@@ -619,8 +619,8 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                     fromFunction function: String,
                     location: String)
     {
-        NSLog("%@", message)
-        // NSLog("Chromecast Message:\n%@\nat level: %@\nfrom Function: %@\nLocation:%@", message, level, function, location)
+        let lvl = MultiVideoStreaming.description(for: level)
+         print("Chromecast Message:\n\(message)\nLevel: \(lvl)\nFunction: \(function)\nLocation:\(location)\n")
     }
 }
 
@@ -783,6 +783,35 @@ func description( for idleReason: GCKMediaPlayerIdleReason) -> String
 
         case .interrupted:
             return "Interrupted"
+
+        case .none:
+            return "None"
+    }
+}
+
+// GCKLoggerLevel
+
+func description( for logLevel: GCKLoggerLevel ) -> String
+{
+    switch logLevel
+    {
+        case .assert:
+            return "Assert"
+
+        case .debug:
+            return "Debug"
+
+        case .error:
+            return "Error"
+
+        case .info:
+            return "Info"
+
+        case .verbose:
+            return "Verbose"
+
+        case .warning:
+            return "Warning"
 
         case .none:
             return "None"
