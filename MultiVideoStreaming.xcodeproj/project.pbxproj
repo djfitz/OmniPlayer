@@ -7,14 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660A55539E3EA0762AFCE220 /* libPods-MultiVideoStreaming.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */; };
+		F68CE3CC215EE93400A0CF12 /* OCDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F68CE3CB215EE93400A0CF12 /* OCDummy.m */; };
 		F6D5C01B214EDD62004BBAA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D5C01A214EDD62004BBAA8 /* AppDelegate.swift */; };
 		F6D5C01D214EDD62004BBAA8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D5C01C214EDD62004BBAA8 /* ViewController.swift */; };
 		F6D5C020214EDD62004BBAA8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C01E214EDD62004BBAA8 /* Main.storyboard */; };
 		F6D5C022214EDD64004BBAA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C021214EDD64004BBAA8 /* Assets.xcassets */; };
 		F6D5C025214EDD64004BBAA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C023214EDD64004BBAA8 /* LaunchScreen.storyboard */; };
+		F6F66EAB214EE3CC00EBE520 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66E9F214EE3CC00EBE520 /* CoreText.framework */; };
+		F6F66EAC214EE3CC00EBE520 /* MediaAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA0214EE3CC00EBE520 /* MediaAccessibility.framework */; };
+		F6F66EAD214EE3CC00EBE520 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA1214EE3CC00EBE520 /* MediaPlayer.framework */; };
+		F6F66EAE214EE3CC00EBE520 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA2214EE3CC00EBE520 /* QuartzCore.framework */; };
+		F6F66EAF214EE3CC00EBE520 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA3214EE3CC00EBE520 /* Foundation.framework */; };
+		F6F66EB0214EE3CC00EBE520 /* MediaToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA4214EE3CC00EBE520 /* MediaToolbox.framework */; };
+		F6F66EB1214EE3CC00EBE520 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA5214EE3CC00EBE520 /* Accelerate.framework */; };
+		F6F66EB2214EE3CC00EBE520 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA6214EE3CC00EBE520 /* SystemConfiguration.framework */; };
+		F6F66EB3214EE3CC00EBE520 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA7214EE3CC00EBE520 /* AVFoundation.framework */; };
+		F6F66EB4214EE3CC00EBE520 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA8214EE3CC00EBE520 /* CoreBluetooth.framework */; };
+		F6F66EB5214EE3CC00EBE520 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA9214EE3CC00EBE520 /* AudioToolbox.framework */; };
+		F6F66EB6214EE3CC00EBE520 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EAA214EE3CC00EBE520 /* CoreGraphics.framework */; };
+		F6F66EBA214F1E6E00EBE520 /* ChromecastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F66EB9214F1E6E00EBE520 /* ChromecastManager.swift */; };
+		F6F66EBC214F207900EBE520 /* MediaPlayerGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F66EBB214F207900EBE520 /* MediaPlayerGeneric.swift */; };
+		F6F66EBE21516FAD00EBE520 /* AVFoundationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F66EBD21516FAD00EBE520 /* AVFoundationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MultiVideoStreaming.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.debug.xcconfig"; sourceTree = "<group>"; };
+		E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.release.xcconfig"; sourceTree = "<group>"; };
+		F68CE3CA215EE93300A0CF12 /* MultiVideoStreaming-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiVideoStreaming-Bridging-Header.h"; sourceTree = "<group>"; };
+		F68CE3CB215EE93400A0CF12 /* OCDummy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCDummy.m; sourceTree = "<group>"; };
 		F6D5C017214EDD62004BBAA8 /* MultiVideoStreaming.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiVideoStreaming.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D5C01A214EDD62004BBAA8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F6D5C01C214EDD62004BBAA8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +44,21 @@
 		F6D5C021214EDD64004BBAA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F6D5C024214EDD64004BBAA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F6D5C026214EDD64004BBAA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F6F66E9F214EE3CC00EBE520 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		F6F66EA0214EE3CC00EBE520 /* MediaAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaAccessibility.framework; path = System/Library/Frameworks/MediaAccessibility.framework; sourceTree = SDKROOT; };
+		F6F66EA1214EE3CC00EBE520 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		F6F66EA2214EE3CC00EBE520 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F6F66EA3214EE3CC00EBE520 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F6F66EA4214EE3CC00EBE520 /* MediaToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaToolbox.framework; path = System/Library/Frameworks/MediaToolbox.framework; sourceTree = SDKROOT; };
+		F6F66EA5214EE3CC00EBE520 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		F6F66EA6214EE3CC00EBE520 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F6F66EA7214EE3CC00EBE520 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F6F66EA8214EE3CC00EBE520 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		F6F66EA9214EE3CC00EBE520 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F6F66EAA214EE3CC00EBE520 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F6F66EB9214F1E6E00EBE520 /* ChromecastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromecastManager.swift; sourceTree = "<group>"; };
+		F6F66EBB214F207900EBE520 /* MediaPlayerGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerGeneric.swift; sourceTree = "<group>"; };
+		F6F66EBD21516FAD00EBE520 /* AVFoundationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVFoundationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +66,61 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F66EB1214EE3CC00EBE520 /* Accelerate.framework in Frameworks */,
+				F6F66EB5214EE3CC00EBE520 /* AudioToolbox.framework in Frameworks */,
+				F6F66EB3214EE3CC00EBE520 /* AVFoundation.framework in Frameworks */,
+				F6F66EB4214EE3CC00EBE520 /* CoreBluetooth.framework in Frameworks */,
+				F6F66EB6214EE3CC00EBE520 /* CoreGraphics.framework in Frameworks */,
+				F6F66EAB214EE3CC00EBE520 /* CoreText.framework in Frameworks */,
+				F6F66EAF214EE3CC00EBE520 /* Foundation.framework in Frameworks */,
+				F6F66EAC214EE3CC00EBE520 /* MediaAccessibility.framework in Frameworks */,
+				F6F66EAD214EE3CC00EBE520 /* MediaPlayer.framework in Frameworks */,
+				F6F66EB0214EE3CC00EBE520 /* MediaToolbox.framework in Frameworks */,
+				F6F66EAE214EE3CC00EBE520 /* QuartzCore.framework in Frameworks */,
+				F6F66EB2214EE3CC00EBE520 /* SystemConfiguration.framework in Frameworks */,
+				660A55539E3EA0762AFCE220 /* libPods-MultiVideoStreaming.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14FCA132BFCDED9E464A1485 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F6F66EA5214EE3CC00EBE520 /* Accelerate.framework */,
+				F6F66EA9214EE3CC00EBE520 /* AudioToolbox.framework */,
+				F6F66EA7214EE3CC00EBE520 /* AVFoundation.framework */,
+				F6F66EA8214EE3CC00EBE520 /* CoreBluetooth.framework */,
+				F6F66EAA214EE3CC00EBE520 /* CoreGraphics.framework */,
+				F6F66E9F214EE3CC00EBE520 /* CoreText.framework */,
+				F6F66EA3214EE3CC00EBE520 /* Foundation.framework */,
+				F6F66EA0214EE3CC00EBE520 /* MediaAccessibility.framework */,
+				F6F66EA1214EE3CC00EBE520 /* MediaPlayer.framework */,
+				F6F66EA4214EE3CC00EBE520 /* MediaToolbox.framework */,
+				F6F66EA2214EE3CC00EBE520 /* QuartzCore.framework */,
+				F6F66EA6214EE3CC00EBE520 /* SystemConfiguration.framework */,
+				44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F8B2971E104135CAF77DAEC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */,
+				E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F6D5C00E214EDD62004BBAA8 = {
 			isa = PBXGroup;
 			children = (
 				F6D5C019214EDD62004BBAA8 /* MultiVideoStreaming */,
 				F6D5C018214EDD62004BBAA8 /* Products */,
+				6F8B2971E104135CAF77DAEC /* Pods */,
+				14FCA132BFCDED9E464A1485 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +141,11 @@
 				F6D5C021214EDD64004BBAA8 /* Assets.xcassets */,
 				F6D5C023214EDD64004BBAA8 /* LaunchScreen.storyboard */,
 				F6D5C026214EDD64004BBAA8 /* Info.plist */,
+				F6F66EB9214F1E6E00EBE520 /* ChromecastManager.swift */,
+				F6F66EBB214F207900EBE520 /* MediaPlayerGeneric.swift */,
+				F6F66EBD21516FAD00EBE520 /* AVFoundationManager.swift */,
+				F68CE3CB215EE93400A0CF12 /* OCDummy.m */,
+				F68CE3CA215EE93300A0CF12 /* MultiVideoStreaming-Bridging-Header.h */,
 			);
 			path = MultiVideoStreaming;
 			sourceTree = "<group>";
@@ -71,9 +157,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F6D5C029214EDD64004BBAA8 /* Build configuration list for PBXNativeTarget "MultiVideoStreaming" */;
 			buildPhases = (
+				498313472F83971514CB367E /* [CP] Check Pods Manifest.lock */,
 				F6D5C013214EDD62004BBAA8 /* Sources */,
 				F6D5C014214EDD62004BBAA8 /* Frameworks */,
 				F6D5C015214EDD62004BBAA8 /* Resources */,
+				7714DD2F71C8E47B87CD3BFE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -96,6 +184,7 @@
 				TargetAttributes = {
 					F6D5C016214EDD62004BBAA8 = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -130,13 +219,66 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		498313472F83971514CB367E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MultiVideoStreaming-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7714DD2F71C8E47B87CD3BFE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming-resources.sh",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.3.2_static/GoogleCast.framework/GoogleCastCoreResources.bundle",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.3.2_static/GoogleCast.framework/GoogleCastUIResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleCastCoreResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleCastUIResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F6D5C013214EDD62004BBAA8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F68CE3CC215EE93400A0CF12 /* OCDummy.m in Sources */,
 				F6D5C01D214EDD62004BBAA8 /* ViewController.swift in Sources */,
+				F6F66EBE21516FAD00EBE520 /* AVFoundationManager.swift in Sources */,
+				F6F66EBC214F207900EBE520 /* MediaPlayerGeneric.swift in Sources */,
 				F6D5C01B214EDD62004BBAA8 /* AppDelegate.swift in Sources */,
+				F6F66EBA214F1E6E00EBE520 /* ChromecastManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +308,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -227,6 +370,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -280,8 +424,11 @@
 		};
 		F6D5C02A214EDD64004BBAA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8447SZV72Y;
 				INFOPLIST_FILE = MultiVideoStreaming/Info.plist;
@@ -291,6 +438,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.doughill.MultiVideoStreaming;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MultiVideoStreaming/MultiVideoStreaming-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -298,8 +447,11 @@
 		};
 		F6D5C02B214EDD64004BBAA8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8447SZV72Y;
 				INFOPLIST_FILE = MultiVideoStreaming/Info.plist;
@@ -309,6 +461,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.doughill.MultiVideoStreaming;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MultiVideoStreaming/MultiVideoStreaming-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
