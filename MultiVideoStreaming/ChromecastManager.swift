@@ -12,6 +12,17 @@ import GoogleCast
 var gChromecastManager:ChromecastManager? = nil
 
 
+//class ChromecastSessionState
+//{
+//    var mediaStatus: GCKMediaStatus? = nil
+//
+//}
+
+/**
+
+*/
+
+
 /**
     Manages the interface between the application and the Chromecast SDK.
 
@@ -22,7 +33,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                           GCKLoggerDelegate
 {
     // ID can be found at: https://cast.google.com/publish/
-    let kChromecastApplicationID = "09E504FF"    // kGCKDefaultMediaReceiverApplicationID
+    let kChromecastApplicationID = "09E504FF"
 
     /**
         There are times that we want commands to the Chromecast SDK to be
@@ -41,6 +52,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     */
     var logChromecastMessages = true
 
+    // Setup the Chromecast session.
     static func Setup()
     {
         gChromecastManager = ChromecastManager()
