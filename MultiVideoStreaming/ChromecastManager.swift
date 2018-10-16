@@ -22,7 +22,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                           GCKLoggerDelegate
 {
     // ID can be found at: https://cast.google.com/publish/
-    let chromecastApplicationID = "09E504FF"
+    let kChromecastApplicationID = "09E504FF"    // kGCKDefaultMediaReceiverApplicationID
 
     /**
         There are times that we want commands to the Chromecast SDK to be
@@ -56,7 +56,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     func setupChromecastSDK()
     {
         // Necessary initialization to start the SDK.
-        let discCrit = GCKDiscoveryCriteria.init(applicationID: "")
+        let discCrit = GCKDiscoveryCriteria.init(applicationID: kChromecastApplicationID)
         let castOptions = GCKCastOptions.init(discoveryCriteria: discCrit)
         GCKCastContext.setSharedInstanceWith(castOptions)
 
@@ -316,7 +316,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     func sessionManager(_ sessionManager: GCKSessionManager,
                         willStart session: GCKSession)
     {
-        NSLog("Session Manager: Will Start Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
+        NSLog("Session Manager: Will Start Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : "No session")
     }
 
     /**
@@ -328,7 +328,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     func sessionManager(_ sessionManager: GCKSessionManager,
                         didStart session: GCKSession)
     {
-        NSLog("Session Manager: Did Start Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
+        NSLog("Session Manager: Did Start Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : "None")
     }
 
     /**
@@ -381,6 +381,8 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                         withError error: Error)
     {
         print( "Session Manager: Session Did Fail to Start, with Session with ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(error)" )
+
+        NotificationCenter.default.post(name: NSNotification.Name.init("SessionDidFailtoStartNotification"), object: error)
     }
 
     /**
@@ -533,6 +535,27 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                         didStart session: GCKCastSession)
     {
         NSLog("Session Manager: Cast Session Did Start. Cast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
+
+        let md = GCKMediaMetadata.init(metadataType: .movie)
+        md.setString("Dumb Title", forKey: kGCKMetadataKeyTitle)
+        md.setString("Dumb Studios", forKey: kGCKMetadataKeyStudio)
+
+
+
+        let mediaInfo = GCKMediaInformation.init(
+                contentID: "http://breaqz.com/movies/ContentInsetDemo1.mov",
+                streamType: .buffered,
+                contentType: "video/quicktime",
+                metadata: md,
+                adBreaks: nil,
+                adBreakClips: nil,
+                streamDuration: 10,
+                mediaTracks: nil,
+                textTrackStyle: nil,
+                customData: nil
+            )
+
+        session.remoteMediaClient?.loadMedia(mediaInfo)
     }
 
     /**
@@ -646,11 +669,6 @@ extension GCKMediaStatus
         retVal += "Queue has a current item: \(self.queueHasCurrentItem)"
         retVal += "Current Queue Item: \(String(describing: self.currentQueueItem?.itemID))"
         retVal += "Next Queue Item: \(String(describing: self.nextQueueItem?.itemID))"
-        retVal += "\(self.mediaSessionID)"
-        retVal += "\(self.mediaSessionID)"
-        retVal += "\(self.mediaSessionID)"
-        retVal += "\(self.mediaSessionID)"
-        retVal += "\(self.mediaSessionID)"
 
         return retVal
     }
@@ -677,8 +695,9 @@ extension GCKMediaInformation
                 retVal += "Stream Type: Unknown\n"
         }
 
-        retVal += "Content ID: \(self.contentType)"
+        retVal += "Content ID: \(self.contentType)\n"
 
+        retVal += "Media Metadata: \(self.metadata?.description() ?? "No media metadata.")\n "
 
         return retVal
     }
@@ -751,7 +770,7 @@ func description( for mediaMetaDateType: GCKMediaMetadataType) -> String
             return "Generic"
 
         case .movie:
-            return "Buffering"
+            return "Movie"
 
         case .musicTrack:
             return "Music Track"
