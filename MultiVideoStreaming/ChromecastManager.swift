@@ -30,7 +30,7 @@ var gChromecastManager:ChromecastManager? = nil
 */
 class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                           GCKCastDeviceStatusListener, GCKSessionManagerListener,
-                          GCKLoggerDelegate
+                          GCKLoggerDelegate, GCKDiscoveryManagerListener
 {
     // ID can be found at: https://cast.google.com/publish/
     let kChromecastApplicationID = "09E504FF"
@@ -70,7 +70,10 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
         // Necessary initialization to start the SDK.
         let discCrit = GCKDiscoveryCriteria.init(applicationID: kChromecastApplicationID)
         let castOptions = GCKCastOptions.init(discoveryCriteria: discCrit)
+        castOptions.physicalVolumeButtonsWillControlDeviceVolume = true
         GCKCastContext.setSharedInstanceWith(castOptions)
+
+        GCKCastContext.sharedInstance().discoveryManager.add(self)
 
         // Start listening for Chromecast session messages.
         GCKCastContext.sharedInstance().sessionManager.add(self)
@@ -80,157 +83,93 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
         GCKLogger.sharedInstance().delegate = self
     }
 
-
     // =======================================================================================
 
-    // MARK:- GCKRemoteMediaClientListener
+    // MARK:- GCKDiscoveryManagerListener
+
 
     /**
-     * Called when a new media session has started on the receiver.
-     *
-     * @param client The client.
-     * @param sessionID The ID of the new session.
+     * Called when discovery has started for the given device category.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                           didStartMediaSessionWithID sessionID: Int)
+    func didStartDiscovery(forDeviceCategory deviceCategory: String)
     {
-        NSLog("\nRemote Media Client: Did Start Media Session With ID = %@\n", sessionID)
+        print( "Discovery Mgr: Did Start Discovery -> Device Category filter: \(deviceCategory)\n" )
     }
 
     /**
-     * Called when updated media status has been received from the receiver.
-     *
-     * @param client The client.
-     * @param mediaStatus The updated media status. The status can also be accessed as a property of
-     * the player.
+     * Called when the list of discovered devices is about to be updated in some way.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                           didUpdate mediaStatus: GCKMediaStatus?)
+    func willUpdateDeviceList()
     {
-        if let mediaStatusThatUpdated = mediaStatus
-        {
-            NSLog("Media Status Did Update:\n%@\n",
-                  String(describing: mediaStatusThatUpdated) )
-        }
-        else
-        {
-            NSLog("Media Status Did Update:\n with no status. ???\n")
-        }
+        print( "Discovery Mgr: Will Update Device List\n" )
     }
 
     /**
-     * Called when updated media metadata has been received from the receiver.
-     *
-     * @param client The client.
-     * @param mediaMetadata The updated media metadata. The metadata can also be accessed through the
-     * GCKRemoteMediaClient::mediaStatus property.
+     * Called when the list of discovered devices has been updated in some way.
      */
-
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                           didUpdate mediaMetadata: GCKMediaMetadata?)
+    func didUpdateDeviceList()
     {
-        if let mediaMetadataThatUpdated = mediaMetadata
-        {
-            NSLog("Remote Media Client: Media Metadata Did Update\n%@\n",
-                  String(describing: mediaMetadataThatUpdated) )
-        }
-        else
-        {
-            NSLog("Remote Media Client: Media Metadata Did Update with no metadata. ???\n")
-        }
+        print( "Discovery Mgr: Did Update Device List\n" )
     }
 
     /**
-     * Called when the media preload status has been updated on the receiver.
+     * Called when a newly-discovered device has been inserted into the list of devices.
      *
-     * @param client The client.
+     * @param device The device that was inserted.
+     * @param index The list index at which the device was inserted.
      */
-    func remoteMediaClientDidUpdatePreloadStatus(_ client: GCKRemoteMediaClient)
+    func didInsert(_ device: GCKDevice, at index: UInt)
     {
-        if let mediaStatusThatUpdated = client.mediaStatus
-        {
-            NSLog("Remote Media Client: Preload Status Did Update:\nPreloaded Item ID = %@\n",
-                  String(describing: mediaStatusThatUpdated.preloadedItemID) )
-        }
-        else
-        {
-            NSLog("Remote Media Client: Preload Status Did Update:\n with no status. ???\n")
-        }
+        print( "Discovery Mgr: Did Insert Device into Device List -> Device ID: \(device.deviceID)\n" )
     }
 
     /**
-     * Called when the media playback queue has been updated on the receiver.
+     * Called when a previously-discovered device has been updated.
      *
-     * @param client The client.
+     * @param device The device that was updated.
+     * @param index The list index of the device.
      */
-    func remoteMediaClientDidUpdateQueue(_ client: GCKRemoteMediaClient)
+    func didUpdate(_ device: GCKDevice, at index: UInt)
     {
-        NSLog("Remote Media Client: Did update Queue")
+        print( "Discovery Mgr: Did Update Device -> Device ID: \(device.deviceID), Index: \(index)\n" )
     }
 
     /**
-     * Called when the list of media queue item IDs has been received.
+     * Called when a previously-discovered device has been updated and/or reordered within the list.
      *
-     * @param client The client.
-     * @param queueItemIDs The list of media queue item IDs.
-     */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                           didReceiveQueueItemIDs queueItemIDs: [NSNumber])
+     * @param device The device that was updated.
+     * @param index The previous list index of the device.
+     * @param newIndex The current list index of the device.
+    */
+    func didUpdate(_ device: GCKDevice, at index: UInt, andMoveTo newIndex: UInt)
     {
-        NSLog("Remote Media Client: Did Receive Queue Items:\n\(queueItemIDs)")
+        print( "Discovery Mgr: Did Update Device -> Device ID: \(device.deviceID), Index: \(index), Moved To Index: \(newIndex)\n" )
     }
 
     /**
-     * Called when a contiguous sequence of items has been inserted into the media queue.
+     * Called when a previously-discovered device has gone offline and has been removed from the list of
+     * devices.
      *
-     * @param client The client.
-     * @param queueItemIDs The item IDs of the inserted items.
-     * @param beforeItemID The item ID of the item in front of which the new items have been inserted.
-     *
-     * If the value is kGCKMediaQueueInvalidItemID, it indicates that the items were appended at the
-     * end of the queue.
+     * @param index The list index of the device that was removed.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                            didInsertQueueItemsWithIDs queueItemIDs: [NSNumber],
-                            beforeItemWithID beforeItemID: UInt)
+    func didRemoveDevice(at index: UInt)
     {
-        NSLog("Remote Media Client: Did Insert Queue Items:\n\(queueItemIDs)\nBefore Item: \(beforeItemID)")
+        print( "Discovery Mgr: Did Remove Device -> Index: \(index)\n" )
     }
 
     /**
-     * Called when existing items has been updated in the media queue.
+     * Called when a previously-discovered device has gone offline and has been
+     * removed from the list of devices. This is an alternative to @ref
+     * didRemoveDeviceAtIndex:. If both are implemented, both will be called.
      *
-     * @param client The client.
-     * @param queueItemIDs The item IDs of the updated items.
-     */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                            didUpdateQueueItemsWithIDs queueItemIDs: [NSNumber])
-    {
-        NSLog("Remote Media Client: Did Update Queue Items:\n\(queueItemIDs)")
-    }
-
-    /**
-     * Called when a contiguous sequence of items has been removed from the media queue.
+     * @param device The device that was removed.
+     * @param index The list index of the device that was removed.
      *
-     * @param client The client.
-     * @param queueItemIDs The item IDs of the removed items.
+     * @since 4.1
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                            didRemoveQueueItemsWithIDs queueItemIDs: [NSNumber])
+    func didRemove(_ device: GCKDevice, at index: UInt)
     {
-        NSLog("Remote Media Client: Did Remove Queue Items:\n\(queueItemIDs)")
-    }
-
-    /**
-     * Called when detailed information has been received for one or more items in the queue.
-     *
-     * @param client The client.
-     * @param queueItems The queue items.
-     */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
-                            didReceive queueItems: [GCKMediaQueueItem])
-    {
-        NSLog("Remote Media Client: Did Receive Queue Items:\n\(queueItems)")
+        print( "Discovery Mgr: Did Remove Device -> Device ID: \(device.deviceID), Index: \(index)\n" )
     }
 
 
@@ -378,7 +317,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     func sessionManager(_ sessionManager: GCKSessionManager,
                         willEnd session: GCKCastSession)
     {
-        NSLog("Session Manager: Will End Casat Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
+        NSLog("Session Manager: Will End Cast Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
     }
 
     /**
@@ -408,7 +347,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                         didSuspend session: GCKSession,
                         with reason: GCKConnectionSuspendReason)
     {
-        print( "Session Manager: Session Did Suspend. Reason:\n\(String(describing: reason))\n" )
+        print( "Session Manager: Session Did Suspend. Reason:\n\(EnumDescriber.description(for: reason)))\n" )
     }
 
     /**
@@ -523,6 +462,8 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                         didResumeCastSession session: GCKCastSession)
     {
         NSLog("Session Manager: Cast Session Did Resume. Cast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
+
+        session.remoteMediaClient?.add(self)
     }
 
     /**
@@ -546,16 +487,16 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     func sessionManager(_ sessionManager: GCKSessionManager,
                         didStart session: GCKCastSession)
     {
-        NSLog("Session Manager: Cast Session Did Start. Cast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
+        session.remoteMediaClient?.add(self)
+
+        NSLog("Session Manager: Cast Session Did Start.\nCast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
 
         let md = GCKMediaMetadata.init(metadataType: .movie)
         md.setString("Dumb Title", forKey: kGCKMetadataKeyTitle)
         md.setString("Dumb Studios", forKey: kGCKMetadataKeyStudio)
 
-
-
         let mediaInfo = GCKMediaInformation.init(
-                contentID: "http://breaqz.com/movies/ContentInsetDemo1.mov",
+                contentID: "http://breaqz.com/movies/Lego911gt3.mov",
                 streamType: .buffered,
                 contentType: "video/quicktime",
                 metadata: md,
@@ -654,8 +595,161 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                     fromFunction function: String,
                     location: String)
     {
-        let lvl = MultiVideoStreaming.description(for: level)
+        let lvl = EnumDescriber.description(for: level)
          print("Chromecast Message:\n\(message)\nLevel: \(lvl)\nFunction: \(function)\nLocation:\(location)\n")
+    }
+
+// =======================================================================================
+
+// MARK:- GCKRemoteMediaClientListener
+
+    /**
+     * Called when a new media session has started on the receiver.
+     *
+     * @param client The client.
+     * @param sessionID The ID of the new session.
+     */
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                           didStartMediaSessionWithID sessionID: Int)
+    {
+        NSLog("\nRemote Media Client: Did Start Media Session With ID = %d\n", sessionID)
+
+        client.add(self)
+    }
+
+    /**
+     * Called when updated media status has been received from the receiver.
+     *
+     * @param client The client.
+     * @param mediaStatus The updated media status. The status can also be accessed as a property of
+     * the player.
+     */
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                           didUpdate mediaStatus: GCKMediaStatus?)
+    {
+        if let mediaStatusThatUpdated = mediaStatus
+        {
+            NSLog("Remote Media Client: Media Status Did Update:\n%@\n", String( describing: mediaStatusThatUpdated) )
+        }
+        else
+        {
+            NSLog("Remote Media Client: Media Status Did Update:\n with no status. ???\n")
+        }
+    }
+
+    /**
+     * Called when updated media metadata has been received from the receiver.
+     *
+     * @param client The client.
+     * @param mediaMetadata The updated media metadata. The metadata can also be accessed through the
+     * GCKRemoteMediaClient::mediaStatus property.
+     */
+
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                           didUpdate mediaMetadata: GCKMediaMetadata?)
+    {
+        if let mediaMetadataThatUpdated = mediaMetadata
+        {
+            NSLog("Remote Media Client: Media Metadata Did Update\n%@\n",
+                    String(describing: mediaMetadataThatUpdated) )
+        }
+        else
+        {
+            NSLog("Remote Media Client: Media Metadata Did Update with no metadata. ???\n")
+        }
+    }
+
+    /**
+     * Called when the media preload status has been updated on the receiver.
+     *
+     * @param client The client.
+     */
+    func remoteMediaClientDidUpdatePreloadStatus(_ client: GCKRemoteMediaClient)
+    {
+        if let mediaStatusThatUpdated = client.mediaStatus
+        {
+            NSLog("Remote Media Client: Preload Status Did Update:\nPreloaded Item ID = %@\n",
+                  String(describing: mediaStatusThatUpdated.preloadedItemID) )
+        }
+        else
+        {
+            NSLog("Remote Media Client: Preload Status Did Update:\n with no status. ???\n")
+        }
+    }
+
+    /**
+     * Called when the media playback queue has been updated on the receiver.
+     *
+     * @param client The client.
+     */
+    func remoteMediaClientDidUpdateQueue(_ client: GCKRemoteMediaClient)
+    {
+        NSLog("Remote Media Client: Did update Queue")
+    }
+
+    /**
+     * Called when the list of media queue item IDs has been received.
+     *
+     * @param client The client.
+     * @param queueItemIDs The list of media queue item IDs.
+     */
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                           didReceiveQueueItemIDs queueItemIDs: [NSNumber])
+    {
+        NSLog("Remote Media Client: Did Receive Queue Items:\n\(queueItemIDs)")
+    }
+
+    /**
+     * Called when a contiguous sequence of items has been inserted into the media queue.
+     *
+     * @param client The client.
+     * @param queueItemIDs The item IDs of the inserted items.
+     * @param beforeItemID The item ID of the item in front of which the new items have been inserted.
+     *
+     * If the value is kGCKMediaQueueInvalidItemID, it indicates that the items were appended at the
+     * end of the queue.
+     */
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                            didInsertQueueItemsWithIDs queueItemIDs: [NSNumber],
+                            beforeItemWithID beforeItemID: UInt)
+    {
+        NSLog("Remote Media Client: Did Insert Queue Items:\n\(queueItemIDs)\nBefore Item: \(beforeItemID)")
+    }
+
+    /**
+     * Called when existing items has been updated in the media queue.
+     *
+     * @param client The client.
+     * @param queueItemIDs The item IDs of the updated items.
+     */
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                            didUpdateQueueItemsWithIDs queueItemIDs: [NSNumber])
+    {
+        NSLog("Remote Media Client: Did Update Queue Items:\n\(queueItemIDs)")
+    }
+
+    /**
+     * Called when a contiguous sequence of items has been removed from the media queue.
+     *
+     * @param client The client.
+     * @param queueItemIDs The item IDs of the removed items.
+     */
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                            didRemoveQueueItemsWithIDs queueItemIDs: [NSNumber])
+    {
+        NSLog("Remote Media Client: Did Remove Queue Items:\n\(queueItemIDs)")
+    }
+
+    /**
+     * Called when detailed information has been received for one or more items in the queue.
+     *
+     * @param client The client.
+     * @param queueItems The queue items.
+     */
+    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+                            didReceive queueItems: [GCKMediaQueueItem])
+    {
+        NSLog("Remote Media Client: Did Receive Queue Items:\n\(queueItems)")
     }
 }
 
@@ -665,32 +759,34 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
 
 extension GCKMediaStatus
 {
-    func description() -> String
+    override open var description: String
     {
         var retVal = "\nMedia Status:\n"
 
-        retVal += "Media Session ID\(self.mediaSessionID)"
-        retVal += "Player State: \(String(describing: self.playerState))"
-        retVal += "Idle Reason: \(MultiVideoStreaming.description(for: self.idleReason))"
-        retVal += "Playback Rate: \(self.playbackRate)"
-        retVal += "Stream Position: \(self.streamPosition)"
-        retVal += "Volume: \(self.volume)"
-        retVal += "Is Muted: \(self.isMuted)"
-        retVal += "Repeat Mode: \(MultiVideoStreaming.description(for: self.queueRepeatMode))"
-        retVal += "Current Item ID: \(self.currentItemID)"
-        retVal += "Queue has a current item: \(self.queueHasCurrentItem)"
-        retVal += "Current Queue Item: \(String(describing: self.currentQueueItem?.itemID))"
-        retVal += "Next Queue Item: \(String(describing: self.nextQueueItem?.itemID))"
+        retVal += "Media Information: \(String(describing: self.mediaInformation))"
+        retVal += "Media Session ID: \(self.mediaSessionID)\n"
+        retVal += "Player State: \(EnumDescriber.description(for: self.playerState))\n"
+        retVal += "Idle Reason: \(EnumDescriber.description(for: self.idleReason))\n"
+        retVal += "Playback Rate: \(self.playbackRate)\n"
+        retVal += "Stream Position: \(self.streamPosition)\n"
+        retVal += "Volume: \(self.volume)\n"
+        retVal += "Is Muted: \(self.isMuted)\n"
+        retVal += "Repeat Mode: \(EnumDescriber.description(for: self.queueRepeatMode))\n"
+        retVal += "Current Item ID: \(self.currentItemID)\n"
+        retVal += "Queue has a current item: \(self.queueHasCurrentItem)\n"
+        retVal += "Current Queue Item: \(String(describing: self.currentQueueItem?.itemID))\n"
+        retVal += "Next Queue Item: \(String(describing: self.nextQueueItem?.itemID))\n"
 
         return retVal
     }
 }
 
+
 extension GCKMediaInformation
 {
-    func description() -> String
+    override open var description: String
     {
-        var retVal = "Content ID: \(self.contentID)"
+        var retVal = "Content ID: \(self.contentID)\n"
 
         switch self.streamType
         {
@@ -709,142 +805,175 @@ extension GCKMediaInformation
 
         retVal += "Content ID: \(self.contentType)\n"
 
-        retVal += "Media Metadata: \(self.metadata?.description() ?? "No media metadata.")\n "
+        if let realMetaData = self.metadata {
+            retVal += "Media Metadata: \(String(describing: realMetaData))\n "
+        }
 
         return retVal
     }
 }
 
-// GCKMediaMetadata
 extension GCKMediaMetadata
 {
-    func description() -> String
+    override open var description: String
     {
-        return "Metadata Type: \(MultiVideoStreaming.description(for: self.metadataType))\n"
-                + "Images:\n\(self.images())\n"
-                + "Keys:\n\(self.allKeys())\n\n"
+        return "Metadata Type: \(EnumDescriber.description(for: self.metadataType))\n"
+                + "Images: \(self.images())\n"
+                + "Keys: \(self.allKeys())\n"
+                + "Values: \( self.allKeys().map{(self.object(forKey: $0))! } )\n"
     }
 }
 
-func description( for mediaRepeatMode: GCKMediaRepeatMode) -> String
+class EnumDescriber
 {
-    switch mediaRepeatMode
+    static func description( for mediaRepeatMode: GCKMediaRepeatMode) -> String
     {
-        case .all:
-            return "All"
+        switch mediaRepeatMode
+        {
+            case .all:
+                return "All"
 
-        case .allAndShuffle:
-            return "All and Shuffle"
+            case .allAndShuffle:
+                return "All and Shuffle"
 
-        case .off:
-            return "Off"
+            case .off:
+                return "Off"
 
-        case .single:
-            return "Single"
+            case .single:
+                return "Single"
 
-        case .unchanged:
-            return "Unchanged"
+            case .unchanged:
+                return "Unchanged"
+        }
     }
-}
 
-func description( for playerState: GCKMediaPlayerState) -> String
-{
-    switch playerState
+    static func description( for playerState: GCKMediaPlayerState) -> String
     {
-        case .unknown:
-            return "Unknown"
+        switch playerState
+        {
+            case .unknown:
+                return "Unknown"
 
-        case .buffering:
-            return "Buffering"
+            case .buffering:
+                return "Buffering"
 
-        case .loading:
-            return "Loading"
+            case .loading:
+                return "Loading"
 
-        case .paused:
-            return "Paused"
+            case .paused:
+                return "Paused"
 
-        case .playing:
-            return "Playing"
+            case .playing:
+                return "Playing"
 
-        case .idle:
-            return "Idle"
+            case .idle:
+                return "Idle"
 
-        default:
-            return "ooooppse"
+            default:
+                return "ooooppse"
+        }
     }
-}
 
-func description( for mediaMetaDateType: GCKMediaMetadataType) -> String
-{
-    switch mediaMetaDateType
+    static func description( for mediaMetaDataType: GCKMediaMetadataType) -> String
     {
-        case .generic:
-            return "Generic"
+        switch mediaMetaDataType
+        {
+            case .generic:
+                return "Generic"
 
-        case .movie:
-            return "Movie"
+            case .movie:
+                return "Movie"
 
-        case .musicTrack:
-            return "Music Track"
+            case .musicTrack:
+                return "Music Track"
 
-        case .photo:
-            return "Photo"
+            case .photo:
+                return "Photo"
 
-        case .tvShow:
-            return "TV Show"
+            case .tvShow:
+                return "TV Show"
 
-        case .user:
-            return "No real Value: Compiler internal limit"
+            case .user:
+                return "No real Value: Compiler internal limit"
+        }
     }
-}
 
 
-func description( for idleReason: GCKMediaPlayerIdleReason) -> String
-{
-    switch idleReason
+    static func description( for idleReason: GCKMediaPlayerIdleReason) -> String
     {
-        case .cancelled:
-            return "Cancelled"
+        switch idleReason
+        {
+            case .cancelled:
+                return "Cancelled"
 
-        case .error:
-            return "Error"
+            case .error:
+                return "Error"
 
-        case .finished:
-            return "Finished"
+            case .finished:
+                return "Finished"
 
-        case .interrupted:
-            return "Interrupted"
+            case .interrupted:
+                return "Interrupted"
 
-        case .none:
-            return "None"
+            case .none:
+                return "None"
+        }
     }
-}
 
-// GCKLoggerLevel
+    // GCKLoggerLevel
 
-func description( for logLevel: GCKLoggerLevel ) -> String
-{
-    switch logLevel
+    static func description( for logLevel: GCKLoggerLevel ) -> String
     {
-        case .assert:
-            return "Assert"
+        switch logLevel
+        {
+            case .assert:
+                return "Assert"
 
-        case .debug:
-            return "Debug"
+            case .debug:
+                return "Debug"
 
-        case .error:
-            return "Error"
+            case .error:
+                return "Error"
 
-        case .info:
-            return "Info"
+            case .info:
+                return "Info"
 
-        case .verbose:
-            return "Verbose"
+            case .verbose:
+                return "Verbose"
 
-        case .warning:
-            return "Warning"
+            case .warning:
+                return "Warning"
 
-        case .none:
-            return "None"
+            case .none:
+                return "None"
+
+            default:
+                return "Unknown"
+        }
+    }
+
+    //GCKConnectionSuspendReason
+    static func description( for suspendReason: GCKConnectionSuspendReason ) -> String
+    {
+        switch suspendReason
+        {
+            case .appBackgrounded:
+                return "App Backgrounded"
+
+            case .appTerminated:
+                return "App Terminated"
+
+            case .networkError:
+                return "Network Error"
+
+            case .networkNotReachable:
+                return "Network Not Reachable"
+
+            case .none:
+                return "None"
+
+            default:
+                return "Unknown"
+        }
     }
 }

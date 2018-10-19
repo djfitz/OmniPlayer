@@ -15,8 +15,14 @@ class MediaControlsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        self.timeSeekSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .normal)
+//        self.timeSeekSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .selected)
+//        self.timeSeekSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .highlighted)
     }
-    
+
+    @IBAction func backButtonTapped(_ sender: Any) {
+        print("Back button tapped")
+    }
 
     /*
     // MARK: - Navigation
