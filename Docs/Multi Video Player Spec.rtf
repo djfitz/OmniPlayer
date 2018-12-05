@@ -1,0 +1,312 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 SFProDisplay-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red255\green255\blue255;
+\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\csgray\c0\c0;\csgenericrgb\c100000\c100000\c100000;
+\csgenericrgb\c0\c0\c0;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{square\}}{\leveltext\leveltemplateid1\'01\uc0\u9642 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww20940\viewh16280\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs48 \cf0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs72 \cf0 Generic Media Player\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs48 \cf0 \
+Purpose\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 \
+The purpose of the generic media player is to abstract the interface so that the same commands can be used to control any media player (e.g. AVFoundation or Chromecast). One can then create a media player object corresponding to a specific media player and send it one of a common set of commands. One could also create many different media player objects and these would act independently of each other.\
+\
+NOTE:\
+A media player is generally part of a larger device framework that encompasses things like session management, device discovery/selection/configuration, DRM management, etc. This class doesn't handle any of these things. One would use the device specific classes for initialization and configuration then use one of the specific methods of this class to create a media player for that framework.\
+\
+NOTE 2:\
+This class doesn't handle any queue semantics (e.g. skip item forward, back). This class can start playback of a single media item, and then can notify a listener if the item finished plyback. There is another class to handle a queue or playlist.\
+\
+NOTE 3:\
+Subclasses of the generic media player for a particular device may have specific methods/properties. Be careful to understand those semantics and use them appropriately.
+\fs48 \
+\
+\
+No UI\
+
+\fs36 \
+This class may have associated local display of media content or none. For example, AVFoundation has an associated layer for rendering local video content. Chromecast does not and only controls a remote device. This is handled by the underlying media playback framework, not this class.\
+\
+Additionally, this class doesn't show or manage any controller UI. Any playback UI controls and state needs to be handled by other classes.\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs48 \cf0 \
+Properties vs. Methods\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 \
+To use this class, one uses a public method to change the player state. Then a corresponding property is updated to reflect the change. This usage is different than updating a property directly that triggers side-effects which change the underlying media player. The reason this is done is because there might be errors when updating the underlying media player and we don't want the property to be inadvertently updated. For example, one could attempt to set an offset value that is invalid. We don't want to update the property, have an observer do error checking and then reset the property. Instead, call the corresponding update method and the property will be updated if successful, or an error will be communicated to the caller some other way.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs48 \cf0 \
+\
+Properties\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\b\fs40 \cf2 \cb3 Current Offset (seconds)
+\fs36 \
+
+\b0 \
+
+\i Get Only
+\i0 \
+
+\i Observable\
+
+\i0 \
+Setting the offset will perform a seek operation. This could take  a long time depending on the media, network stream, etc.\
+\
+NOTE: Not all media players can support fractional seconds for the offset.\
+\
+NOTE2: How often observers will be called is dependent on the media player. May not be fractional seconds, even if the media player supports fractional offsets.
+\fs24 \cf0 \cb4 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\b\fs36 \cf5 \
+\
+
+\fs40 Rate
+\b0 \
+
+\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\i\fs36 \cf2 \cb3 Get Only
+\i0 \
+
+\i Observable\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\i0\fs24 \cf0 \cb4 \
+
+\fs36 \cf2 The rate of the playback as a fractional amount. Also known as the playback speed.\
+\
+0 = stopped, 1 = Default playback rate, 2 = Double speed playback, 0.5 = Half speed\
+\
+NOTE:\
+\'95 Not all media players can support non-whole fractional amounts for rate.\
+\cf5 \'95\'a0Some media players may only support 0 and 1 values for rate (e.g. paused and playing)j
+\fs24 \cf0 \
+
+\b\fs36 \cf5 \
+\
+
+\fs40 volume
+\b0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\fs36 \cf2 \cb3 \
+
+\i Get Only
+\i0 \
+
+\i Observable\
+
+\i0 \
+Can be a value from 0 (muted) to 1 (full volume).\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\b \cf5 \cb4 \
+
+\fs40 mediaItem
+\b0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\fs36 \cf2 \cb3 \
+
+\i Get Only
+\i0 \
+
+\i Observable\
+
+\i0 \
+Returns the media item that has been loaded and is now ready for playback.\
+Observers are called when a new media item has been loaded.\
+\
+Use the media item object to determine information about it. For example, duration, media type (e.g. video, audio, etc.), track information, other metadata, etc.\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\b\fs40 \cf5 \cb4 playbackState
+\b0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\fs36 \cf2 \cb3 \
+
+\i Get Only\
+Observable
+\i0 \
+\
+Indicates the state of playback. Can be one of the following states:\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf2 \'95 Not Ready to Play\
+It may take some time after creating the media player before it is ready to play a media item.\
+\
+\'95 Ready to Play\
+The media player has fully initialized and is ready to play. Loading a media item hasn't been initiated and no item has been loaded.\
+\
+\'95 Media loading\
+A media item has been specified and is now loading.\
+\
+\'95 Playing\
+Media has been successfully loaded and is now playing\
+\
+\'95 Paused\
+Playback is currently paused.\
+\
+\'95 Buffering\
+Playback is no longer happening because the media player is waiting for decoded audio data. This could be due to many reasons:\
+- Network latency\
+- Network temporarily lost\
+- Local storage latency\
+- etc.\
+\
+In the buffering state, the assumption is that playback can potentially continue at some point in the near future. e.g. a recoverable error.\
+\
+\'95 Stopped\
+Media playback has been stopped.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+\cf2 Depending on the underlying media player, media may need to be loaded again. Or this state may be no different than Paused.\
+\
+\'95\'a0Finished\
+Media playback has successfully continued until the end of the media item.\
+\
+\'95 Playback Error\
+There was an error that caused media to no longer play. This could be for many reasons:\
+- Network errors\
+- Corrupted media item\
+- Local storage device read errors, or local storage device is missing.\
+- Memory issues\
+- Software/CODEC bug\
+\
+Attempting to use this media item again may fail, although some operations might work. For example, if there was a lost network connection, and the network returns, playback might be able to resume without reloading the media\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs48 \cf0 \cb1 Methods\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab989\pardirnatural\partightenfactor0
+
+\b\fs40 \cf2 \cb3 Load Media Item
+\fs36 \
+
+\b0 \
+Input Params:\
+\
+- URL\
+A URL that points to a media item. URL can be for a remote item or a local item. \
+NOTE: Not all media players can handle both local and remote items. Be prepared to handle errors for each situation.\
+\
+- Error Block callback\
+Will be called if there is an error.\
+\
+This method attempts to load the specified URL for playback.\
+\
+This method may fail for many reasons:\
+- Invalid URL format\
+- URL doesn't exist\
+- URL doesn't specify a media item supported by the underlying player.\
+- etc.\
+\
+
+\b\fs40 \
+Play
+\fs36 \
+
+\b0 \
+This method is only valid if a media item is finished loading loaded successfully.\
+\
+If the media item is currently in the paused state, playback will resume at the current time offset.\
+If the media item is currently in the stopped state or finished state, playback will commence at the beginning of the media item.\
+If the media item is currently in the playing state, this method has no effect. \
+If the media item is in the error state, this method has no effect.\
+\
+\
+
+\b\fs40 Pause
+\fs36 \
+
+\b0 \
+If a media item has been loaded and is currently playing, playback will be paused at the current time offset.\
+If the playback state is anything other than playing, this method has no effect.\
+\
+\
+
+\b\fs40 Stop
+\fs36 \
+
+\b0 \
+If a media item has been loaded and is currently playing, playback will be stopped. Loading state and current offset might be affected.\
+\
+NOTE:\
+Stop semantics may differ from Pause because of how the underlying media player handles this message. Stop might be identical to Pause. Or it might cause the media item to be unloaded, and the current time offset might be reset to 0.\
+\
+\
+
+\b\fs40 Seek
+\fs36 \
+
+\b0 \
+Input Params:\
+\
+- New Time (seconds) \
+\
+If a media item has been loaded and is not in an error state, the current time offset will be changed to the New Time.\
+\
+\
+
+\b\fs40 Seek Forward
+\fs36 \
+
+\b0 \
+Input Params:\
+\
+- Offset (unsigned seconds)\
+\
+If a media item has been loaded and is not in an error state, the current time offset will be added to the Offset input param.\
+\
+\
+
+\b\fs40 Seek Backwards
+\fs36 \
+
+\b0 \
+Input Params:\
+\
+- Offset (unsigned seconds)\
+\
+If a media item has been loaded and is not in an error state, the the Offset input param will be subtracted from the current time offset.\
+\
+\
+
+\b\fs40 Set Volume
+\fs36 \
+
+\b0 \
+Input Params:\
+\
+- New Volume (fractional value from 0 to 1)\
+\
+Can be a value from 0 (muted) to 1 (full volume).\
+\
+If a media item has been loaded and is not in an error state, volume of playback will be changed.\
+\
+\
+}
