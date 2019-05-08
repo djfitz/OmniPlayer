@@ -45,7 +45,8 @@ class ViewController: UIViewController
 
     func startPlayback()
     {
-        let url = URL.init(fileURLWithPath: "http://breaqz.com/movies/Lego911gt3.mov")
+        let url = URL.init(string: "http://10.0.0.245:8080/camera/livestream.m3u8")!
+//        let url = URL.init(fileURLWithPath: "http://breaqz.com/movies/Lego911gt3.mov")
         self.playerItem = AVPlayerItem.init(url: url)
         self.player = AVPlayer.init(playerItem: self.playerItem)
         self.player?.addPeriodicTimeObserver(forInterval: CMTime.init(seconds: 1, preferredTimescale: 1), queue: DispatchQueue.main, using:
@@ -55,8 +56,8 @@ class ViewController: UIViewController
 
         self.playerItem?.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
         self.player?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-//        self.player?.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
-//        self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: .new, context: nil)
+        self.player?.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
+        self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: .new, context: nil)
     }
 
     @objc override func observeValue(forKeyPath keyPath: String?,
@@ -64,17 +65,21 @@ class ViewController: UIViewController
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
     {
-        print("Update to Observed Value\nObject:\n\(String(describing: object))\nChange:\n\(String(describing: change))\n\n")
+        let changeKey = change?.keys.first
+        let vals = change?.values
+//        let z = change.keys[0]
+        
+        print("Update to Observed Value\nObject:\n\(String(describing: vals))\nChange:\n\(String(describing: change))\n\n")
 
         let statusDesc = MultiVideoStreaming.description(for: self.player?.status ?? .unknown)
         let timeControlDesc = MultiVideoStreaming.description(for: self.player?.timeControlStatus ?? .waitingToPlayAtSpecifiedRate)
 
         print("Duration:\(String(describing: self.playerItem?.duration))\nRate:\(String(describing: self.player?.rate))\nStatus:\(statusDesc)\nTime Control Status: \(timeControlDesc)\n\n")
 
-//        if self.player?.status == .readyToPlay && self.player?.rate == 0
-//        {
-//            self.player?.play()
-//        }
+        if self.player?.status == .readyToPlay && self.player?.rate == 0
+        {
+            self.player?.play()
+        }
     }
 
     func updateAirplayButtonVisibility()
@@ -103,8 +108,6 @@ class ViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRoutesAvailableNotification ), name: Notification.Name.MPVolumeViewWirelessRoutesAvailableDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRouteChangedNotification ), name: Notification.Name.MPVolumeViewWirelessRouteActiveDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector( sessionInterrupted ), name: AVAudioSession.interruptionNotification, object: nil)
-
-
 
         let customLabel = UILabel.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 20))
         customLabel.textColor = UIColor.white
@@ -137,6 +140,8 @@ class ViewController: UIViewController
         sv.spacing = 30
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: sv)
+
+        self.startPlayback()
 
 //        let chromecastBarButton = UIBarButtonItem.init(customView: chromecastButton)
 //        chromecastBarButton.tintColor = UIColor.white
