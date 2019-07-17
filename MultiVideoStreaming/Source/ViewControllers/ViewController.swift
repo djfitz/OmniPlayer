@@ -77,7 +77,6 @@ class ViewController: UIViewController
             }
         }
 
-
         self.player?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
         self.player?.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
         self.player?.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
@@ -111,9 +110,13 @@ class ViewController: UIViewController
 
             print("Status:\(statusDesc)\n\n")
 
+            if self.player?.status == .failed
+            {
+//                self.errorLabel = ""
+            }
             if self.player?.status == .readyToPlay && self.player?.rate == 0
             {
-                self.player?.play()
+                self.player?.playImmediately(atRate: 1)
             }
         }
         else if keyPath == "rate"
@@ -157,11 +160,6 @@ class ViewController: UIViewController
     {
         super.viewDidLoad()
 
-        let sf = UIFont.systemFont(ofSize: 12, weight: .medium)
-        let ts = sf.fontDescriptor
-        
-    
-
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRoutesAvailableNotification ), name: Notification.Name.MPVolumeViewWirelessRoutesAvailableDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRouteChangedNotification ), name: Notification.Name.MPVolumeViewWirelessRouteActiveDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector( sessionInterrupted ), name: AVAudioSession.interruptionNotification, object: nil)
@@ -170,7 +168,7 @@ class ViewController: UIViewController
         customLabel.textColor = UIColor.white
         customLabel.font = UIFont.systemFont(ofSize: 19)
         customLabel.text = "Very Long Ago S3:E5 ‟For the top to show the world〞"
-        customLabel.textAlignment = .left
+        customLabel.textAlignment = .center
         self.navigationItem.titleView = customLabel
 
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
@@ -260,6 +258,9 @@ func description( for playerStatus: AVPlayer.Status ) -> String
 
         case .readyToPlay:
             return "Ready to Play"
+
+        @unknown default:
+            return "Unknown"
     }
 }
 
@@ -276,6 +277,9 @@ func description( for timeControlStatus: AVPlayer.TimeControlStatus ) -> String
 
         case .waitingToPlayAtSpecifiedRate:
             return "Waiting for Rate"
+
+        @unknown default:
+            return "Unknown"
     }
 }
 
