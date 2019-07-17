@@ -19,6 +19,8 @@ class RealUIViewController: UIViewController {
 
     @IBOutlet var chromecastButton: GCKUICastButton!
 
+    @IBOutlet weak var avPlayerView: AVPlayerView!
+
     var userInitiatedSeekInProgress = false
 
     override func viewDidLoad()
