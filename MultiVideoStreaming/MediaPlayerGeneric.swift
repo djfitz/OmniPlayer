@@ -48,7 +48,9 @@ protocol MediaPlayerGeneric
     */
     func load( mediaItem: URL )
 
-    /// Starts playback at the current offset
+    /// Starts playback at the current offset.
+    // NOTE: Playback must have already started for Play message to be
+    // effective.
 
     func play()
 
@@ -59,7 +61,7 @@ protocol MediaPlayerGeneric
     /// Stop playback at the current offset.
     /// NOTE: This is potentially different from Pause functionality, depending
     /// on the media player. For example, stop may remove the current media item,
-    // requiring it to be loaded again.
+    /// requiring it to be loaded again.
 
     func stop()
 
