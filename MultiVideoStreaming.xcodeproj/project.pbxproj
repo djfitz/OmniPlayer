@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		660A55539E3EA0762AFCE220 /* libPods-MultiVideoStreaming.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */; };
+		F6087CF722E614940000A637 /* MediaControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6087CF622E614940000A637 /* MediaControlsView.swift */; };
+		F6087CFC22E617080000A637 /* MultiMediaPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6087CFA22E617080000A637 /* MultiMediaPlayer.storyboard */; };
 		F614FD9C219BC1C000EDA431 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD8F219BC1C000EDA431 /* AppDelegate.swift */; };
 		F614FD9D219BC1C000EDA431 /* AVFoundationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD91219BC1C000EDA431 /* AVFoundationManager.swift */; };
 		F614FD9E219BC1C000EDA431 /* ChromecastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD92219BC1C000EDA431 /* ChromecastManager.swift */; };
@@ -17,6 +19,7 @@
 		F614FDA3219BC1C000EDA431 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD98219BC1C000EDA431 /* ViewController.swift */; };
 		F614FDA5219BC1C000EDA431 /* ViewUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD9B219BC1C000EDA431 /* ViewUpdates.swift */; };
 		F625DAB22284B3C2005EC540 /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625DAB12284B3C2005EC540 /* AVPlayerView.swift */; };
+		F6BA87F322DF8290005C9437 /* MultiMediaPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6BA87F122DF8290005C9437 /* MultiMediaPlayer.storyboard */; };
 		F6C573A3219BC45F00F09066 /* OCDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C573A1219BC45E00F09066 /* OCDummy.m */; };
 		F6D5C022214EDD64004BBAA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C021214EDD64004BBAA8 /* Assets.xcassets */; };
 		F6D5C025214EDD64004BBAA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C023214EDD64004BBAA8 /* LaunchScreen.storyboard */; };
@@ -40,6 +43,8 @@
 		44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MultiVideoStreaming.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.debug.xcconfig"; sourceTree = "<group>"; };
 		E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.release.xcconfig"; sourceTree = "<group>"; };
+		F6087CF622E614940000A637 /* MediaControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaControlsView.swift; sourceTree = "<group>"; };
+		F6087CFB22E617080000A637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MultiVideoStreaming/Base.lproj/MultiMediaPlayer.storyboard; sourceTree = SOURCE_ROOT; };
 		F614FD8F219BC1C000EDA431 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F614FD91219BC1C000EDA431 /* AVFoundationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVFoundationManager.swift; sourceTree = "<group>"; };
 		F614FD92219BC1C000EDA431 /* ChromecastManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChromecastManager.swift; sourceTree = "<group>"; };
@@ -50,6 +55,7 @@
 		F614FD9B219BC1C000EDA431 /* ViewUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewUpdates.swift; sourceTree = "<group>"; };
 		F625DAB12284B3C2005EC540 /* AVPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
 		F68CE3CA215EE93300A0CF12 /* MultiVideoStreaming-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiVideoStreaming-Bridging-Header.h"; sourceTree = "<group>"; };
+		F6BA87F222DF8290005C9437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MultiMediaPlayer.storyboard; sourceTree = "<group>"; };
 		F6C573A1219BC45E00F09066 /* OCDummy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCDummy.m; sourceTree = "<group>"; };
 		F6D5C017214EDD62004BBAA8 /* MultiVideoStreaming.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiVideoStreaming.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6D5C01F214EDD62004BBAA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -123,9 +129,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F6087CF522E614550000A637 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F6087CF622E614940000A637 /* MediaControlsView.swift */,
+				F6087CFA22E617080000A637 /* MultiMediaPlayer.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F614FD8E219BC1C000EDA431 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				F6087CF522E614550000A637 /* Views */,
 				F614FD8F219BC1C000EDA431 /* AppDelegate.swift */,
 				F6EC9B542282851000CCBAF5 /* MediaPlayerGeneric.swift */,
 				F614FD90219BC1C000EDA431 /* DeviceSupport */,
@@ -195,6 +211,7 @@
 			children = (
 				F614FD8E219BC1C000EDA431 /* Source */,
 				F6D5C01E214EDD62004BBAA8 /* Main.storyboard */,
+				F6BA87F122DF8290005C9437 /* MultiMediaPlayer.storyboard */,
 				F6D5C021214EDD64004BBAA8 /* Assets.xcassets */,
 				F6D5C023214EDD64004BBAA8 /* LaunchScreen.storyboard */,
 				F68CE3CA215EE93300A0CF12 /* MultiVideoStreaming-Bridging-Header.h */,
@@ -264,8 +281,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6087CFC22E617080000A637 /* MultiMediaPlayer.storyboard in Resources */,
 				F6FAB4E62179509C0085A098 /* Main.storyboard in Resources */,
 				F6D5C025214EDD64004BBAA8 /* LaunchScreen.storyboard in Resources */,
+				F6BA87F322DF8290005C9437 /* MultiMediaPlayer.storyboard in Resources */,
 				F6D5C022214EDD64004BBAA8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,6 +350,7 @@
 				F614FDA1219BC1C000EDA431 /* MediaControlsViewController.swift in Sources */,
 				F614FD9D219BC1C000EDA431 /* AVFoundationManager.swift in Sources */,
 				F614FDA5219BC1C000EDA431 /* ViewUpdates.swift in Sources */,
+				F6087CF722E614940000A637 /* MediaControlsView.swift in Sources */,
 				F614FDA2219BC1C000EDA431 /* RealUIViewController.swift in Sources */,
 				F6C573A3219BC45F00F09066 /* OCDummy.m in Sources */,
 				F614FDA0219BC1C000EDA431 /* HomePageViewController.swift in Sources */,
@@ -343,6 +363,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		F6087CFA22E617080000A637 /* MultiMediaPlayer.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6087CFB22E617080000A637 /* Base */,
+			);
+			name = MultiMediaPlayer.storyboard;
+			sourceTree = "<group>";
+		};
+		F6BA87F122DF8290005C9437 /* MultiMediaPlayer.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6BA87F222DF8290005C9437 /* Base */,
+			);
+			name = MultiMediaPlayer.storyboard;
+			sourceTree = "<group>";
+		};
 		F6D5C01E214EDD62004BBAA8 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
