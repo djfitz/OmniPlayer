@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		660A55539E3EA0762AFCE220 /* libPods-MultiVideoStreaming.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */; };
+		F6087CF722E614940000A637 /* MediaControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6087CF622E614940000A637 /* MediaControlsView.swift */; };
 		F614FD9C219BC1C000EDA431 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD8F219BC1C000EDA431 /* AppDelegate.swift */; };
 		F614FD9D219BC1C000EDA431 /* AVFoundationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD91219BC1C000EDA431 /* AVFoundationManager.swift */; };
 		F614FD9E219BC1C000EDA431 /* ChromecastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD92219BC1C000EDA431 /* ChromecastManager.swift */; };
-		F614FDA0219BC1C000EDA431 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD95219BC1C000EDA431 /* HomePageViewController.swift */; };
 		F614FDA1219BC1C000EDA431 /* MediaControlsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD96219BC1C000EDA431 /* MediaControlsViewController.swift */; };
 		F614FDA2219BC1C000EDA431 /* RealUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD97219BC1C000EDA431 /* RealUIViewController.swift */; };
 		F614FDA3219BC1C000EDA431 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD98219BC1C000EDA431 /* ViewController.swift */; };
@@ -40,10 +40,10 @@
 		44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MultiVideoStreaming.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.debug.xcconfig"; sourceTree = "<group>"; };
 		E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.release.xcconfig"; sourceTree = "<group>"; };
+		F6087CF622E614940000A637 /* MediaControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaControlsView.swift; sourceTree = "<group>"; };
 		F614FD8F219BC1C000EDA431 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F614FD91219BC1C000EDA431 /* AVFoundationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVFoundationManager.swift; sourceTree = "<group>"; };
 		F614FD92219BC1C000EDA431 /* ChromecastManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChromecastManager.swift; sourceTree = "<group>"; };
-		F614FD95219BC1C000EDA431 /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		F614FD96219BC1C000EDA431 /* MediaControlsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaControlsViewController.swift; sourceTree = "<group>"; };
 		F614FD97219BC1C000EDA431 /* RealUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealUIViewController.swift; sourceTree = "<group>"; };
 		F614FD98219BC1C000EDA431 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -55,7 +55,7 @@
 		F6D5C01F214EDD62004BBAA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F6D5C021214EDD64004BBAA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F6D5C024214EDD64004BBAA8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F6EC9B542282851000CCBAF5 /* MediaPlayerGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaPlayerGeneric.swift; path = MultiVideoStreaming/MediaPlayerGeneric.swift; sourceTree = SOURCE_ROOT; };
+		F6EC9B542282851000CCBAF5 /* MediaPlayerGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaPlayerGeneric.swift; path = MultiVideoStreaming/Source/DeviceSupport/MediaPlayerGeneric.swift; sourceTree = SOURCE_ROOT; };
 		F6F66E9F214EE3CC00EBE520 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6F66EA0214EE3CC00EBE520 /* MediaAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaAccessibility.framework; path = System/Library/Frameworks/MediaAccessibility.framework; sourceTree = SDKROOT; };
 		F6F66EA1214EE3CC00EBE520 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -123,11 +123,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F6087CF522E614550000A637 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F6087CF622E614940000A637 /* MediaControlsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F614FD8E219BC1C000EDA431 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				F614FD8F219BC1C000EDA431 /* AppDelegate.swift */,
-				F6EC9B542282851000CCBAF5 /* MediaPlayerGeneric.swift */,
+				F6087CF522E614550000A637 /* Views */,
 				F614FD90219BC1C000EDA431 /* DeviceSupport */,
 				F614FD94219BC1C000EDA431 /* ViewControllers */,
 				F614FD99219BC1C000EDA431 /* ViewUpdates */,
@@ -138,6 +145,7 @@
 		F614FD90219BC1C000EDA431 /* DeviceSupport */ = {
 			isa = PBXGroup;
 			children = (
+				F6EC9B542282851000CCBAF5 /* MediaPlayerGeneric.swift */,
 				F614FD91219BC1C000EDA431 /* AVFoundationManager.swift */,
 				F614FD92219BC1C000EDA431 /* ChromecastManager.swift */,
 			);
@@ -147,7 +155,6 @@
 		F614FD94219BC1C000EDA431 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				F614FD95219BC1C000EDA431 /* HomePageViewController.swift */,
 				F614FD96219BC1C000EDA431 /* MediaControlsViewController.swift */,
 				F614FD97219BC1C000EDA431 /* RealUIViewController.swift */,
 				F614FD98219BC1C000EDA431 /* ViewController.swift */,
@@ -195,6 +202,7 @@
 			children = (
 				F614FD8E219BC1C000EDA431 /* Source */,
 				F6D5C01E214EDD62004BBAA8 /* Main.storyboard */,
+				F614FD8F219BC1C000EDA431 /* AppDelegate.swift */,
 				F6D5C021214EDD64004BBAA8 /* Assets.xcassets */,
 				F6D5C023214EDD64004BBAA8 /* LaunchScreen.storyboard */,
 				F68CE3CA215EE93300A0CF12 /* MultiVideoStreaming-Bridging-Header.h */,
@@ -331,9 +339,9 @@
 				F614FDA1219BC1C000EDA431 /* MediaControlsViewController.swift in Sources */,
 				F614FD9D219BC1C000EDA431 /* AVFoundationManager.swift in Sources */,
 				F614FDA5219BC1C000EDA431 /* ViewUpdates.swift in Sources */,
+				F6087CF722E614940000A637 /* MediaControlsView.swift in Sources */,
 				F614FDA2219BC1C000EDA431 /* RealUIViewController.swift in Sources */,
 				F6C573A3219BC45F00F09066 /* OCDummy.m in Sources */,
-				F614FDA0219BC1C000EDA431 /* HomePageViewController.swift in Sources */,
 				F6EC9B552282851100CCBAF5 /* MediaPlayerGeneric.swift in Sources */,
 				F614FDA3219BC1C000EDA431 /* ViewController.swift in Sources */,
 				F614FD9E219BC1C000EDA431 /* ChromecastManager.swift in Sources */,

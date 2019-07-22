@@ -21,14 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCKLoggerDelegate {
         NSLog("%@ %@", function, message)
     }
 
-    func setupChromecast()
-    {
-        ChromecastManager.Setup()
-    }
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
-        self.setupChromecast()
+        AVFoundationMediaPlayerManager.mgr.beginSearchForRemoteDevices()
+        ChromecastManager.mgr.beginSearchForRemoteDevices()
 
         return true
     }

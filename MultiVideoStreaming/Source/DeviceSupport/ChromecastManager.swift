@@ -9,12 +9,9 @@
 import Foundation
 import GoogleCast
 
-var gChromecastManager:ChromecastManager? = nil
-
 
 //class ChromecastSessionState
-//{
-//    var mediaStatus: GCKMediaStatus? = nil
+///    var mediaStatus: GCKMediaStatus? = nil
 //
 //}
 
@@ -32,6 +29,8 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
                           GCKCastDeviceStatusListener, GCKSessionManagerListener,
                           GCKLoggerDelegate, GCKDiscoveryManagerListener
 {
+    static let mgr = ChromecastManager()
+
     // ID can be found at: https://cast.google.com/publish/
     let kChromecastApplicationID = "09E504FF"
 
@@ -52,16 +51,17 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     */
     var logChromecastMessages = true
 
-    // Setup the Chromecast session.
-    static func Setup()
-    {
-        gChromecastManager = ChromecastManager()
-    }
+    let remoteDevicePickerButton: UIView = GCKUICastButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 34))
 
     override init()
     {
         super.init()
 
+        self.setupChromecastSDK()
+    }
+
+    func beginSearchForRemoteDevices()
+    {
         self.setupChromecastSDK()
     }
 
@@ -771,7 +771,7 @@ extension GCKMediaStatus
         retVal += "Stream Position: \(self.streamPosition)\n"
         retVal += "Volume: \(self.volume)\n"
         retVal += "Is Muted: \(self.isMuted)\n"
-        retVal += "Repeat Mode: \(EnumDescriber.description(for: self.queueRepeatMode))\n"
+        retVal += "Repeat Mode: \(EnumDescriber.description(forMediaRepeatMode: self.queueRepeatMode))\n"
         retVal += "Current Item ID: \(self.currentItemID)\n"
         retVal += "Queue has a current item: \(self.queueHasCurrentItem)\n"
         retVal += "Current Queue Item: \(String(describing: self.currentQueueItem?.itemID))\n"
@@ -826,9 +826,9 @@ extension GCKMediaStatus
 
 class EnumDescriber
 {
-    static func description( for mediaRepeatMode: GCKMediaRepeatMode) -> String
+    static func description( forMediaRepeatMode: GCKMediaRepeatMode) -> String
     {
-        switch mediaRepeatMode
+        switch forMediaRepeatMode
         {
             case .all:
                 return "All"
@@ -844,6 +844,9 @@ class EnumDescriber
 
             case .unchanged:
                 return "Unchanged"
+
+            @unknown default:
+                return "Unknown"
         }
     }
 
@@ -895,9 +898,11 @@ class EnumDescriber
 
             case .user:
                 return "No real Value: Compiler internal limit"
+
+            @unknown default:
+                return "Unknown"
         }
     }
-
 
     static func description( for idleReason: GCKMediaPlayerIdleReason) -> String
     {
@@ -917,6 +922,9 @@ class EnumDescriber
 
             case .none:
                 return "None"
+
+            @unknown default:
+                return "Unknown"
         }
     }
 
