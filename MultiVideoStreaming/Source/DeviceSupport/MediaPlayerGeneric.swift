@@ -13,17 +13,6 @@ import AVFoundation
 // MARK: - Media Player
 class MediaItem
 {
-    public enum Status
-    {
-        case unknown
-        
-        case loading
-
-        case readyToPlay
-
-        case failed
-    }
-
     let title: String
     let url: URL
 
@@ -99,7 +88,7 @@ protocol MediaPlayerGeneric
 
     func stop()
 
-    func seek( to offsetSeconds: CMTime )
+    func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
 
     func skip( forward seconds: CMTime )
 

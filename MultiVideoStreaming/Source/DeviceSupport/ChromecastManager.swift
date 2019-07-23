@@ -899,7 +899,9 @@ class EnumDescriber
             case .user:
                 return "No real Value: Compiler internal limit"
 
-            @unknown default:
+        case .audioBookChapter:
+                return "audioBookChapter"
+        @unknown default:
                 return "Unknown"
         }
     }

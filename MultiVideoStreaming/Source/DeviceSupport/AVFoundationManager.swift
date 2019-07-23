@@ -11,118 +11,34 @@ import AVFoundation
 import MediaPlayer
 
 
-/*
-////////////////////$$$$$$$$$$$
-var gChromecastManager:ChromecastManager? = nil
-
-
-//class ChromecastSessionState
-//{
-//    var mediaStatus: GCKMediaStatus? = nil
-//
-//}
-
-/**
-
-*/
-
-
-/**
-    Manages the interface between the application and the Chromecast SDK.
-
-    Implements most of the delegate/listeners as defined by the SDK.
-*/
-class ChromecastManager : GCKRemoteMediaClientListener,
-
-    /**
-        There are times that we want commands to the Chromecast SDK to be
-        executed serially. For example, if the SDK hasn't been initialized
-        quickly enough upon app startup, calling SDK methods before it is
-        initialized will cause the app to crash.
-    */
-    var messageQueue = DispatchQueue.init(
-                        label: "ChromecastMessageQueue",
-                        qos: .background )
-
-
-    // Setup the Chromecast session.
-    static func Setup()
-    {
-        gChromecastManager = ChromecastManager()
-    }
-
-    override init()
-    {
-        super.init()
-
-        self.setupChromecastSDK()
-    }
-
-    func setupChromecastSDK()
-    {
-
-    }
-
-//////////////////////
-
-    func sessionManager(_ sessionManager: GCKSessionManager,
-                        didFailToStart session: GCKSession,
-                        withError error: Error)
-    {
-        print( "Session Manager: Session Did Fail to Start, with Session with ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(error)" )
-
-        NotificationCenter.default.post(name: NSNotification.Name.init("SessionDidFailtoStartNotification"), object: error)
-    }
-
-
-
-    func sessionManager(_ sessionManager: GCKSessionManager,
-                        didStart session: GCKCastSession)
-    {
-        session.remoteMediaClient?.add(self)
-
-        NSLog("Session Manager: Cast Session Did Start.\nCast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
-
-        let md = GCKMediaMetadata.init(metadataType: .movie)
-        md.setString("Dumb Title", forKey: kGCKMetadataKeyTitle)
-        md.setString("Dumb Studios", forKey: kGCKMetadataKeyStudio)
-
-        let mediaInfo = GCKMediaInformation.init(
-                contentID: "http://breaqz.com/movies/Lego911gt3.mov",
-                streamType: .buffered,
-                contentType: "video/quicktime",
-                metadata: md,
-                adBreaks: nil,
-                adBreakClips: nil,
-                streamDuration: 10,
-                mediaTracks: nil,
-                textTrackStyle: nil,
-                customData: nil
-            )
-
-        session.remoteMediaClient?.loadMedia(mediaInfo)
-    }
-
-//        // Do a size based on an autolayout pass. This may not have happened yet for these subviews when viewDidLoad is
-//        // first called.
-//        let buttonSize = self.chromecastButton.systemLayoutSizeFitting(self.view.frame.size)
-//
-//        // Eenforce a minimum size for the Chromecast button, which Apple says should
-//        // be at least 44px X 44px.
-//        let newButtonSize = CGSize( width:  max(buttonSize.width,  kMinimumButtonSize.width),
-//                                    height: max(buttonSize.height, kMinimumButtonSize.height))
-//
-//        self.chromecastButtonWidthConstraint.constant = newButtonSize.width
-//        self.chromecastButtonHeightConstraint.constant = newButtonSize.height
-
-/////////////////////////////////////////$$$$$$$$$
-*/
 
 class AVFoundationMediaPlayerManager : NSObject,
                                        MediaPlayerGeneric,
                                        RemoteMediaPlayback,
                                        MediaPlaybackQueue
 {
+    var isSeeking = false
+
+    @objc public enum Status:Int
+    {
+        case unknown
+        
+        case loading
+
+        case readyToPlay
+
+        case playing
+
+        case paused
+        
+        case buffering
+
+        case playedToEnd
+
+        case failed
+    }
+    
+    @objc dynamic var status:Status = .unknown
 
     // MARK: Playback Queue
 
@@ -241,7 +157,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     }
 
     // MARK: AVFoundation Objects
-    var player: AVPlayer = AVPlayer()
+    let player: AVPlayer = AVPlayer()
     var playerItem: AVPlayerItem? = nil
 
     // MARK: ** Methods
@@ -256,34 +172,42 @@ class AVFoundationMediaPlayerManager : NSObject,
     deinit
     {
         self.player.pause()
+
+        self.player.removeObserver(self, forKeyPath: "status")
+        self.player.removeObserver(self, forKeyPath: "rate")
+        self.player.removeObserver(self, forKeyPath: "duration")
+        self.player.removeObserver(self, forKeyPath: "timeControlStatus")
+
+        self.player.removeTimeObserver(self)
+
+        NotificationCenter.default.removeObserver(self)
     }
 
     func setupAVFoundationPlayer()
     {
-        self.player = AVPlayer.init()
-
         self.player.addObserver(self, forKeyPath: "status", options: .new, context: nil)
         self.player.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
         self.player.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
         self.player.addObserver(self, forKeyPath: "timeControlStatus", options: .new, context: nil)
+
         self.player
             .addPeriodicTimeObserver(
                 forInterval: CMTime.init(seconds: 1, preferredTimescale: 1),
                 queue: DispatchQueue.main,
                 using:
                 { (time:CMTime) in
-                    print("\(time)")
+                    NotificationCenter.default.post(name: NSNotification.Name.init("PlaybackTimeObserver"), object: time)
                 }
             )
 
-        self.beginSearchForRemoteDevices()
-
         NotificationCenter.default.addObserver(self, selector: #selector( sessionInterrupted ), name: AVAudioSession.interruptionNotification, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector( sessionInterrupted ), name: .AVPlayerItemDidPlayToEndTime , object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector( sessionInterrupted ), name: .AVPlayerItemFailedToPlayToEndTime , object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector( sessionInterrupted ), name: .AVPlayerItemTimeJumped, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector( sessionInterrupted ), name: .AVPlayerItemPlaybackStalled , object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector( mediaDidToPlayToEndTime ), name: .AVPlayerItemDidPlayToEndTime , object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector( mediaFailedToPlayToEndTime ), name: .AVPlayerItemFailedToPlayToEndTime , object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector( mediaPlaybackTimeJumped ), name: .AVPlayerItemTimeJumped, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector( mediaPlaybackStalled ), name: .AVPlayerItemPlaybackStalled , object: nil)
+
+        self.beginSearchForRemoteDevices()
     }
 
     // MARK: ** Generic Media Player
@@ -313,6 +237,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     {
         let url = mediaItem.url
         self.loadingMediaItem = mediaItem
+        self.status = .loading
 
         // Create the new player item for this media.
 
@@ -328,21 +253,21 @@ class AVFoundationMediaPlayerManager : NSObject,
         self.player.replaceCurrentItem(with: self.playerItem)
     }
 
-    @objc
     /// Starts playback at the current offset.
     // NOTE: Playback must have already started for Play message to be
     // effective.
 
     func play()
     {
-        #warning("fill me in")
+        self.status = .buffering
+        self.player.play()
     }
 
     /// Pause playback at the current offset.
 
     func pause()
     {
-        #warning("fill me in")
+        self.player.pause()
     }
 
     /// Stop playback at the current offset.
@@ -352,61 +277,58 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     func stop()
     {
-        #warning("fill me in")
+        self.pause()
     }
 
 
-    func seek( to offsetSeconds: CMTime )
+    func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
     {
         self.player.currentItem?.cancelPendingSeeks()
 
-        self.player.seek(to: offsetSeconds)
+        self.isSeeking = true
+
+        self.pause()
+        self.status = .buffering
+
+        self.player.seek(to: time)
+        { (cancelled) in
+            completionHandler(cancelled)
+            self.isSeeking = false
+            self.play()
+        }
     }
 
     func skip(forward seconds: CMTime)
     {
-        self.player.seek(
-            to: seconds,
-            completionHandler:
-            { (finished:Bool) in
+        guard let playerItem = self.playerItem else { return }
+        if playerItem.duration > playerItem.currentTime() + seconds
+        {
+            let skipTime = playerItem.currentTime() + seconds
 
-            }
-        )
-//        self.player?.seek(to: offsetSeconds,completionHandler:
+            self.seek(to: skipTime) { (cancelled) in }
+        }
     }
     
     func skip(back seconds: CMTime)
     {
-        #warning("fill me in")
+        guard let playerItem = self.playerItem else { return }
+        if (playerItem.currentTime() - seconds) >= CMTime.zero
+        {
+            let skipTime = playerItem.currentTime() - seconds
+
+            self.seek(to: skipTime) { (cancelled) in }
+        }
     }
     
-    func skipBack( seconds: CMTime )
-    {
-        #warning("fill me in")
-    }
-
     // * startPlayback
     func startPlayback()
     {
-        let url = URL.init(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8")!
 //        let url = URL.init(string: "http://breaqz.com/movies/Lego911gt3.mov")!
 //        let url = URL.init(string: "http://10.0.0.245:8080/camera/livestream.m3u8")!
 
-        self.playerItem = AVPlayerItem.init(url: url)
-        self.playerItem?.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
-
-        self.player = AVPlayer.init(playerItem: self.playerItem)
-        
-        self.player.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-        self.player.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
-        self.player.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
-        self.player.addObserver(self, forKeyPath: "timeControlStatus", options: .new, context: nil)
-
-        self.player.addPeriodicTimeObserver(forInterval: CMTime.init(seconds: 1, preferredTimescale: 1), queue: DispatchQueue.main, using:
-        { (time:CMTime) in
-            print("Periodic Time Update. New Time: \(time)")
-        })
-
+        let url = URL.init(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8")!
+        let item = MediaItem.init(title: "Zelo - Boss Video Productions", url: url)
+        self.load(mediaItem: item)
     }
 
     // * observeValue(forKeyPath…)
@@ -433,16 +355,20 @@ class AVFoundationMediaPlayerManager : NSObject,
             {
                 case .failed:
                     print("Player Status is Failed")
+                    self.status = .failed
 
                 case .readyToPlay:
                     print("Player Status is Ready to Play")
+                    self.currentMediaItem = self.loadingMediaItem
+                    self.status = .readyToPlay
 
                 case .unknown:
                     print("Player Status is Unknown")
+                    self.status = .unknown
 
                 @unknown default:
                     print("Unknown")
-
+                    self.status = .unknown
             }
             
             if let validItemStatus = itemStatus
@@ -451,15 +377,19 @@ class AVFoundationMediaPlayerManager : NSObject,
                 {
                     case .failed:
                         print("Player Status is Failed")
+                        self.status = .failed
 
                     case .readyToPlay:
                         print("Player Status is Ready to Play")
+                        self.status = .readyToPlay
 
                     case .unknown:
                         print("Unknown")
+                        self.status = .unknown
 
                     @unknown default:
                         print("Unknown")
+                        self.status = .unknown
                 }
             }
 
@@ -479,6 +409,23 @@ class AVFoundationMediaPlayerManager : NSObject,
             let status = self.player.timeControlStatus
             let timeControlDesc = status.description()
             print("Time Control Status: \(timeControlDesc)\n\n")
+
+            switch status
+            {
+                case .paused:
+                    if self.status != .playedToEnd
+                    {
+                        self.status = .paused
+                    }
+                case .playing:
+                    self.status = .playing
+
+                case .waitingToPlayAtSpecifiedRate:
+                    self.status = .buffering
+
+                @unknown default:
+                    print("Unknown Time Control Status.")
+            }
         }
         else if keyPath == "duration"
         {
@@ -492,12 +439,25 @@ class AVFoundationMediaPlayerManager : NSObject,
         print("\(notif)")
     }
 
-    @objc func mediaDidEndPlayback( notif: Notification )
+    @objc func mediaDidToPlayToEndTime( notif: Notification )
     {
-        
+        self.status = .playedToEnd
+        print("mediaDidToPlayToEndTime")
     }
 
     @objc func mediaFailedToPlayToEndTime( notif: Notification )
+    {
+        self.status = .failed
+        print("mediaFailedToPlayToEndTime")
+    }
+
+    @objc func mediaPlaybackStalled( notif: Notification )
+    {
+        self.status = .failed
+        print("mediaFailedToPlayToEndTime")
+    }
+
+    @objc func mediaPlaybackTimeJumped( notif: Notification )
     {
     
     }
@@ -549,3 +509,111 @@ extension AVPlayer.TimeControlStatus
         }
     }
 }
+
+
+/*
+////////////////////$$$$$$$$$$$
+var gChromecastManager:ChromecastManager? = nil
+
+
+//class ChromecastSessionState
+//{
+//    var mediaStatus: GCKMediaStatus? = nil
+//
+//}
+
+/**
+
+*/
+
+
+/**
+    Manages the interface between the application and the Chromecast SDK.
+
+    Implements most of the delegate/listeners as defined by the SDK.
+*/
+class ChromecastManager : GCKRemoteMediaClientListener,
+
+    /**
+        There are times that we want commands to the Chromecast SDK to be
+        executed serially. For example, if the SDK hasn't been initialized
+        quickly enough upon app startup, calling SDK methods before it is
+        initialized will cause the app to crash.
+    */
+    var messageQueue = DispatchQueue.init(
+                        label: "ChromecastMessageQueue",
+                        qos: .background )
+
+
+    // Setup the Chromecast session.
+    static func Setup()
+    {
+        gChromecastManager = ChromecastManager()
+    }
+
+    override init()
+    {
+        super.init()
+
+        self.setupChromecastSDK()
+    }
+
+    func setupChromecastSDK()
+    {
+
+    }
+
+//////////////////////
+
+    func sessionManager(_ sessionManager: GCKSessionManager,
+                        didFailToStart session: GCKSession,
+                        withError error: Error)
+    {
+        print( "Session Manager: Session Did Fail to Start, with Session with ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(error)" )
+
+        NotificationCenter.default.post(name: NSNotification.Name.init("SessionDidFailtoStartNotification"), object: error)
+    }
+
+
+
+    func sessionManager(_ sessionManager: GCKSessionManager,
+                        didStart session: GCKCastSession)
+    {
+        session.remoteMediaClient?.add(self)
+
+        NSLog("Session Manager: Cast Session Did Start.\nCast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
+
+        let md = GCKMediaMetadata.init(metadataType: .movie)
+        md.setString("Dumb Title", forKey: kGCKMetadataKeyTitle)
+        md.setString("Dumb Studios", forKey: kGCKMetadataKeyStudio)
+
+        let mediaInfo = GCKMediaInformation.init(
+                contentID: "http://breaqz.com/movies/Lego911gt3.mov",
+                streamType: .buffered,
+                contentType: "video/quicktime",
+                metadata: md,
+                adBreaks: nil,
+                adBreakClips: nil,
+                streamDuration: 10,
+                mediaTracks: nil,
+                textTrackStyle: nil,
+                customData: nil
+            )
+
+        session.remoteMediaClient?.loadMedia(mediaInfo)
+    }
+
+//        // Do a size based on an autolayout pass. This may not have happened yet for these subviews when viewDidLoad is
+//        // first called.
+//        let buttonSize = self.chromecastButton.systemLayoutSizeFitting(self.view.frame.size)
+//
+//        // Eenforce a minimum size for the Chromecast button, which Apple says should
+//        // be at least 44px X 44px.
+//        let newButtonSize = CGSize( width:  max(buttonSize.width,  kMinimumButtonSize.width),
+//                                    height: max(buttonSize.height, kMinimumButtonSize.height))
+//
+//        self.chromecastButtonWidthConstraint.constant = newButtonSize.width
+//        self.chromecastButtonHeightConstraint.constant = newButtonSize.height
+
+/////////////////////////////////////////$$$$$$$$$
+*/
