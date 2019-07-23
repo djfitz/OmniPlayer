@@ -105,10 +105,20 @@ class MediaControlsViewController: UIViewController {
                 AVFoundationMediaPlayerManager.mgr.play()
 
             case .playedToEnd:
-                AVFoundationMediaPlayerManager.mgr.seek(to: CMTime.zero) { (cancelled) in }
                 self.seekTimeSlider.value = 0
-                AVFoundationMediaPlayerManager.mgr.play()
-                self.playPauseButton.setImage(UIImage.init(named: "Pause"), for: .normal)
+
+                AVFoundationMediaPlayerManager.mgr.seek(to: CMTime.zero)
+                { (cancelled) in
+                    if !cancelled
+                    {
+                        AVFoundationMediaPlayerManager.mgr.play()
+                        self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                    }
+                    else
+                    {
+                        self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    }
+                }
 
             case .buffering:
                 AVFoundationMediaPlayerManager.mgr.pause()
@@ -202,45 +212,61 @@ class MediaControlsViewController: UIViewController {
                     print("Loading")
                     self.avPlayerView.isHidden = true
 
-                    self.playPauseButton.setImage(UIImage.init(named: "Pause"), for: .normal)
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                     self.infoLabel.text = AVFoundationMediaPlayerManager.mgr.loadingMediaItem?.title
                     self.infoLabel.isHidden = false
+                    self.errorLabel.text = ""
+                    self.errorLabel.isHidden = false
                     self.activitySpinner.startAnimating()
 
                 case .readyToPlay:
                     print("readyToPlay")
-                    self.playPauseButton.setImage(UIImage.init(named: "Pause"), for: .normal)
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                     self.activitySpinner.stopAnimating()
+                    self.errorLabel.text = ""
+                    self.errorLabel.isHidden = false
 
                     self.avPlayerView.isHidden = false
 
                 case .playing:
                     print("playing")
         
-                    self.playPauseButton.setImage(UIImage.init(named: "Pause"), for: .normal)
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                     self.activitySpinner.stopAnimating()
+                    self.errorLabel.text = ""
+                    self.errorLabel.isHidden = false
 
                 case .paused:
                     print("paused")
-                    self.playPauseButton.setImage(UIImage.init(named: "PlayButton"), for: .normal)
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
                     self.activitySpinner.stopAnimating()
+                    self.errorLabel.text = ""
+                    self.errorLabel.isHidden = false
 
                 case .failed:
                     print("failed")
-                    self.playPauseButton.setImage(UIImage.init(named: "PlayButton"), for: .normal)
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
                     self.activitySpinner.stopAnimating()
+                    self.errorLabel.text = "There was a playback error."
+                    self.errorLabel.isHidden = false
 
                 case .buffering:
                     print("buffering")
                     self.activitySpinner.startAnimating()
-                    self.playPauseButton.setImage(UIImage.init(named: "Pause"), for: .normal)
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                    self.errorLabel.text = ""
+                    self.errorLabel.isHidden = false
 
                 case .playedToEnd:
                     self.activitySpinner.stopAnimating()
-                    self.playPauseButton.setImage(UIImage.init(named: "PlayButton"), for: .normal)
+                    
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    self.errorLabel.text = ""
+                    self.errorLabel.isHidden = false
 
                 case .unknown:
                     print("Unknown")
+                    self.errorLabel.isHidden = false
             }
         }
     }

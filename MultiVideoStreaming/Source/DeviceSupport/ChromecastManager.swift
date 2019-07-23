@@ -51,7 +51,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     */
     var logChromecastMessages = true
 
-    let remoteDevicePickerButton: UIView = GCKUICastButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 34))
+//    let remoteDevicePickerButton: UIView
 
     override init()
     {
