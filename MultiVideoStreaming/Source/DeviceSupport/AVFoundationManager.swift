@@ -293,8 +293,11 @@ class AVFoundationMediaPlayerManager : NSObject,
         self.player.seek(to: time)
         { (cancelled) in
             completionHandler(cancelled)
-            self.isSeeking = false
-            self.play()
+            if !cancelled
+            {
+                self.isSeeking = false
+                self.play()
+            }
         }
     }
 

@@ -26,10 +26,10 @@ class ViewController: UIViewController
     // * startPlayback
     func startPlayback()
     {
-        let url = URL.init(string: "http://breaqz.com/movies/Lego911gt3.mov")!
+//        let url = URL.init(string: "http://breaqz.com/movies/Lego911gt3.mov")!
 //        let url = URL.init(string: "http://10.0.0.245:8080/camera/livestream.m3u8")!
 
-//        let url = URL.init(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8")!
+        let url = URL.init(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8")!
         let item = MediaItem.init(title: "Zelo - Boss Video Productions", url: url)
 
         AVFoundationMediaPlayerManager.mgr.load(mediaItem: item)

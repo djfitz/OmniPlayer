@@ -109,15 +109,8 @@ class MediaControlsViewController: UIViewController {
 
                 AVFoundationMediaPlayerManager.mgr.seek(to: CMTime.zero)
                 { (cancelled) in
-                    if !cancelled
-                    {
-                        AVFoundationMediaPlayerManager.mgr.play()
-                        self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
-                    }
-                    else
-                    {
-                        self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
-                    }
+                    AVFoundationMediaPlayerManager.mgr.play()
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                 }
 
             case .buffering:
