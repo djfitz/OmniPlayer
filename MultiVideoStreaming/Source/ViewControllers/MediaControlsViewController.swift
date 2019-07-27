@@ -24,7 +24,7 @@ class MediaControlsViewController: UIViewController {
     @IBOutlet weak var errorLabel: UILabel!
 
     @IBOutlet weak var remoteButtonsContainerStack: UIStackView!
-    @IBOutlet weak var chromecastButton: GCKUIMultistateButton!
+    var chromecastButton: GCKUIMultistateButton?
     @IBOutlet weak var airplayButton: MPVolumeView!
 
     @IBOutlet weak var avPlayerView: AVPlayerView!
@@ -54,6 +54,11 @@ class MediaControlsViewController: UIViewController {
         self.infoLabel.text = AVFoundationMediaPlayerManager.mgr.currentMediaItem?.title
         self.infoLabel.isHidden = false
         self.errorLabel.text = ""
+
+        if let cButton = ChromecastManager.mgr.remoteDevicePickerButton
+        {
+            self.remoteButtonsContainerStack.addArrangedSubview(cButton)
+        }
     }
 
     @objc func playbackTimeUpdated( notif: Notification)
@@ -105,12 +110,16 @@ class MediaControlsViewController: UIViewController {
                 AVFoundationMediaPlayerManager.mgr.play()
 
             case .playedToEnd:
+                // When the player is at the end, due to playback finishing
+                // normally, starting playback involves
+                // - Seek to the beginning
+                // - Start playback
                 self.seekTimeSlider.value = 0
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
 
                 AVFoundationMediaPlayerManager.mgr.seek(to: CMTime.zero)
                 { (cancelled) in
                     AVFoundationMediaPlayerManager.mgr.play()
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                 }
 
             case .buffering:
@@ -126,62 +135,75 @@ class MediaControlsViewController: UIViewController {
     
     @IBAction func sliderValueChanged(_ sender: Any)
     {
-        print("sliderValueChanged \(sender)")
+        print("sliderValueChanged")
         self.isSliderChanging = true
     }
     
     @IBAction func sliderEditingChanged(_ sender: Any)
     {
-        print("sliderEditingChanged \(sender)")
+        print("sliderEditingChanged")
         self.isSliderChanging = true
     }
     
     @IBAction func sliderTouchCancelled(_ sender: Any)
     {
-        print("sliderTouchCancelled \(sender)")
+        print("sliderTouchCancelled")
         self.isSliderChanging = false
     }
     
     @IBAction func sliderEditingDidEnd(_ sender: Any)
     {
-        print("sliderEditingDidEnd \(sender)")
+        print("sliderEditingDidEnd")
         self.isSliderChanging = false
     }
     
     @IBAction func sliderDidEndOnExit(_ sender: Any)
     {
-        print("sliderDidEndOnExit \(sender)")
+        print("sliderDidEndOnExit")
         self.isSliderChanging = false
     }
 
     @IBAction func sliderTouchUpInside(_ sender: Any)
     {
-        print("sliderTouchUpInside \(sender)")
-
+        print("***** Slider >> Touch Up Inside\nNew Value: \(self.seekTimeSlider!.value)")
         let currentSliderValue = Double(self.seekTimeSlider!.value)
         let dur = AVFoundationMediaPlayerManager.mgr.playerItem?.duration
         if let duration = dur?.seconds
         {
-            var newSecondsElapsed = currentSliderValue * duration
-            if duration - newSecondsElapsed < 0.12
+            let seekTimeSec = currentSliderValue * duration
+
+            if seekTimeSec == duration
             {
-                newSecondsElapsed = duration
+                print("***** Seeking to the end.")
             }
 
             AVFoundationMediaPlayerManager.mgr.pause()
 
-            AVFoundationMediaPlayerManager.mgr.seek(to: CMTime(seconds: newSecondsElapsed, preferredTimescale: CMTimeScale(1)))
+            AVFoundationMediaPlayerManager.mgr.seek(
+                to: CMTime( seconds: seekTimeSec,
+                            preferredTimescale: CMTimeScale(1) )
+            )
             { (cancelled) in
+                print("Seeked to \(seekTimeSec): Cancelled = \(cancelled)")
+
                 self.isSliderChanging = false
-                AVFoundationMediaPlayerManager.mgr.play()
+
+                if seekTimeSec != duration && !cancelled
+                {
+                    AVFoundationMediaPlayerManager.mgr.play()
+                }
             }
+        }
+        else
+        {
+            print("Ulp! Can't get duration.")
         }
     }
 
     @IBAction func sliderTouchUpOutside(_ sender: Any)
     {
-        print("sliderTouchUpOutside \(sender)")
-        self.isSliderChanging = false
+        print("sliderTouchUpOutside")
+//        self.isSliderChanging = false
     }
 
     //
@@ -193,9 +215,11 @@ class MediaControlsViewController: UIViewController {
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
     {
-        print("Observed Value change:\n\(String.init(describing: keyPath))\n")
-        print("Object:\n\(String(describing: object))\n")
-        print("Change:\n\(String(describing: change))\n")
+        print("\n**************************************")
+        print("Observed Value change: \(keyPath!)")
+        print("Object: \(object!)")
+        print("Kind: \(change![NSKeyValueChangeKey.kindKey]!)")
+        print("New Value: \(change![NSKeyValueChangeKey.newKey]!)")
 
         if keyPath == "status"
         {
@@ -223,8 +247,32 @@ class MediaControlsViewController: UIViewController {
 
                 case .playing:
                     print("playing")
-        
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+
+                    let currentTimeSec = AVFoundationMediaPlayerManager.mgr.playerItem?.currentTime().seconds
+                    let durationSec = AVFoundationMediaPlayerManager.mgr.playerItem?.duration.seconds
+
+                    let currentTimeRoundedWholeSec = currentTimeSec!.rounded(.down)
+                    let currentTimeFrac = currentTimeSec! - currentTimeRoundedWholeSec
+                    let currentTimeFracRoundedFrac = (currentTimeFrac * 100).rounded(.down) / 100
+                    let currentTimeRoundedSec = currentTimeRoundedWholeSec + currentTimeFracRoundedFrac
+                    
+                    let durationRoundedWholeSec = durationSec!.rounded(.down)
+                    let durationFrac = durationSec! - durationRoundedWholeSec
+                    let durationFracRoundedFrac = (durationFrac * 100).rounded(.down) / 100
+                    let durationRoundedSec = durationRoundedWholeSec + durationFracRoundedFrac
+
+                    print("**** Current Time =  \(currentTimeSec!) Rounded: \(currentTimeRoundedSec)")
+                    print("**** Duration = \(durationSec!) rounded to \(durationRoundedSec)")
+
+                    if durationRoundedSec <= currentTimeRoundedSec
+                    {
+                        self.playButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    }
+                    else
+                    {
+                        self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                    }
+
                     self.activitySpinner.stopAnimating()
                     self.errorLabel.text = ""
                     self.errorLabel.isHidden = false
@@ -262,5 +310,7 @@ class MediaControlsViewController: UIViewController {
                     self.errorLabel.isHidden = false
             }
         }
+
+        print("**************************************")
     }
 }

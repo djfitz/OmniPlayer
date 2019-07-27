@@ -51,13 +51,15 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
     */
     var logChromecastMessages = true
 
-//    let remoteDevicePickerButton: UIView
+    var remoteDevicePickerButton: UIView? = nil
 
     override init()
     {
         super.init()
 
         self.setupChromecastSDK()
+
+        self.remoteDevicePickerButton = GCKUICastButton.init()
     }
 
     func beginSearchForRemoteDevices()
@@ -81,6 +83,8 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
         // Gives us a chance to log Chromecast messages to our
         // logger of choice. For us, NSLog.
         GCKLogger.sharedInstance().delegate = self
+
+        self.remoteDevicePickerButton = GCKUIMultistateButton.init()
     }
 
     // =======================================================================================
