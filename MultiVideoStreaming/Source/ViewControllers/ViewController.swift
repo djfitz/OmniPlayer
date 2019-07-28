@@ -14,18 +14,14 @@ import MediaPlayer
 
 class ViewController: UIViewController
 {
-    @IBAction func ASa(_ sender: Any) {
-    }
-    
-    @IBOutlet weak var e3: UILabel!
-    @IBOutlet weak var a: UITextField!
-    @IBOutlet weak var urlTextInput: UITextField!
+    var mediaURL:URL? = nil
+
     // * viewDidLoad
     override func viewDidLoad()
     {
         super.viewDidLoad()
 
-        // self.startPlayback()
+         self.startPlayback()
     }
 
 
@@ -34,12 +30,16 @@ class ViewController: UIViewController
     {
 //        let url = URL.init(string: "http://breaqz.com/movies/Lego911gt3.mov")!
 //        let url = URL.init(string: "http://10.0.0.245:8080/camera/livestream.m3u8")!
-        let url = URL.init(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8")!
+//        let url = URL.init(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8")!
 
 //        let url = URL.init(string: "http://csm-e.cds1.yospace.com/csm/live/74246610.m3u8")!
-        let item = MediaItem.init(title: "Zelo - Boss Video Productions", url: url)
 
-        AVFoundationMediaPlayerManager.mgr.load(mediaItem: item)
+        if let url = self.mediaURL
+        {
+            let item = MediaItem.init(title: "Zelo - Boss Video Productions", url: url)
+            
+            AVFoundationMediaPlayerManager.mgr.load(mediaItem: item)
+        }
     }
 }
 

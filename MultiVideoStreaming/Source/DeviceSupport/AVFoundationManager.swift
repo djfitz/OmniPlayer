@@ -40,6 +40,10 @@ class AVFoundationMediaPlayerManager : NSObject,
     
     @objc dynamic var status:Status = .unknown
 
+    @objc dynamic var currentTime:CMTime = CMTime.invalid
+
+    @objc dynamic var duration:CMTime = CMTime.invalid
+
     // MARK: Playback Queue
 
     func addItem(at index: Int)
@@ -158,7 +162,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     // MARK: AVFoundation Objects
     let player: AVPlayer = AVPlayer()
-    var playerItem: AVPlayerItem? = nil
+    private var playerItem: AVPlayerItem? = nil
 
     // MARK: ** Methods
 
@@ -173,9 +177,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     {
         self.player.pause()
 
-        self.player.removeObserver(self, forKeyPath: "status")
         self.player.removeObserver(self, forKeyPath: "rate")
-        self.player.removeObserver(self, forKeyPath: "duration")
         self.player.removeObserver(self, forKeyPath: "timeControlStatus")
 
         self.player.removeTimeObserver(self)
@@ -190,9 +192,7 @@ class AVFoundationMediaPlayerManager : NSObject,
             airplayButton.showsVolumeSlider = false
         }
 
-        self.player.addObserver(self, forKeyPath: "status", options: .new, context: nil)
         self.player.addObserver(self, forKeyPath: "rate", options: .new, context: nil)
-        self.player.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
         self.player.addObserver(self, forKeyPath: "timeControlStatus", options: .new, context: nil)
 
         self.player
@@ -201,7 +201,7 @@ class AVFoundationMediaPlayerManager : NSObject,
                 queue: DispatchQueue.main,
                 using:
                 { (time:CMTime) in
-                    NotificationCenter.default.post(name: NSNotification.Name.init("PlaybackTimeObserver"), object: time)
+                    self.currentTime = time
                 }
             )
 
@@ -253,6 +253,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 
         // * First some paraoia cleanup.
         self.playerItem?.removeObserver(self, forKeyPath: "duration")
+        self.playerItem?.removeObserver(self, forKeyPath: "status")
 
         // * Create the new player item
         self.playerItem = AVPlayerItem.init(url: url)
@@ -360,6 +361,11 @@ class AVFoundationMediaPlayerManager : NSObject,
             print("Kind: \(kindVal)")
         }
 
+        if let newVal = change?[NSKeyValueChangeKey.newKey]
+        {
+            print("New: \(newVal)")
+        }
+
         if keyPath == "status"
         {
             let playerStatus = self.player.status
@@ -448,7 +454,12 @@ class AVFoundationMediaPlayerManager : NSObject,
         }
         else if keyPath == "duration"
         {
-            print("Duration:\(self.playerItem!.duration.seconds)")
+            print("Duration: \(self.playerItem!.duration.seconds)")
+
+            if let newVal = self.playerItem?.duration
+            {
+                self.duration = newVal
+            }
         }
 
         print("\n========================================\n\n")

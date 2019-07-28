@@ -15,6 +15,7 @@
 		F614FDA2219BC1C000EDA431 /* RealUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD97219BC1C000EDA431 /* RealUIViewController.swift */; };
 		F614FDA3219BC1C000EDA431 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD98219BC1C000EDA431 /* ViewController.swift */; };
 		F614FDA5219BC1C000EDA431 /* ViewUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD9B219BC1C000EDA431 /* ViewUpdates.swift */; };
+		F61E009B22ECD0A2004C78AB /* TextInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61E009A22ECD0A2004C78AB /* TextInputViewController.swift */; };
 		F625DAB22284B3C2005EC540 /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625DAB12284B3C2005EC540 /* AVPlayerView.swift */; };
 		F63A81B322E6C154008473EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A81B222E6C154008473EA /* AppDelegate.swift */; };
 		F63A81B822E6C1D1008473EA /* MediaControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F63A81B622E6C1D1008473EA /* MediaControls.storyboard */; };
@@ -48,6 +49,7 @@
 		F614FD97219BC1C000EDA431 /* RealUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealUIViewController.swift; sourceTree = "<group>"; };
 		F614FD98219BC1C000EDA431 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F614FD9B219BC1C000EDA431 /* ViewUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewUpdates.swift; sourceTree = "<group>"; };
+		F61E009A22ECD0A2004C78AB /* TextInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputViewController.swift; sourceTree = "<group>"; };
 		F625DAB12284B3C2005EC540 /* AVPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
 		F63A81B222E6C154008473EA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F63A81B722E6C1D1008473EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MultiVideoStreaming/Base.lproj/MediaControls.storyboard; sourceTree = SOURCE_ROOT; };
@@ -163,6 +165,7 @@
 				F614FD97219BC1C000EDA431 /* RealUIViewController.swift */,
 				F614FD98219BC1C000EDA431 /* ViewController.swift */,
 				F625DAB12284B3C2005EC540 /* AVPlayerView.swift */,
+				F61E009A22ECD0A2004C78AB /* TextInputViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				F614FDA2219BC1C000EDA431 /* RealUIViewController.swift in Sources */,
 				F6C573A3219BC45F00F09066 /* OCDummy.m in Sources */,
 				F6EC9B552282851100CCBAF5 /* MediaPlayerGeneric.swift in Sources */,
+				F61E009B22ECD0A2004C78AB /* TextInputViewController.swift in Sources */,
 				F614FDA3219BC1C000EDA431 /* ViewController.swift in Sources */,
 				F614FD9E219BC1C000EDA431 /* ChromecastManager.swift in Sources */,
 			);

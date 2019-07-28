@@ -32,9 +32,8 @@ class MediaControlsViewController: UIViewController {
     deinit
     {
         AVFoundationMediaPlayerManager.mgr.removeObserver(self, forKeyPath: "status")
+        AVFoundationMediaPlayerManager.mgr.removeObserver(self, forKeyPath: "currentTime")
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.init("PlaybackTimeObserver"), object: nil)
-
-        AVFoundationMediaPlayerManager.mgr.player.replaceCurrentItem(with: nil)
     }
 
     override func viewDidLoad()
@@ -44,8 +43,7 @@ class MediaControlsViewController: UIViewController {
         self.avPlayerView.player = AVFoundationMediaPlayerManager.mgr.player
 
         AVFoundationMediaPlayerManager.mgr.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(playbackTimeUpdated), name: NSNotification.Name.init("PlaybackTimeObserver"), object: nil)
+        AVFoundationMediaPlayerManager.mgr.addObserver(self, forKeyPath: "currentTime", options: .new, context: nil)
 
         self.seekTimeSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .normal)
         self.seekTimeSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .selected)
@@ -61,30 +59,20 @@ class MediaControlsViewController: UIViewController {
         }
     }
 
-    @objc func playbackTimeUpdated( notif: Notification)
+    @objc func playbackTimeUpdated( newTime: CMTime)
     {
-//        print("\(notif)")
-
-        if let currentCMTime:CMTime = notif.object as? CMTime
+        let currentTimeSeconds = newTime.seconds
+        let durationSeconds = AVFoundationMediaPlayerManager.mgr.duration.seconds
+        if durationSeconds > 0 && !self.isSliderChanging && !AVFoundationMediaPlayerManager.mgr.isSeeking
         {
-            let currentTimeSeconds = currentCMTime.seconds
-            let dur = AVFoundationMediaPlayerManager.mgr.playerItem?.duration
-            if let duration = dur?.seconds
-            {
-                if duration > 0 && !self.isSliderChanging && !AVFoundationMediaPlayerManager.mgr.isSeeking
-                {
-                    let fracTimeElapsed = currentTimeSeconds / duration
-                    self.seekTimeSlider.value = Float(fracTimeElapsed)
-                }
-            }
+            let fracTimeElapsed = currentTimeSeconds / durationSeconds
+            self.seekTimeSlider.value = Float(fracTimeElapsed)
         }
     }
 
     @IBAction func backButtonTapped(_ sender: Any)
     {
         print("Back button tapped")
-
-//        AVFoundationMediaPlayerManager.mgr.sk`
     }
 
     @IBAction func playPauseButtonTapped(_ sender: Any)
@@ -167,43 +155,30 @@ class MediaControlsViewController: UIViewController {
     {
         print("***** Slider >> Touch Up Inside\nNew Value: \(self.seekTimeSlider!.value)")
         let currentSliderValue = Double(self.seekTimeSlider!.value)
-        let dur = AVFoundationMediaPlayerManager.mgr.playerItem?.duration
-        if let duration = dur?.seconds
-        {
-            let seekTimeSec = currentSliderValue * duration
+        let duration = AVFoundationMediaPlayerManager.mgr.duration
+        let seekTimeSec = currentSliderValue * duration.seconds
 
-            if seekTimeSec == duration
+        if seekTimeSec == duration.seconds
+        {
+            print("***** Seeking to the end.")
+        }
+
+        AVFoundationMediaPlayerManager.mgr.pause()
+
+        AVFoundationMediaPlayerManager.mgr.seek(
+            to: CMTime( seconds: seekTimeSec,
+                        preferredTimescale: CMTimeScale(1) )
+        )
+        { (cancelled) in
+            print("Seeked to \(seekTimeSec): Cancelled = \(cancelled)")
+
+            self.isSliderChanging = false
+
+            if seekTimeSec != duration.seconds && !cancelled
             {
-                print("***** Seeking to the end.")
-            }
-
-            AVFoundationMediaPlayerManager.mgr.pause()
-
-            AVFoundationMediaPlayerManager.mgr.seek(
-                to: CMTime( seconds: seekTimeSec,
-                            preferredTimescale: CMTimeScale(1) )
-            )
-            { (cancelled) in
-                print("Seeked to \(seekTimeSec): Cancelled = \(cancelled)")
-
-                self.isSliderChanging = false
-
-                if seekTimeSec != duration && !cancelled
-                {
-                    AVFoundationMediaPlayerManager.mgr.play()
-                }
+                AVFoundationMediaPlayerManager.mgr.play()
             }
         }
-        else
-        {
-            print("Ulp! Can't get duration.")
-        }
-    }
-
-    @IBAction func sliderTouchUpOutside(_ sender: Any)
-    {
-        print("sliderTouchUpOutside")
-//        self.isSliderChanging = false
     }
 
     //
@@ -223,94 +198,111 @@ class MediaControlsViewController: UIViewController {
 
         if keyPath == "status"
         {
-            switch AVFoundationMediaPlayerManager.mgr.status
+            self.playerStatusUpdated(status: AVFoundationMediaPlayerManager.mgr.status)
+        }
+        else if keyPath == "currentTime"
+        {
+            if let newCurrentTime = change?[NSKeyValueChangeKey.newKey] as? CMTime
             {
-                case .loading:
-                    print("Loading")
-                    self.avPlayerView.isHidden = true
-
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
-                    self.infoLabel.text = AVFoundationMediaPlayerManager.mgr.loadingMediaItem?.title
-                    self.infoLabel.isHidden = false
-                    self.errorLabel.text = ""
-                    self.errorLabel.isHidden = false
-                    self.activitySpinner.startAnimating()
-
-                case .readyToPlay:
-                    print("readyToPlay")
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
-                    self.activitySpinner.stopAnimating()
-                    self.errorLabel.text = ""
-                    self.errorLabel.isHidden = false
-
-                    self.avPlayerView.isHidden = false
-
-                case .playing:
-                    print("playing")
-
-                    let currentTimeSec = AVFoundationMediaPlayerManager.mgr.playerItem?.currentTime().seconds
-                    let durationSec = AVFoundationMediaPlayerManager.mgr.playerItem?.duration.seconds
-
-                    let currentTimeRoundedWholeSec = currentTimeSec!.rounded(.down)
-                    let currentTimeFrac = currentTimeSec! - currentTimeRoundedWholeSec
-                    let currentTimeFracRoundedFrac = (currentTimeFrac * 100).rounded(.down) / 100
-                    let currentTimeRoundedSec = currentTimeRoundedWholeSec + currentTimeFracRoundedFrac
-                    
-                    let durationRoundedWholeSec = durationSec!.rounded(.down)
-                    let durationFrac = durationSec! - durationRoundedWholeSec
-                    let durationFracRoundedFrac = (durationFrac * 100).rounded(.down) / 100
-                    let durationRoundedSec = durationRoundedWholeSec + durationFracRoundedFrac
-
-                    print("**** Current Time =  \(currentTimeSec!) Rounded: \(currentTimeRoundedSec)")
-                    print("**** Duration = \(durationSec!) rounded to \(durationRoundedSec)")
-
-                    if durationRoundedSec <= currentTimeRoundedSec
-                    {
-                        self.playButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
-                    }
-                    else
-                    {
-                        self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
-                    }
-
-                    self.activitySpinner.stopAnimating()
-                    self.errorLabel.text = ""
-                    self.errorLabel.isHidden = false
-
-                case .paused:
-                    print("paused")
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
-                    self.activitySpinner.stopAnimating()
-                    self.errorLabel.text = ""
-                    self.errorLabel.isHidden = false
-
-                case .failed:
-                    print("failed")
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
-                    self.activitySpinner.stopAnimating()
-                    self.errorLabel.text = "There was a playback error."
-                    self.errorLabel.isHidden = false
-
-                case .buffering:
-                    print("buffering")
-                    self.activitySpinner.startAnimating()
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
-                    self.errorLabel.text = ""
-                    self.errorLabel.isHidden = false
-
-                case .playedToEnd:
-                    self.activitySpinner.stopAnimating()
-                    
-                    self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
-                    self.errorLabel.text = ""
-                    self.errorLabel.isHidden = false
-
-                case .unknown:
-                    print("Unknown")
-                    self.errorLabel.isHidden = false
+                self.playbackTimeUpdated(newTime: newCurrentTime)
             }
         }
 
         print("**************************************")
+    }
+
+    func playerCurrentTimeUpdated( time: CMTime)
+    {
+        
+    }
+
+    func playerStatusUpdated( status: AVFoundationMediaPlayerManager.Status )
+    {
+        switch status
+        {
+            case .loading:
+                print("Loading")
+                self.avPlayerView.isHidden = true
+
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                self.infoLabel.text = AVFoundationMediaPlayerManager.mgr.loadingMediaItem?.title
+                self.infoLabel.isHidden = false
+                self.errorLabel.text = ""
+                self.errorLabel.isHidden = false
+                self.activitySpinner.startAnimating()
+
+            case .readyToPlay:
+                print("readyToPlay")
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                self.activitySpinner.stopAnimating()
+                self.errorLabel.text = ""
+                self.errorLabel.isHidden = false
+
+                self.avPlayerView.isHidden = false
+
+            case .playing:
+                print("playing")
+
+                let currentTimeSec = AVFoundationMediaPlayerManager.mgr.currentTime.seconds
+                let durationSec = AVFoundationMediaPlayerManager.mgr.duration.seconds
+
+                let currentTimeRoundedWholeSec = currentTimeSec.rounded(.down)
+                let currentTimeFrac = currentTimeSec - currentTimeRoundedWholeSec
+                let currentTimeFracRoundedFrac = (currentTimeFrac * 100).rounded(.down) / 100
+                let currentTimeRoundedSec = currentTimeRoundedWholeSec + currentTimeFracRoundedFrac
+                
+                let durationRoundedWholeSec = durationSec.rounded(.down)
+                let durationFrac = durationSec - durationRoundedWholeSec
+                let durationFracRoundedFrac = (durationFrac * 100).rounded(.down) / 100
+                let durationRoundedSec = durationRoundedWholeSec + durationFracRoundedFrac
+
+                print("**** Current Time =  \(currentTimeSec) Rounded: \(currentTimeRoundedSec)")
+                print("**** Duration = \(durationSec) rounded to \(durationRoundedSec)")
+
+                if durationRoundedSec <= currentTimeRoundedSec
+                {
+                    self.playButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                }
+                else
+                {
+                    self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                }
+
+                self.activitySpinner.stopAnimating()
+                self.errorLabel.text = ""
+                self.errorLabel.isHidden = false
+
+            case .paused:
+                print("paused")
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                self.activitySpinner.stopAnimating()
+                self.errorLabel.text = ""
+                self.errorLabel.isHidden = false
+
+            case .failed:
+                print("failed")
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                self.activitySpinner.stopAnimating()
+                self.errorLabel.text = "There was a playback error."
+                self.errorLabel.isHidden = false
+
+            case .buffering:
+                print("buffering")
+                self.activitySpinner.startAnimating()
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                self.errorLabel.text = ""
+                self.errorLabel.isHidden = false
+
+            case .playedToEnd:
+                self.activitySpinner.stopAnimating()
+                
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                self.errorLabel.text = ""
+                self.errorLabel.isHidden = false
+
+            case .unknown:
+                print("Unknown")
+                self.errorLabel.isHidden = false
+        }
     }
 }
