@@ -19,6 +19,7 @@
 		F625DAB22284B3C2005EC540 /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F625DAB12284B3C2005EC540 /* AVPlayerView.swift */; };
 		F63A81B322E6C154008473EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A81B222E6C154008473EA /* AppDelegate.swift */; };
 		F63A81B822E6C1D1008473EA /* MediaControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F63A81B622E6C1D1008473EA /* MediaControls.storyboard */; };
+		F67BF7B922EE805D00D453F8 /* MediaPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67BF7B822EE805D00D453F8 /* MediaPlayerManager.swift */; };
 		F6C573A3219BC45F00F09066 /* OCDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C573A1219BC45E00F09066 /* OCDummy.m */; };
 		F6D5C022214EDD64004BBAA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C021214EDD64004BBAA8 /* Assets.xcassets */; };
 		F6D5C025214EDD64004BBAA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C023214EDD64004BBAA8 /* LaunchScreen.storyboard */; };
@@ -53,6 +54,7 @@
 		F625DAB12284B3C2005EC540 /* AVPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
 		F63A81B222E6C154008473EA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F63A81B722E6C1D1008473EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MultiVideoStreaming/Base.lproj/MediaControls.storyboard; sourceTree = SOURCE_ROOT; };
+		F67BF7B822EE805D00D453F8 /* MediaPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerManager.swift; sourceTree = "<group>"; };
 		F68CE3CA215EE93300A0CF12 /* MultiVideoStreaming-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiVideoStreaming-Bridging-Header.h"; sourceTree = "<group>"; };
 		F6C573A1219BC45E00F09066 /* OCDummy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCDummy.m; sourceTree = "<group>"; };
 		F6D5C017214EDD62004BBAA8 /* MultiVideoStreaming.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiVideoStreaming.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,7 @@
 				F6EC9B542282851000CCBAF5 /* MediaPlayerGeneric.swift */,
 				F614FD91219BC1C000EDA431 /* AVFoundationManager.swift */,
 				F614FD92219BC1C000EDA431 /* ChromecastManager.swift */,
+				F67BF7B822EE805D00D453F8 /* MediaPlayerManager.swift */,
 			);
 			path = DeviceSupport;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				F61E009B22ECD0A2004C78AB /* TextInputViewController.swift in Sources */,
 				F614FDA3219BC1C000EDA431 /* ViewController.swift in Sources */,
 				F614FD9E219BC1C000EDA431 /* ChromecastManager.swift in Sources */,
+				F67BF7B922EE805D00D453F8 /* MediaPlayerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

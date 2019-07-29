@@ -32,7 +32,7 @@ class MediaControlsViewController: UIViewController {
     deinit
     {
         AVFoundationMediaPlayerManager.mgr.removeObserver(self, forKeyPath: "status")
-        AVFoundationMediaPlayerManager.mgr.removeObserver(self, forKeyPath: "currentTime")
+        AVFoundationMediaPlayerManager.mgr.removeObserver(self, forKeyPath: "currentOffset")
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.init("PlaybackTimeObserver"), object: nil)
     }
 
@@ -43,7 +43,7 @@ class MediaControlsViewController: UIViewController {
         self.avPlayerView.player = AVFoundationMediaPlayerManager.mgr.player
 
         AVFoundationMediaPlayerManager.mgr.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-        AVFoundationMediaPlayerManager.mgr.addObserver(self, forKeyPath: "currentTime", options: .new, context: nil)
+        AVFoundationMediaPlayerManager.mgr.addObserver(self, forKeyPath: "currentOffset", options: .new, context: nil)
 
         self.seekTimeSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .normal)
         self.seekTimeSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .selected)
@@ -151,6 +151,11 @@ class MediaControlsViewController: UIViewController {
         self.isSliderChanging = false
     }
 
+    @IBAction func sliderTouchUpOutside(_ sender: Any)
+    {
+        self.sliderTouchUpInside(sender)
+    }
+
     @IBAction func sliderTouchUpInside(_ sender: Any)
     {
         print("***** Slider >> Touch Up Inside\nNew Value: \(self.seekTimeSlider!.value)")
@@ -200,8 +205,13 @@ class MediaControlsViewController: UIViewController {
         {
             self.playerStatusUpdated(status: AVFoundationMediaPlayerManager.mgr.status)
         }
-        else if keyPath == "currentTime"
+        else if keyPath == "currentOffset"
         {
+            if let newValue = change?[NSKeyValueChangeKey.newKey]
+            {
+                print("New Current Offset: \((newValue as AnyObject).seconds)")
+            }
+
             if let newCurrentTime = change?[NSKeyValueChangeKey.newKey] as? CMTime
             {
                 self.playbackTimeUpdated(newTime: newCurrentTime)
@@ -243,7 +253,7 @@ class MediaControlsViewController: UIViewController {
             case .playing:
                 print("playing")
 
-                let currentTimeSec = AVFoundationMediaPlayerManager.mgr.currentTime.seconds
+                let currentTimeSec = AVFoundationMediaPlayerManager.mgr.currentOffset.seconds
                 let durationSec = AVFoundationMediaPlayerManager.mgr.duration.seconds
 
                 let currentTimeRoundedWholeSec = currentTimeSec.rounded(.down)

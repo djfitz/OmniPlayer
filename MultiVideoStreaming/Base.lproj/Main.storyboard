@@ -17,14 +17,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://breaqz.com/movies/Lego911gt3.mov" borderStyle="roundedRect" placeholder="Enter a Media URL" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-d6-gB6" userLabel="URL Text Field">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8" borderStyle="roundedRect" placeholder="Enter a Media URL" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-d6-gB6" userLabel="URL Text Field">
                                 <rect key="frame" x="10" y="103" width="394" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" keyboardAppearance="alert" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
-                                <connections>
-                                    <action selector="textInputEditingDidEnd:" destination="YOY-z1-69q" eventType="editingDidEnd" id="koj-92-pMl"/>
-                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -38,7 +35,7 @@
                     <navigationItem key="navigationItem" id="a2K-E3-l6g"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="urlTextInput" destination="9Uk-d6-gB6" id="7rI-gv-v5k"/>
+                        <outlet property="urlTextInput" destination="9Uk-d6-gB6" id="mER-ON-vuT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cpt-yp-L1c" userLabel="First Responder" sceneMemberID="firstResponder"/>

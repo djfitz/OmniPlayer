@@ -17,6 +17,22 @@ class AVFoundationMediaPlayerManager : NSObject,
                                        RemoteMediaPlayback,
                                        MediaPlaybackQueue
 {
+    // MARK: ** Generic Media Player
+
+    /// Setting the offset will perform a seek operation.
+    @objc dynamic var status:Status = .unknown
+
+    @objc dynamic var currentOffset:CMTime = CMTime.invalid
+
+    @objc dynamic var duration:CMTime = CMTime.invalid
+
+    /// The rate of the playback as a fractional amount. Also known as the playback speed.
+    /// Can be observed for when rate changes.
+    /// 0 = stopped, 1 = Default playback rate, 2 = Double speed playback
+    /// NOTE: Not all media players can support non-whole fractional amounts.
+    var playbackRate: Double = 0
+
+
     var isSeeking = false
 
     @objc public enum Status:Int
@@ -38,12 +54,6 @@ class AVFoundationMediaPlayerManager : NSObject,
         case failed
     }
     
-    @objc dynamic var status:Status = .unknown
-
-    @objc dynamic var currentTime:CMTime = CMTime.invalid
-
-    @objc dynamic var duration:CMTime = CMTime.invalid
-
     // MARK: Playback Queue
 
     func addItem(at index: Int)
@@ -201,7 +211,7 @@ class AVFoundationMediaPlayerManager : NSObject,
                 queue: DispatchQueue.main,
                 using:
                 { (time:CMTime) in
-                    self.currentTime = time
+                    self.currentOffset = time
                 }
             )
 
@@ -216,15 +226,6 @@ class AVFoundationMediaPlayerManager : NSObject,
     }
 
     // MARK: ** Generic Media Player
-
-    /// Setting the offset will perform a seek operation.
-    var currentOffsetSeconds: CMTime = CMTime.invalid
-
-    /// The rate of the playback as a fractional amount. Also known as the playback speed.
-    /// Can be observed for when rate changes.
-    /// 0 = stopped, 1 = Default playback rate, 2 = Double speed playback
-    /// NOTE: Not all media players can support non-whole fractional amounts.
-    var playbackRate: Double = 0
 
     /**
         Prepare the media item for playback.

@@ -80,7 +80,7 @@
                                             <action selector="sliderEditingDidEnd:" destination="0pJ-06-kSK" eventType="editingDidEnd" id="J5a-JP-rl6"/>
                                             <action selector="sliderTouchCancelled:" destination="0pJ-06-kSK" eventType="touchCancel" id="WGq-yZ-K8g"/>
                                             <action selector="sliderTouchUpInside:" destination="0pJ-06-kSK" eventType="touchUpInside" id="g0p-Xn-hUl"/>
-                                            <action selector="sliderTouchUpOutside:" destination="0pJ-06-kSK" eventType="touchUpOutside" id="xTm-FF-qhs"/>
+                                            <action selector="sliderTouchUpOutside:" destination="0pJ-06-kSK" eventType="touchUpOutside" id="1GG-oc-195"/>
                                             <action selector="sliderValueChanged:" destination="0pJ-06-kSK" eventType="valueChanged" id="pYw-dz-c6O"/>
                                         </connections>
                                     </slider>

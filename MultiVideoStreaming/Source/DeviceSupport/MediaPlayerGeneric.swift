@@ -49,7 +49,7 @@ protocol MediaPlayerGeneric
     /// NOTE2: Can be observed when the offset changes. How often observers will be called
     /// is dependent on the media player. May not be fractional seconds, even if the media
     /// player supports fractional offsets.
-    var currentOffsetSeconds: CMTime { get set }
+    var currentOffset: CMTime { get set }
 
     /// The rate of the playback as a fractional amount. Also known as the playback speed.
     /// Can be observed for when rate changes.
@@ -93,7 +93,6 @@ protocol MediaPlayerGeneric
     func skip( forward seconds: CMTime )
 
     func skip( back seconds: CMTime )
-
 }
 
 protocol PlaybackDevice
