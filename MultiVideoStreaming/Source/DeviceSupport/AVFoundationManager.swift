@@ -30,7 +30,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     /// Can be observed for when rate changes.
     /// 0 = stopped, 1 = Default playback rate, 2 = Double speed playback
     /// NOTE: Not all media players can support non-whole fractional amounts.
-    var playbackRate: Double = 0
+    @objc dynamic var playbackRate: Double = 0
 
     // Whether there is a seek in progress.
     @objc dynamic var isSeeking = false
@@ -47,9 +47,9 @@ class AVFoundationMediaPlayerManager : NSObject,
 //        #warning("fill me in")
     }
 
-    var currentMediaItem: MediaItem?
+    @objc dynamic var currentMediaItem: MediaItem?
 
-    var loadingMediaItem: MediaItem?
+    @objc dynamic var loadingMediaItem: MediaItem?
 
     var currentPlaybackQueueIndex: Int?
     {
@@ -121,9 +121,9 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     // MARK: Remote Media Playback
     var remoteDevicesList: [PlaybackDevice] = []
-    
+
     var currentlySelectedDevice: PlaybackDevice? = nil
-    
+
     var remoteDevicePickerButton: UIView = UIView()
 
     func beginSearchForRemoteDevices()
@@ -373,6 +373,7 @@ class AVFoundationMediaPlayerManager : NSObject,
                 case .readyToPlay:
                     print("Player Status is Ready to Play")
                     self.currentMediaItem = self.loadingMediaItem
+                    self.loadingMediaItem = nil
                     self.status = .readyToPlay
 
                 case .unknown:

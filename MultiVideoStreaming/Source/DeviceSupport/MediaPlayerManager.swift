@@ -42,6 +42,8 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         let currentlyLoadedMediaItem = self.currentMediaItem
         let currentTime = self.currentOffset
 
+        self.pause()
+
         self.stopObserving(player: self.currentPlayer)
         
         self.beginObserving(player: player)
@@ -55,6 +57,27 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         else if let currentItem = currentlyLoadedMediaItem
         {
             player.load(mediaItem: currentItem, startingAt: currentTime)
+        }
+    }
+
+    func stopUsing( player: MediaPlayerGeneric )
+    {
+        let cInPlayer = player as? ChromecastManager
+        let avInPlayer = player as? AVFoundationMediaPlayerManager
+
+        if let currentPlayer = self.currentPlayer as? ChromecastManager
+        {
+            if cInPlayer == currentPlayer
+            {
+                self.switchPlayback(to: self.avFoundationPlayer)
+            }
+        }
+        else if let currentPlayer = self.currentPlayer as? AVFoundationMediaPlayerManager
+        {
+            if avInPlayer == currentPlayer
+            {
+                self.switchPlayback(to: self.chromecastPlayer)
+            }
         }
     }
 
@@ -250,18 +273,19 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
             if let newLoadingItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
             {
                 print("New Media Item is being loaded: \(newLoadingItem)")
-
-                self.loadingMediaItem = newLoadingItem
             }
+
+            self.loadingMediaItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
         }
         else if keyPath == "currentMediaItem"
         {
             if let newCurrentItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
             {
                 print("Current Media Item Changed: \(newCurrentItem)")
-
-                self.currentMediaItem = newCurrentItem
             }
+
+            self.currentMediaItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
+            self.loadingMediaItem = nil
         }
         else if keyPath == "duration"
         {

@@ -79,19 +79,19 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     
     // MARK: Properties
 
-    var status: PlaybackStatus = .unknown
+    @objc dynamic var status: PlaybackStatus = .unknown
     
-    var loadingMediaItem: MediaItem? = nil
+    @objc dynamic var loadingMediaItem: MediaItem? = nil
     
-    var currentMediaItem: MediaItem? = nil
+    @objc dynamic var currentMediaItem: MediaItem? = nil
     
-    var currentOffset: CMTime = CMTime.zero
+    @objc dynamic var currentOffset: CMTime = CMTime.zero
     
-    var duration: CMTime = CMTime.invalid
+    @objc dynamic var duration: CMTime = CMTime.invalid
     
-    var playbackRate: Double = 0.0
+    @objc dynamic var playbackRate: Double = 0.0
     
-    var isSeeking: Bool = false
+    @objc dynamic var isSeeking: Bool = false
 
     // MARK: Methods
     
@@ -125,9 +125,18 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
     func play()
     {
-        if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
+        guard let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient else { return }
+        if remoteMediaClient.mediaStatus?.mediaInformation != nil
         {
             remoteMediaClient.play()
+        }
+        else
+        {
+            let cItem = MediaPlayerManager.mgr.currentMediaItem ?? self.currentMediaItem
+            if let currentItem = cItem
+            {
+                self.load(mediaItem: currentItem, startingAt: CMTime.zero)
+            }
         }
     }
     
@@ -149,6 +158,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     
     func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
     {
+        guard let _ = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus?.mediaInformation else { completionHandler(true); return }
         if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
         {
             self.cancelPendingSeeks()
@@ -164,6 +174,9 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
             seekOptions.resumeState = .play
 
             self.currentSeekRequest = remoteMediaClient.seek(with: seekOptions)
+            self.currentSeekRequest?.delegate = self
+
+            completionHandler(false)
         }
     }
     
@@ -179,10 +192,14 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
 
     // ------------------------------------------------------------------
-    // Chromecast SDK Properties
+    // Chromecast SDK
+    // ------------------------------------------------------------------
 
     var currentSeekRequest: GCKRequest?
 
+    // ------------------------------------------------------------------
+
+    // * cancelPendingSeeks
     func cancelPendingSeeks()
     {
         if let currentSeek = self.currentSeekRequest
@@ -191,6 +208,10 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
+    func isSessionActive() -> Bool
+    {
+        return GCKCastContext.sharedInstance().sessionManager.currentSession != nil
+    }
     
     // MARK: GCKRequestDelegate Methods
 
@@ -504,6 +525,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         withError error: Error?)
     {
         NSLog("Session Manager: Cast Session Did End. Cast Session ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(String(describing: error))" )
+
+        MediaPlayerManager.mgr.stopUsing(player: self)
     }
 
     /**
@@ -597,9 +620,22 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         switch status.playerState
         {
             case .buffering:
+                self.loadingMediaItem = nil
+
+                if let currentStatus = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus
+                {
+                    self.currentOffset = CMTime.init(seconds: currentStatus.streamPosition, preferredTimescale: 1)
+                }
                 self.status = .buffering
 
             case .idle:
+                self.loadingMediaItem = nil
+
+                if let currentStatus = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus
+                {
+                    self.currentOffset = CMTime.init(seconds: currentStatus.streamPosition, preferredTimescale: 1)
+                }
+
                 switch status.idleReason
                 {
                     case .cancelled:
@@ -625,9 +661,21 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                 self.status = .loading
 
             case .paused:
+                self.loadingMediaItem = nil
+
+                if let currentStatus = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus
+                {
+                    self.currentOffset = CMTime.init(seconds: currentStatus.streamPosition, preferredTimescale: 1)
+                }
                 self.status = .paused
 
             case .playing:
+                self.loadingMediaItem = nil
+
+                if let currentStatus = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus
+                {
+                    self.currentOffset = CMTime.init(seconds: currentStatus.streamPosition, preferredTimescale: 1)
+                }
                 self.status = .playing
 
             case .unknown:
@@ -787,7 +835,7 @@ extension GCKMediaInformation
 {
     override open var description: String
     {
-        var retVal = "\nMedia Information:\nContent ID: \(self.contentID ?? "0")\n"
+        var retVal = "\nMedia Information:\nURL: \(self.contentURL?.absoluteString ?? "0")\n"
 
         switch self.streamType
         {
@@ -808,7 +856,9 @@ extension GCKMediaInformation
 
         }
 
-        retVal += "Content ID: \(self.contentType)\n"
+        retVal += "Content Type: \(self.contentType)\n"
+
+        retVal += "Content ID: \(self.contentID ?? "none")\n"
 
         if let realMetaData = self.metadata {
             retVal += "Media Metadata: \(String(describing: realMetaData))\n "

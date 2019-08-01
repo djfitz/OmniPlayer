@@ -174,20 +174,30 @@ class MediaControlsViewController: UIViewController {
             print("***** Seeking to the end.")
         }
 
-        MediaPlayerManager.mgr.pause()
-
-        MediaPlayerManager.mgr.seek(
-            to: CMTime( seconds: seekTimeSec,
-                        preferredTimescale: CMTimeScale(1) )
-        )
-        { (cancelled) in
-            print("Seeked to \(seekTimeSec): Cancelled = \(cancelled)")
-
-            self.isSliderChanging = false
-
-            if seekTimeSec != duration.seconds && !cancelled
+        if MediaPlayerManager.mgr.status == .playedToEnd
+        {
+            if let mediaItem = MediaPlayerManager.mgr.currentMediaItem
             {
-                MediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: CMTime.init(seconds: seekTimeSec, preferredTimescale: 1))
+            }
+        }
+        else
+        {
+            MediaPlayerManager.mgr.pause()
+
+            MediaPlayerManager.mgr.seek(
+                to: CMTime( seconds: seekTimeSec,
+                            preferredTimescale: CMTimeScale(1) )
+            )
+            { (cancelled) in
+                print("Seeked to \(seekTimeSec): Cancelled = \(cancelled)")
+
+                self.isSliderChanging = false
+
+                if seekTimeSec != duration.seconds && !cancelled
+                {
+                    MediaPlayerManager.mgr.play()
+                }
             }
         }
     }
