@@ -8,6 +8,7 @@
 
 import Foundation
 import GoogleCast
+import MediaPlayer
 
 
 //class ChromecastSessionState
@@ -25,11 +26,12 @@ import GoogleCast
 
     Implements most of the delegate/listeners as defined by the SDK.
 */
-class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
-                          GCKCastDeviceStatusListener, GCKSessionManagerListener,
-                          GCKLoggerDelegate, GCKDiscoveryManagerListener
+class ChromecastManager : NSObject, MediaPlayerGeneric,
+                          GCKRemoteMediaClientListener, GCKRequestDelegate,
+                          GCKSessionManagerListener, GCKLoggerDelegate
 {
-    static let mgr = ChromecastManager()
+//    var session: GCKSession?
+//    var castSession: GCKCastSession?
 
     // ID can be found at: https://cast.google.com/publish/
     let kChromecastApplicationID = "09E504FF"
@@ -58,8 +60,6 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
         super.init()
 
         self.setupChromecastSDK()
-
-        self.remoteDevicePickerButton = GCKUICastButton.init()
     }
 
     func beginSearchForRemoteDevices()
@@ -75,8 +75,6 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
         castOptions.physicalVolumeButtonsWillControlDeviceVolume = true
         GCKCastContext.setSharedInstanceWith(castOptions)
 
-        GCKCastContext.sharedInstance().discoveryManager.add(self)
-
         // Start listening for Chromecast session messages.
         GCKCastContext.sharedInstance().sessionManager.add(self)
 
@@ -84,175 +82,154 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
         // logger of choice. For us, NSLog.
         GCKLogger.sharedInstance().delegate = self
 
-        self.remoteDevicePickerButton = GCKUIMultistateButton.init()
+        self.remoteDevicePickerButton = GCKUIMultistateButton()
     }
 
     // =======================================================================================
+    // MARK: - Generic Media Player protocol
+    
+    // MARK: Properties
 
-    // MARK:- GCKDiscoveryManagerListener
+    var status: PlaybackStatus = .unknown
+    
+    var loadingMediaItem: MediaItem? = nil
+    
+    var currentMediaItem: MediaItem? = nil
+    
+    var currentOffset: CMTime = CMTime.zero
+    
+    var duration: CMTime = CMTime.invalid
+    
+    var playbackRate: Double = 0.0
+    
+    var isSeeking: Bool = false
 
-
-    /**
-     * Called when discovery has started for the given device category.
-     */
-    func didStartDiscovery(forDeviceCategory deviceCategory: String)
+    // MARK: Methods
+    
+    func load(mediaItem: MediaItem)
     {
-        print( "Discovery Mgr: Did Start Discovery -> Device Category filter: \(deviceCategory)\n" )
+        self.load(mediaItem: mediaItem, startingAt: CMTime.zero)
     }
 
-    /**
-     * Called when the list of discovered devices is about to be updated in some way.
-     */
-    func willUpdateDeviceList()
+    func load(mediaItem: MediaItem, startingAt time: CMTime)
     {
-        print( "Discovery Mgr: Will Update Device List\n" )
+        let md = GCKMediaMetadata.init(metadataType: .movie)
+        md.setString(mediaItem.title, forKey: kGCKMetadataKeyTitle)
+        md.setString("0 Lux Studios", forKey: kGCKMetadataKeyStudio)
+
+        let mBuilder = GCKMediaInformationBuilder.init(contentURL: mediaItem.url)
+        mBuilder.metadata = md
+
+        if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
+        {
+            let loadOptions = GCKMediaLoadOptions()
+            loadOptions.autoplay = true
+            loadOptions.playPosition = time.seconds
+            
+            remoteMediaClient.loadMedia(mBuilder.build(), with: loadOptions)
+
+            self.loadingMediaItem = mediaItem
+            self.status = .loading
+        }
+    }
+    
+
+    func play()
+    {
+        if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
+        {
+            remoteMediaClient.play()
+        }
+    }
+    
+    func pause()
+    {
+        if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
+        {
+            remoteMediaClient.pause()
+        }
+    }
+    
+    func stop()
+    {
+        if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
+        {
+            remoteMediaClient.stop()
+        }
+    }
+    
+    func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
+    {
+        if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
+        {
+            self.cancelPendingSeeks()
+
+            self.isSeeking = true
+
+            self.pause()
+
+            self.status = .buffering
+
+            let seekOptions = GCKMediaSeekOptions.init()
+            seekOptions.interval = time.seconds
+            seekOptions.resumeState = .play
+
+            self.currentSeekRequest = remoteMediaClient.seek(with: seekOptions)
+        }
+    }
+    
+    func  skip(forward seconds: CMTime)
+    {
+        
+    }
+    
+    func skip(back seconds: CMTime)
+    {
+        
     }
 
-    /**
-     * Called when the list of discovered devices has been updated in some way.
-     */
-    func didUpdateDeviceList()
+
+    // ------------------------------------------------------------------
+    // Chromecast SDK Properties
+
+    var currentSeekRequest: GCKRequest?
+
+    func cancelPendingSeeks()
     {
-        print( "Discovery Mgr: Did Update Device List\n" )
+        if let currentSeek = self.currentSeekRequest
+        {
+            currentSeek.cancel()
+        }
     }
 
-    /**
-     * Called when a newly-discovered device has been inserted into the list of devices.
-     *
-     * @param device The device that was inserted.
-     * @param index The list index at which the device was inserted.
-     */
-    func didInsert(_ device: GCKDevice, at index: UInt)
+    
+    // MARK: GCKRequestDelegate Methods
+
+    func requestDidComplete(_ request: GCKRequest)
     {
-        print( "Discovery Mgr: Did Insert Device into Device List -> Device ID: \(device.deviceID)\n" )
+        if request == self.currentSeekRequest
+        {
+            self.isSeeking = false
+            self.currentSeekRequest = nil
+        }
     }
 
-    /**
-     * Called when a previously-discovered device has been updated.
-     *
-     * @param device The device that was updated.
-     * @param index The list index of the device.
-     */
-    func didUpdate(_ device: GCKDevice, at index: UInt)
+    func request(_ request: GCKRequest, didFailWithError error: GCKError)
     {
-        print( "Discovery Mgr: Did Update Device -> Device ID: \(device.deviceID), Index: \(index)\n" )
+        if request == self.currentSeekRequest
+        {
+            self.isSeeking = false
+            self.currentSeekRequest = nil
+        }
     }
 
-    /**
-     * Called when a previously-discovered device has been updated and/or reordered within the list.
-     *
-     * @param device The device that was updated.
-     * @param index The previous list index of the device.
-     * @param newIndex The current list index of the device.
-    */
-    func didUpdate(_ device: GCKDevice, at index: UInt, andMoveTo newIndex: UInt)
+    func request(_ request: GCKRequest, didAbortWith abortReason: GCKRequestAbortReason)
     {
-        print( "Discovery Mgr: Did Update Device -> Device ID: \(device.deviceID), Index: \(index), Moved To Index: \(newIndex)\n" )
-    }
-
-    /**
-     * Called when a previously-discovered device has gone offline and has been removed from the list of
-     * devices.
-     *
-     * @param index The list index of the device that was removed.
-     */
-    func didRemoveDevice(at index: UInt)
-    {
-        print( "Discovery Mgr: Did Remove Device -> Index: \(index)\n" )
-    }
-
-    /**
-     * Called when a previously-discovered device has gone offline and has been
-     * removed from the list of devices. This is an alternative to @ref
-     * didRemoveDeviceAtIndex:. If both are implemented, both will be called.
-     *
-     * @param device The device that was removed.
-     * @param index The list index of the device that was removed.
-     *
-     * @since 4.1
-     */
-    func didRemove(_ device: GCKDevice, at index: UInt)
-    {
-        print( "Discovery Mgr: Did Remove Device -> Device ID: \(device.deviceID), Index: \(index)\n" )
-    }
-
-
-    // =======================================================================================
-
-    // MARK:- GCKCastDeviceStatusListener
-
-    /**
-     * Called when the Cast device's active input status has changed.
-     *
-     * @param castSession The Cast session.
-     * @param activeInputStatus The new active input status.
-     */
-    // optional public func castSession(_ castSession: Any!, didReceiveActiveInputStatus activeInputStatus: Any!)
-
-    func castSession(_ castSession: GCKCastSession,
-                        didReceive activeInputStatus: GCKActiveInputStatus)
-    {
-        NSLog("Cast Session: Did Receive Active Input Status:\n\(String(describing: activeInputStatus))")
-    }
-
-    /**
-     * Called when the Cast device's standby status has changed.
-     *
-     * @param castSession The Cast session.
-     * @param standbyStatus The new standby status.
-     */
-    func castSession(_ castSession: GCKCastSession,
-                        didReceive standbyStatus: GCKStandbyStatus)
-    {
-        NSLog("Cast Session: Did Receive Standby Status:\n\(String(describing: standbyStatus))")
-    }
-
-    /**
-     * Called when the Cast device's multizone status has changed.
-     *
-     * @param castSession The Cast session.
-     * @param multizoneStatus The new multizone status.
-     */
-    func castSession(_ castSession: GCKCastSession,
-                        didReceive multizoneStatus: GCKMultizoneStatus)
-    {
-        NSLog("Cast Session: Did Receive Multizone Input Status:\n\(String(describing: multizoneStatus))")
-    }
-
-    /**
-     * Called whenever a multizone device is added.
-     *
-     * @param castSession The Cast session.
-     * @param device The newly-added multizone device.
-     */
-    func castSession(_ castSession: GCKCastSession,
-                    didAdd device: GCKMultizoneDevice)
-    {
-        NSLog("Cast Session: Did Add Multizone Device:\n\(String(describing: device.deviceID))")
-    }
-
-    /**
-     * Called whenever a multizone device is updated.
-     *
-     * @param castSession The Cast session.
-     * @param device The updated multizone device.
-     */
-    func castSession(_ castSession: GCKCastSession,
-                    didUpdate device: GCKMultizoneDevice)
-    {
-            NSLog("Cast Session: Did Update Multizone Device:\n\(String(describing: device.deviceID))")
-    }
-
-    /**
-     * Called whenever a multizone device is removed.
-     *
-     * @param castSession The Cast session.
-     * @param deviceID The deviceID of the removed multizone device.
-     */
-    func castSession(_ castSession: GCKCastSession,
-                    didRemoveMultizoneDeviceWithID deviceID: String)
-    {
-            NSLog("Cast Session: Did Remove Multizone Device:\n\(deviceID)")
+        if request == self.currentSeekRequest
+        {
+            self.isSeeking = false
+            self.currentSeekRequest = nil
+        }
     }
 
 
@@ -495,24 +472,7 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
 
         NSLog("Session Manager: Cast Session Did Start.\nCast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
 
-        let md = GCKMediaMetadata.init(metadataType: .movie)
-        md.setString("Dumb Title", forKey: kGCKMetadataKeyTitle)
-        md.setString("Dumb Studios", forKey: kGCKMetadataKeyStudio)
-
-        let mediaInfo = GCKMediaInformation.init(
-                contentID: "http://breaqz.com/movies/Lego911gt3.mov",
-                streamType: .buffered,
-                contentType: "video/quicktime",
-                metadata: md,
-                adBreaks: nil,
-                adBreakClips: nil,
-                streamDuration: 10,
-                mediaTracks: nil,
-                textTrackStyle: nil,
-                customData: nil
-            )
-
-        session.remoteMediaClient?.loadMedia(mediaInfo)
+        MediaPlayerManager.mgr.switchPlayback(to: self)
     }
 
     /**
@@ -634,10 +594,58 @@ class ChromecastManager : NSObject, GCKRemoteMediaClientListener,
         if let mediaStatusThatUpdated = mediaStatus
         {
             NSLog("Remote Media Client: Media Status Did Update:\n%@\n", String( describing: mediaStatusThatUpdated) )
+
+            self.didUpdate(to: mediaStatusThatUpdated)
         }
         else
         {
             NSLog("Remote Media Client: Media Status Did Update:\n with no status. ???\n")
+        }
+    }
+
+    func didUpdate( to status: GCKMediaStatus )
+    {
+        switch status.playerState
+        {
+            case .buffering:
+                self.status = .buffering
+
+            case .idle:
+                switch status.idleReason
+                {
+                    case .cancelled:
+                        self.status = .idle
+
+                    case .error:
+                        self.status = .failed
+
+                    case .finished:
+                        self.status = .playedToEnd
+
+                    case .interrupted:
+                        self.status = .idle
+
+                    case .none:
+                        self.status = .idle
+
+                    @unknown default:
+                        self.status = .unknown
+                }
+
+            case .loading:
+                self.status = .loading
+
+            case .paused:
+                self.status = .paused
+
+            case .playing:
+                self.status = .playing
+
+            case .unknown:
+                self.status = .unknown
+
+            @unknown default:
+                self.status = .unknown
         }
     }
 

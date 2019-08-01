@@ -11,7 +11,7 @@ import AVFoundation
 
 
 // MARK: - Media Player
-class MediaItem
+class MediaItem : NSObject
 {
     let title: String
     let url: URL
@@ -23,11 +23,38 @@ class MediaItem
     }
 }
 
+@objc public enum PlaybackStatus:Int
+{
+    case unknown
+    
+    case loading
+
+    case readyToPlay
+
+    case playing
+
+    case paused
+    
+    case buffering
+
+    case idle
+
+    case playedToEnd
+
+    case failed
+}
+
 
 /// A generic interface for a media player.
 
+// MARK: - Generic Media Player protocol
+
 protocol MediaPlayerGeneric
 {
+    // MARK: - Properties
+
+    var status: PlaybackStatus {get set}
+
     /// The media item that is in the process of loading.
     /// Observable.
     ///
@@ -51,11 +78,15 @@ protocol MediaPlayerGeneric
     /// player supports fractional offsets.
     var currentOffset: CMTime { get set }
 
+    var duration:CMTime { get set }
+
     /// The rate of the playback as a fractional amount. Also known as the playback speed.
     /// Can be observed for when rate changes.
     /// 0 = stopped, 1 = Default playback rate, 2 = Double speed playback
     /// NOTE: Not all media players can support non-whole fractional amounts.
     var playbackRate: Double { get set }
+
+    var isSeeking:Bool { get set }
 
     /**
         Prepare the media item for playback.
@@ -70,6 +101,8 @@ protocol MediaPlayerGeneric
                          which it supports.
     */
     func load( mediaItem: MediaItem )
+
+    func load( mediaItem: MediaItem, startingAt time: CMTime )
 
     /// Starts playback at the current offset.
     // NOTE: Playback must have already started for Play message to be
@@ -100,6 +133,8 @@ protocol PlaybackDevice
     var isLocal: Int { get }
     var name: String { get }
 }
+
+// MARK: - Remote Playback and Device Switching
 
 protocol RemoteMediaPlayback
 {

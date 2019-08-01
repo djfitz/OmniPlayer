@@ -20,7 +20,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     // MARK: ** Generic Media Player
 
     /// Setting the offset will perform a seek operation.
-    @objc dynamic var status:Status = .unknown
+    @objc dynamic var status: PlaybackStatus = .unknown
 
     @objc dynamic var currentOffset:CMTime = CMTime.invalid
 
@@ -32,28 +32,9 @@ class AVFoundationMediaPlayerManager : NSObject,
     /// NOTE: Not all media players can support non-whole fractional amounts.
     var playbackRate: Double = 0
 
+    // Whether there is a seek in progress.
+    @objc dynamic var isSeeking = false
 
-    var isSeeking = false
-
-    @objc public enum Status:Int
-    {
-        case unknown
-        
-        case loading
-
-        case readyToPlay
-
-        case playing
-
-        case paused
-        
-        case buffering
-
-        case playedToEnd
-
-        case failed
-    }
-    
     // MARK: Playback Queue
 
     func addItem(at index: Int)
@@ -137,15 +118,13 @@ class AVFoundationMediaPlayerManager : NSObject,
         self.currentPlaybackQueueIndex = index
         self.load(mediaItem: playlist[index])
     }
-    
-    static let mgr: AVFoundationMediaPlayerManager = AVFoundationMediaPlayerManager.init()
 
     // MARK: Remote Media Playback
     var remoteDevicesList: [PlaybackDevice] = []
     
     var currentlySelectedDevice: PlaybackDevice? = nil
     
-    var remoteDevicePickerButton: UIView = UIView.init()
+    var remoteDevicePickerButton: UIView = UIView()
 
     func beginSearchForRemoteDevices()
     {
@@ -241,6 +220,11 @@ class AVFoundationMediaPlayerManager : NSObject,
     */
     func load( mediaItem: MediaItem )
     {
+        self.load(mediaItem: mediaItem, startingAt: CMTime.zero)
+    }
+
+    func load(mediaItem: MediaItem, startingAt time: CMTime)
+    {
         if let airplayButton = self.remoteDevicePickerButton as? MPVolumeView
         {
             airplayButton.showsVolumeSlider = false
@@ -263,6 +247,8 @@ class AVFoundationMediaPlayerManager : NSObject,
 
         // Start playing the new media
         self.player.replaceCurrentItem(with: self.playerItem)
+
+        self.seek(to: time) { (a) in }
     }
 
     /// Starts playback at the current offset.
@@ -289,7 +275,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     func stop()
     {
-        self.pause()
+        self.player.replaceCurrentItem(with: nil)
     }
 
 
@@ -303,6 +289,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         self.isSeeking = true
 
         self.pause()
+
         self.status = .buffering
 
         self.player.seek(to: time)
@@ -497,7 +484,10 @@ class AVFoundationMediaPlayerManager : NSObject,
 }
 
 
-//// ========
+//// ==============================
+// Custom Description methods
+//// ==============================
+
 
 // * description for player status
 extension AVPlayer.Status
@@ -542,5 +532,4 @@ extension AVPlayer.TimeControlStatus
         }
     }
 }
-
 

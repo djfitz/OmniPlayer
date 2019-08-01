@@ -31,29 +31,29 @@ class MediaControlsViewController: UIViewController {
     
     deinit
     {
-        AVFoundationMediaPlayerManager.mgr.removeObserver(self, forKeyPath: "status")
-        AVFoundationMediaPlayerManager.mgr.removeObserver(self, forKeyPath: "currentOffset")
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.init("PlaybackTimeObserver"), object: nil)
+        MediaPlayerManager.mgr.stop()
+        MediaPlayerManager.mgr.removeObserver(self, forKeyPath: "status")
+        MediaPlayerManager.mgr.removeObserver(self, forKeyPath: "currentOffset")
     }
 
     override func viewDidLoad()
     {
         super.viewDidLoad()
 
-        self.avPlayerView.player = AVFoundationMediaPlayerManager.mgr.player
+        self.avPlayerView.player = MediaPlayerManager.mgr.avFoundationPlayer.player
 
-        AVFoundationMediaPlayerManager.mgr.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-        AVFoundationMediaPlayerManager.mgr.addObserver(self, forKeyPath: "currentOffset", options: .new, context: nil)
+        MediaPlayerManager.mgr.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+        MediaPlayerManager.mgr.addObserver(self, forKeyPath: "currentOffset", options: .new, context: nil)
 
         self.seekTimeSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .normal)
         self.seekTimeSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .selected)
         self.seekTimeSlider.setThumbImage(UIImage(named: "TimeSeekSliderThumb"), for: .highlighted)
 
-        self.infoLabel.text = AVFoundationMediaPlayerManager.mgr.currentMediaItem?.title
+        self.infoLabel.text = MediaPlayerManager.mgr.currentMediaItem?.title
         self.infoLabel.isHidden = false
         self.errorLabel.text = ""
 
-        if let cButton = ChromecastManager.mgr.remoteDevicePickerButton
+        if let cButton = MediaPlayerManager.mgr.chromecastPlayer.remoteDevicePickerButton
         {
             self.remoteButtonsContainerStack.addArrangedSubview(cButton)
         }
@@ -62,8 +62,8 @@ class MediaControlsViewController: UIViewController {
     @objc func playbackTimeUpdated( newTime: CMTime)
     {
         let currentTimeSeconds = newTime.seconds
-        let durationSeconds = AVFoundationMediaPlayerManager.mgr.duration.seconds
-        if durationSeconds > 0 && !self.isSliderChanging && !AVFoundationMediaPlayerManager.mgr.isSeeking
+        let durationSeconds = MediaPlayerManager.mgr.duration.seconds
+        if durationSeconds > 0 && !self.isSliderChanging && !MediaPlayerManager.mgr.isSeeking
         {
             let fracTimeElapsed = currentTimeSeconds / durationSeconds
             self.seekTimeSlider.value = Float(fracTimeElapsed)
@@ -77,25 +77,25 @@ class MediaControlsViewController: UIViewController {
 
     @IBAction func playPauseButtonTapped(_ sender: Any)
     {
-        switch AVFoundationMediaPlayerManager.mgr.status
+        switch MediaPlayerManager.mgr.status
         {
             case .readyToPlay:
-                AVFoundationMediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.play()
 
             case .paused:
-                AVFoundationMediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.play()
 
             case .playing:
-                AVFoundationMediaPlayerManager.mgr.pause()
+                MediaPlayerManager.mgr.pause()
 
             case .failed:
-                AVFoundationMediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.play()
 
             case .loading:
-                AVFoundationMediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.play()
 
             case .unknown:
-                AVFoundationMediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.play()
 
             case .playedToEnd:
                 // When the player is at the end, due to playback finishing
@@ -105,13 +105,16 @@ class MediaControlsViewController: UIViewController {
                 self.seekTimeSlider.value = 0
                 self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
 
-                AVFoundationMediaPlayerManager.mgr.seek(to: CMTime.zero)
+                MediaPlayerManager.mgr.seek(to: CMTime.zero)
                 { (cancelled) in
-                    AVFoundationMediaPlayerManager.mgr.play()
+                    MediaPlayerManager.mgr.play()
                 }
 
             case .buffering:
-                AVFoundationMediaPlayerManager.mgr.pause()
+                MediaPlayerManager.mgr.pause()
+
+            case .idle:
+                print("Player is idle.")
         }
     }
     
@@ -160,7 +163,7 @@ class MediaControlsViewController: UIViewController {
     {
         print("***** Slider >> Touch Up Inside\nNew Value: \(self.seekTimeSlider!.value)")
         let currentSliderValue = Double(self.seekTimeSlider!.value)
-        let duration = AVFoundationMediaPlayerManager.mgr.duration
+        let duration = MediaPlayerManager.mgr.duration
         let seekTimeSec = currentSliderValue * duration.seconds
 
         if seekTimeSec == duration.seconds
@@ -168,9 +171,9 @@ class MediaControlsViewController: UIViewController {
             print("***** Seeking to the end.")
         }
 
-        AVFoundationMediaPlayerManager.mgr.pause()
+        MediaPlayerManager.mgr.pause()
 
-        AVFoundationMediaPlayerManager.mgr.seek(
+        MediaPlayerManager.mgr.seek(
             to: CMTime( seconds: seekTimeSec,
                         preferredTimescale: CMTimeScale(1) )
         )
@@ -181,7 +184,7 @@ class MediaControlsViewController: UIViewController {
 
             if seekTimeSec != duration.seconds && !cancelled
             {
-                AVFoundationMediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.play()
             }
         }
     }
@@ -203,13 +206,13 @@ class MediaControlsViewController: UIViewController {
 
         if keyPath == "status"
         {
-            self.playerStatusUpdated(status: AVFoundationMediaPlayerManager.mgr.status)
+            self.playerStatusUpdated(status: MediaPlayerManager.mgr.status)
         }
         else if keyPath == "currentOffset"
         {
-            if let newValue = change?[NSKeyValueChangeKey.newKey]
+            if let newValue = change?[NSKeyValueChangeKey.newKey] as? CMTime
             {
-                print("New Current Offset: \((newValue as AnyObject).seconds)")
+                print("New Current Offset: \(newValue.seconds)")
             }
 
             if let newCurrentTime = change?[NSKeyValueChangeKey.newKey] as? CMTime
@@ -226,7 +229,7 @@ class MediaControlsViewController: UIViewController {
         
     }
 
-    func playerStatusUpdated( status: AVFoundationMediaPlayerManager.Status )
+    func playerStatusUpdated( status: PlaybackStatus )
     {
         switch status
         {
@@ -235,7 +238,7 @@ class MediaControlsViewController: UIViewController {
                 self.avPlayerView.isHidden = true
 
                 self.playPauseButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
-                self.infoLabel.text = AVFoundationMediaPlayerManager.mgr.loadingMediaItem?.title
+                self.infoLabel.text = MediaPlayerManager.mgr.loadingMediaItem?.title
                 self.infoLabel.isHidden = false
                 self.errorLabel.text = ""
                 self.errorLabel.isHidden = false
@@ -253,8 +256,8 @@ class MediaControlsViewController: UIViewController {
             case .playing:
                 print("playing")
 
-                let currentTimeSec = AVFoundationMediaPlayerManager.mgr.currentOffset.seconds
-                let durationSec = AVFoundationMediaPlayerManager.mgr.duration.seconds
+                let currentTimeSec = MediaPlayerManager.mgr.currentOffset.seconds
+                let durationSec = MediaPlayerManager.mgr.duration.seconds
 
                 let currentTimeRoundedWholeSec = currentTimeSec.rounded(.down)
                 let currentTimeFrac = currentTimeSec - currentTimeRoundedWholeSec
@@ -306,6 +309,11 @@ class MediaControlsViewController: UIViewController {
             case .playedToEnd:
                 self.activitySpinner.stopAnimating()
                 
+                self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                self.errorLabel.text = ""
+                self.errorLabel.isHidden = false
+
+            case .idle:
                 self.playPauseButton.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
                 self.errorLabel.text = ""
                 self.errorLabel.isHidden = false
