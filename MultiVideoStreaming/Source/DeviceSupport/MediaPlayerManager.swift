@@ -27,9 +27,6 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
     {
         super.init()
 
-        self.avFoundationPlayer.beginSearchForRemoteDevices()
-        self.chromecastPlayer.beginSearchForRemoteDevices()
-
         self.switchPlayback(to: self.avFoundationPlayer)
     }
 

@@ -36,6 +36,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" red="0.96432751159999996" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="JDS-GT-7fI" userLabel="Info Stack">
                                 <rect key="frame" x="166.5" y="306" width="42" height="75"/>

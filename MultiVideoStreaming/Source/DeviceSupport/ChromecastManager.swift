@@ -11,16 +11,6 @@ import GoogleCast
 import MediaPlayer
 
 
-//class ChromecastSessionState
-///    var mediaStatus: GCKMediaStatus? = nil
-//
-//}
-
-/**
-
-*/
-
-
 /**
     Manages the interface between the application and the Chromecast SDK.
 
@@ -30,9 +20,6 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                           GCKRemoteMediaClientListener, GCKRequestDelegate,
                           GCKSessionManagerListener, GCKLoggerDelegate
 {
-//    var session: GCKSession?
-//    var castSession: GCKCastSession?
-
     // ID can be found at: https://cast.google.com/publish/
     let kChromecastApplicationID = "09E504FF"
 
@@ -64,7 +51,11 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
     func beginSearchForRemoteDevices()
     {
-        self.setupChromecastSDK()
+        if self.remoteDevicePickerButton == nil
+        {
+            self.remoteDevicePickerButton = GCKUICastButton()
+            self.remoteDevicePickerButton?.tintColor = .white
+        }
     }
 
     func setupChromecastSDK()
@@ -81,8 +72,6 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         // Gives us a chance to log Chromecast messages to our
         // logger of choice. For us, NSLog.
         GCKLogger.sharedInstance().delegate = self
-
-        self.remoteDevicePickerButton = GCKUIMultistateButton()
     }
 
     // =======================================================================================
@@ -794,47 +783,51 @@ extension GCKMediaStatus
 }
 
 
-//extension GCKMediaInformation
-//{
-//    override open var description: String
-//    {
-//        var retVal = "\nMedia Information:\nContent ID: \(self.contentID)\n"
-//
-//        switch self.streamType
-//        {
-//            case .buffered:
-//                retVal += "Stream Type: Buffered\n"
-//
-//            case .live:
-//                retVal += "Stream Type: Live\n"
-//
-//            case .none:
-//                retVal += "Stream Type: None\n"
-//
-//            case .unknown:
-//                retVal += "Stream Type: Unknown\n"
-//        }
-//
-//        retVal += "Content ID: \(self.contentType)\n"
-//
-//        if let realMetaData = self.metadata {
-//            retVal += "Media Metadata: \(String(describing: realMetaData))\n "
-//        }
-//
-//        return retVal
-//    }
-//}
+extension GCKMediaInformation
+{
+    override open var description: String
+    {
+        var retVal = "\nMedia Information:\nContent ID: \(self.contentID ?? "0")\n"
 
-//extension GCKMediaMetadata
-//{
-//    override open var description: String
-//    {
-//        return "Metadata Type: \(EnumDescriber.description(for: self.metadataType))\n"
-//                + "Images: \(self.images())\n"
-//                + "Keys: \(self.allKeys())\n"
-//                + "Values: \( self.allKeys().map{(self.object(forKey: $0))! } )\n"
-//    }
-//}
+        switch self.streamType
+        {
+            case .buffered:
+                retVal += "Stream Type: Buffered\n"
+
+            case .live:
+                retVal += "Stream Type: Live\n"
+
+            case .none:
+                retVal += "Stream Type: None\n"
+
+            case .unknown:
+                retVal += "Stream Type: Unknown\n"
+
+            @unknown default:
+                retVal += "Stream Type: Unknown\n"
+
+        }
+
+        retVal += "Content ID: \(self.contentType)\n"
+
+        if let realMetaData = self.metadata {
+            retVal += "Media Metadata: \(String(describing: realMetaData))\n "
+        }
+
+        return retVal
+    }
+}
+
+extension GCKMediaMetadata
+{
+    override open var description: String
+    {
+        return "Metadata Type: \(EnumDescriber.description(for: self.metadataType))\n"
+                + "Images: \(self.images())\n"
+                + "Keys: \(self.allKeys())\n"
+                + "Values: \( self.allKeys().map{(self.object(forKey: $0))! } )\n"
+    }
+}
 
 class EnumDescriber
 {

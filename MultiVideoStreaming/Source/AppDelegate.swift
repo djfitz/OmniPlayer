@@ -23,6 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GCKLoggerDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
+        MediaPlayerManager.mgr.avFoundationPlayer.beginSearchForRemoteDevices()
+        MediaPlayerManager.mgr.chromecastPlayer.beginSearchForRemoteDevices()
+
         return true
     }
 

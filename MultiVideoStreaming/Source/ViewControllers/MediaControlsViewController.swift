@@ -55,7 +55,10 @@ class MediaControlsViewController: UIViewController {
 
         if let cButton = MediaPlayerManager.mgr.chromecastPlayer.remoteDevicePickerButton
         {
+//            self.remoteButtonsContainerStack.backgroundColor = .red
+//            cButton.backgroundColor = .green
             self.remoteButtonsContainerStack.addArrangedSubview(cButton)
+            cButton.isHidden = false
         }
     }
 
