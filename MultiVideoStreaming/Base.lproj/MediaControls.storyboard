@@ -13,7 +13,7 @@
         <scene sceneID="WaS-ad-bLk">
             <objects>
                 <viewController id="0pJ-06-kSK" customClass="MediaControlsViewController" customModule="MultiVideoStreaming" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dlQ-6G-Gfx">
+                    <view key="view" contentMode="scaleToFill" id="dlQ-6G-Gfx" customClass="MediaPlayerControlsView" customModule="MultiVideoStreaming" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -23,20 +23,11 @@
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="MLe-gd-C8u" userLabel="Remote Buttons Stack">
                                 <rect key="frame" x="331" y="20" width="44" height="44"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M1c-uc-Nqw" userLabel="Airplay Button" customClass="MPVolumeView">
-                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="3E8-aP-rva"/>
-                                            <constraint firstAttribute="width" constant="44" id="fY4-Mn-U5d"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showsVolumeSlider" value="NO"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                </subviews>
                                 <color key="backgroundColor" red="0.96432751159999996" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Gfs-mV-Piq"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="RYR-2C-0cG"/>
+                                </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="JDS-GT-7fI" userLabel="Info Stack">
                                 <rect key="frame" x="166.5" y="306" width="42" height="75"/>
@@ -61,36 +52,18 @@
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bqJ-z3-yX3" userLabel="Back Button">
                                         <rect key="frame" x="0.0" y="0.0" width="20" height="22"/>
                                         <state key="normal" image="Backward"/>
-                                        <connections>
-                                            <action selector="backButtonTapped:" destination="0pJ-06-kSK" eventType="touchUpInside" id="oln-IE-mZo"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cV-FI-lRd" userLabel="Play/Pause Button">
                                         <rect key="frame" x="42" y="0.0" width="20" height="22"/>
                                         <state key="normal" image="PlayButton"/>
-                                        <connections>
-                                            <action selector="playPauseButtonTapped:" destination="0pJ-06-kSK" eventType="touchUpInside" id="uiV-1G-g5J"/>
-                                        </connections>
                                     </button>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-ma-sft" userLabel="Seek/Time Slider">
                                         <rect key="frame" x="82" y="0.0" width="253" height="23"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="sliderDidEndOnExit:" destination="0pJ-06-kSK" eventType="editingDidEndOnExit" id="PS1-0o-751"/>
-                                            <action selector="sliderEditingChanged:" destination="0pJ-06-kSK" eventType="editingChanged" id="tmm-HJ-nmH"/>
-                                            <action selector="sliderEditingDidEnd:" destination="0pJ-06-kSK" eventType="editingDidEnd" id="J5a-JP-rl6"/>
-                                            <action selector="sliderTouchCancelled:" destination="0pJ-06-kSK" eventType="touchCancel" id="WGq-yZ-K8g"/>
-                                            <action selector="sliderTouchUpInside:" destination="0pJ-06-kSK" eventType="touchUpInside" id="g0p-Xn-hUl"/>
-                                            <action selector="sliderTouchUpOutside:" destination="0pJ-06-kSK" eventType="touchUpOutside" id="1GG-oc-195"/>
-                                            <action selector="sliderValueChanged:" destination="0pJ-06-kSK" eventType="valueChanged" id="pYw-dz-c6O"/>
-                                        </connections>
                                     </slider>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfd-HR-r8c" userLabel="Forward Button">
                                         <rect key="frame" x="355" y="0.0" width="20" height="22"/>
                                         <state key="normal" image="Forward"/>
-                                        <connections>
-                                            <action selector="forwardButtonTapped:" destination="0pJ-06-kSK" eventType="touchUpInside" id="78p-jU-YPE"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -109,24 +82,27 @@
                             <constraint firstItem="yd8-Jn-8t3" firstAttribute="trailing" secondItem="MLe-gd-C8u" secondAttribute="trailing" id="LOB-VL-gww"/>
                             <constraint firstItem="Kbl-0I-fK9" firstAttribute="centerX" secondItem="yd8-Jn-8t3" secondAttribute="centerX" id="PB3-3T-yKr"/>
                             <constraint firstItem="J70-14-MAj" firstAttribute="centerX" secondItem="yd8-Jn-8t3" secondAttribute="centerX" id="ROf-dQ-ZGw"/>
+                            <constraint firstItem="MLe-gd-C8u" firstAttribute="leading" secondItem="yd8-Jn-8t3" secondAttribute="leading" constant="331" id="bYi-P2-1ww"/>
                             <constraint firstItem="l5k-Tz-7PD" firstAttribute="centerX" secondItem="yd8-Jn-8t3" secondAttribute="centerX" id="gqZ-mJ-9YB"/>
                             <constraint firstItem="MLe-gd-C8u" firstAttribute="top" secondItem="yd8-Jn-8t3" secondAttribute="top" id="i43-Lr-laj"/>
                             <constraint firstItem="Kbl-0I-fK9" firstAttribute="width" secondItem="dlQ-6G-Gfx" secondAttribute="width" id="iHS-4D-HSY"/>
                             <constraint firstItem="l5k-Tz-7PD" firstAttribute="width" secondItem="dlQ-6G-Gfx" secondAttribute="width" id="jJz-vE-Usv"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yd8-Jn-8t3"/>
+                        <connections>
+                            <outlet property="activitySpinner" destination="J70-14-MAj" id="pxH-jT-IUY"/>
+                            <outlet property="avPlayerView" destination="l5k-Tz-7PD" id="djy-8I-UiO"/>
+                            <outlet property="backButton" destination="bqJ-z3-yX3" id="s3J-sE-ELZ"/>
+                            <outlet property="errorLabel" destination="seI-DU-pXZ" id="Cd8-XO-8q9"/>
+                            <outlet property="forwardButton" destination="rfd-HR-r8c" id="9UO-DJ-5FW"/>
+                            <outlet property="infoLabel" destination="eNC-m2-noz" id="62S-Xj-o4n"/>
+                            <outlet property="playPauseButton" destination="2cV-FI-lRd" id="AKf-wN-ekS"/>
+                            <outlet property="remoteButtonsContainerStack" destination="MLe-gd-C8u" id="hSn-Mn-1nN"/>
+                            <outlet property="seekTimeSlider" destination="hMs-ma-sft" id="ADv-aD-PVN"/>
+                        </connections>
                     </view>
                     <connections>
-                        <outlet property="activitySpinner" destination="J70-14-MAj" id="HWT-qq-MDX"/>
-                        <outlet property="airplayButton" destination="M1c-uc-Nqw" id="h9s-T4-IvK"/>
-                        <outlet property="avPlayerView" destination="l5k-Tz-7PD" id="Uqg-Xm-n4O"/>
-                        <outlet property="backButton" destination="bqJ-z3-yX3" id="VRc-iR-Ytt"/>
-                        <outlet property="errorLabel" destination="seI-DU-pXZ" id="FN6-Id-7QS"/>
-                        <outlet property="infoLabel" destination="eNC-m2-noz" id="IsV-QA-RYP"/>
-                        <outlet property="playButton" destination="rfd-HR-r8c" id="3EU-bK-YYr"/>
-                        <outlet property="playPauseButton" destination="2cV-FI-lRd" id="sEC-ea-eRA"/>
-                        <outlet property="remoteButtonsContainerStack" destination="MLe-gd-C8u" id="lNc-8b-QGK"/>
-                        <outlet property="seekTimeSlider" destination="hMs-ma-sft" id="t5u-MN-Mb7"/>
+                        <outlet property="mediaControlsView" destination="dlQ-6G-Gfx" id="FBg-dJ-R7t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ube-kQ-M4J" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -20,21 +20,8 @@ import Foundation
     from having to manage these complicated state changesin the UI
     themselves.
 */
-protocol MediaPlayerUIDelegate {
-    /**
-     When the media is playing, the Play button is hidden.
-     When the media is paused, tapping the play button will
-     send a Play message to the audio engine.
-     */
-    var PlayButton:UIButton {get}
-
-    /**
-     When the media is paused, the Pause button is hidden.
-     When the media is playing, tapping the Pause button will
-     send a pause message to the audio engine.
-     */
-    var PauseButton:UIButton {get}
-
+protocol MediaPlayerUICollection
+{
     /**
      A slider that will show time elapsed and time remaining.
 
@@ -45,6 +32,16 @@ protocol MediaPlayerUIDelegate {
      and sends messages to the audio engine. For example, dragging
      the slider will perform a seek on the audio engine.
     */
-    var timeSlider: UISlider {get}
+    var seekTimeSlider: UISlider? {get}
 
+    var playPauseButton: UIButton? {get}
+
+    var activitySpinner: UIActivityIndicatorView? {get}
+
+    var infoLabel: UILabel? {get}
+    var errorLabel: UILabel? {get}
+
+    var remoteButtonsContainerStack: UIStackView? {get}
+
+    var avPlayerView: AVPlayerView? {get}
 }

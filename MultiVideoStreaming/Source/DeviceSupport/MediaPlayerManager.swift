@@ -22,6 +22,8 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
 
     var currentPlayer:MediaPlayerGeneric = AVFoundationMediaPlayerManager()
 
+    var uiUpdatesController: MediaUIController?
+
     // * init
     override init()
     {
@@ -171,6 +173,15 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
     // Generic Player Interface
     // ============================
 
+    func registerPlayerUICollection(uiCollection: MediaPlayerUICollection)
+    {
+        if self.uiUpdatesController == nil
+        {
+            self.uiUpdatesController = MediaUIController()
+        }
+
+        self.uiUpdatesController?.registerMediaPlayerUICollection(uiCollection: uiCollection)
+    }
 
     // MARK: - Generic Player Properties
 

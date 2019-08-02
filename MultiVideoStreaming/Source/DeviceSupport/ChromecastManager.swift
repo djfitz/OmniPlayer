@@ -212,7 +212,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     {
         return GCKCastContext.sharedInstance().sessionManager.currentSession != nil
     }
-    
+
     // MARK: GCKRequestDelegate Methods
 
     func requestDidComplete(_ request: GCKRequest)
@@ -572,7 +572,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                     location: String)
     {
         let lvl = EnumDescriber.description(for: level)
-         print("Chromecast Message:\n\(message)\nLevel: \(lvl)\nFunction: \(function)\nLocation:\(location)\n")
+
+        print("Chromecast Message:\n\(message)\nLevel: \(lvl)\nFunction: \(function)\nLocation:\(location)\n")
     }
 
 // =======================================================================================

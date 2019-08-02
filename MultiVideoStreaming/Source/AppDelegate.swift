@@ -11,21 +11,12 @@ import GoogleCast
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GCKLoggerDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate
+{
     var window: UIWindow?
-
-
-    func logMessage(_ message: String, at level: GCKLoggerLevel, fromFunction function: String, location: String)
-    {
-        NSLog("%@ %@", function, message)
-    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
-        MediaPlayerManager.mgr.avFoundationPlayer.beginSearchForRemoteDevices()
-        MediaPlayerManager.mgr.chromecastPlayer.beginSearchForRemoteDevices()
-
         return true
     }
 

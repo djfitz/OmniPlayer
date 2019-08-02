@@ -124,7 +124,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     var currentlySelectedDevice: PlaybackDevice? = nil
 
-    var remoteDevicePickerButton: UIView = UIView()
+    var remoteDevicePickerButton: UIView? = MPVolumeView()
 
     func beginSearchForRemoteDevices()
     {

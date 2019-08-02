@@ -155,7 +155,7 @@ protocol RemoteMediaPlayback
     /// When a new remote device is selected via this UI, the client
     /// will start receiving messages from the newly selected remote
     /// device. Playback may also automatically switch to it as well.
-    var remoteDevicePickerButton: UIView { get }
+    var remoteDevicePickerButton: UIView? { get }
 
 }
 

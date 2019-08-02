@@ -1,5 +1,5 @@
 //
-//  URLInputViewController.swift
+//  TextInputViewController.swift
 //  MultiVideoStreaming
 //
 //  Created by Doug Hill on 7/27/19.
@@ -15,6 +15,9 @@ class TextInputViewController: UIViewController, UITextFieldDelegate
     override func viewDidLoad()
     {
         super.viewDidLoad()
+
+        MediaPlayerManager.mgr.avFoundationPlayer.beginSearchForRemoteDevices()
+        MediaPlayerManager.mgr.chromecastPlayer.beginSearchForRemoteDevices()
 
         self.urlTextInput.delegate = self
     }
