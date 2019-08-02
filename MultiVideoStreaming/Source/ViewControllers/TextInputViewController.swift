@@ -11,7 +11,7 @@ import UIKit
 class TextInputViewController: UIViewController, UITextFieldDelegate
 {
     @IBOutlet weak var urlTextInput: UITextField!
-    
+
     override func viewDidLoad()
     {
         super.viewDidLoad()

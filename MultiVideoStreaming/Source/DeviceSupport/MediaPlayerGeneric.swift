@@ -26,7 +26,7 @@ class MediaItem : NSObject
 @objc public enum PlaybackStatus:Int
 {
     case unknown
-    
+
     case loading
 
     case readyToPlay
@@ -34,7 +34,7 @@ class MediaItem : NSObject
     case playing
 
     case paused
-    
+
     case buffering
 
     case idle
@@ -144,7 +144,7 @@ protocol RemoteMediaPlayback
     // as they happen. For example, to know to change any
     // UI info relating to the list of devices.
     // Client can create their own device picker UI.
-    
+
     var remoteDevicesList: [PlaybackDevice] { get }
 
     var currentlySelectedDevice: PlaybackDevice? { get set }

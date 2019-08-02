@@ -76,25 +76,25 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
     // =======================================================================================
     // MARK: - Generic Media Player protocol
-    
+
     // MARK: Properties
 
     @objc dynamic var status: PlaybackStatus = .unknown
-    
+
     @objc dynamic var loadingMediaItem: MediaItem? = nil
-    
+
     @objc dynamic var currentMediaItem: MediaItem? = nil
-    
+
     @objc dynamic var currentOffset: CMTime = CMTime.zero
-    
+
     @objc dynamic var duration: CMTime = CMTime.invalid
-    
+
     @objc dynamic var playbackRate: Double = 0.0
-    
+
     @objc dynamic var isSeeking: Bool = false
 
     // MARK: Methods
-    
+
     func load(mediaItem: MediaItem)
     {
         self.load(mediaItem: mediaItem, startingAt: CMTime.zero)
@@ -114,14 +114,13 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
             let loadOptions = GCKMediaLoadOptions()
             loadOptions.autoplay = true
             loadOptions.playPosition = time.seconds
-            
+
             remoteMediaClient.loadMedia(mBuilder.build(), with: loadOptions)
 
             self.loadingMediaItem = mediaItem
             self.status = .loading
         }
     }
-    
 
     func play()
     {
@@ -139,7 +138,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
             }
         }
     }
-    
+
     func pause()
     {
         if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
@@ -147,7 +146,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
             remoteMediaClient.pause()
         }
     }
-    
+
     func stop()
     {
         if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
@@ -155,7 +154,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
             remoteMediaClient.stop()
         }
     }
-    
+
     func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
     {
         guard let _ = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus?.mediaInformation else { completionHandler(true); return }
@@ -179,12 +178,12 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
             completionHandler(false)
         }
     }
-    
+
     func  skip(forward seconds: CMTime)
     {
         
     }
-    
+
     func skip(back seconds: CMTime)
     {
         

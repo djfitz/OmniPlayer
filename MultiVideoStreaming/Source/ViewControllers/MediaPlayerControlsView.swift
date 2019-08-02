@@ -14,7 +14,7 @@ class MediaPlayerControlsView: UIView, MediaPlayerUICollection
     @IBOutlet weak var playPauseButton: UIButton?
     @IBOutlet weak var seekTimeSlider: UISlider?
     @IBOutlet weak var forwardButton: UIButton?
-    
+
     @IBOutlet weak var activitySpinner: UIActivityIndicatorView?
 
     @IBOutlet weak var infoLabel: UILabel?

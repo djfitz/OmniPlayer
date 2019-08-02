@@ -47,7 +47,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         self.pause()
 
         self.stopObserving(player: self.currentPlayer)
-        
+
         self.beginObserving(player: player)
 
         self.currentPlayer = player
@@ -188,18 +188,18 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
     @objc dynamic var status: PlaybackStatus = .unknown
 
     @objc dynamic var loadingMediaItem: MediaItem? = nil
-    
+
     @objc dynamic var currentMediaItem: MediaItem? = nil
-    
+
     @objc dynamic var currentOffset: CMTime = CMTime.invalid
 
     @objc dynamic var duration: CMTime = CMTime.invalid
-    
+
     @objc dynamic var playbackRate: Double = Double.nan
 
     @objc dynamic var isSeeking: Bool = false
-    
-    
+
+
     // MARK: - Generic Player Methods
 
 
@@ -217,27 +217,27 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
     {
         self.currentPlayer.play()
     }
-    
+
     func pause()
     {
         self.currentPlayer.pause()
     }
-    
+
     func stop()
     {
         self.currentPlayer.stop()
     }
-    
+
     func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
     {
         self.currentPlayer.seek(to: time, completionHandler: completionHandler)
     }
-    
+
     func skip(forward seconds: CMTime)
     {
         self.currentPlayer.skip(forward: seconds)
     }
-    
+
     func skip(back seconds: CMTime)
     {
         self.currentPlayer.skip(back: seconds)

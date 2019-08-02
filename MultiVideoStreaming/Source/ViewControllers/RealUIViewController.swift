@@ -12,7 +12,7 @@ class RealUIViewController: UIViewController {
 
     @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
-    
+
     @IBOutlet var seekTimeSlider: UISlider!
 
     @IBOutlet var nextButton: UIButton!

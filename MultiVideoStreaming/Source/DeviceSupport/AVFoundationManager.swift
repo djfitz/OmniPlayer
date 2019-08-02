@@ -41,7 +41,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     {
 //        #warning("fill me in")
     }
-    
+
     func addToEnd(mediaItems: [MediaItem])
     {
 //        #warning("fill me in")
@@ -84,15 +84,15 @@ class AVFoundationMediaPlayerManager : NSObject,
     func removeLast() {
 //        #warning("fill me in")
     }
-    
+
     func removeFirst() {
 //        #warning("fill me in")
     }
-    
+
     func removeItem(at index: Int) {
 //        #warning("fill me in")
     }
-    
+
     func next()
     {
         if let currentIdx = self.currentPlaybackQueueIndex, currentIdx < (self.playlist.count - 1)
@@ -102,7 +102,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         // If no current queue item, do nothing.
         // If already at beginning of the queue, do nothing.
     }
-    
+
     func previous()
     {
         if let currentIdx = self.currentPlaybackQueueIndex, currentIdx > 0
@@ -112,7 +112,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         // If no current queue item, do nothing.
         // If already at beginning of the queue, do nothing.
     }
-    
+
     func skipToMediaItem(at index: Int)
     {
         self.currentPlaybackQueueIndex = index
@@ -318,7 +318,7 @@ class AVFoundationMediaPlayerManager : NSObject,
             self.seek(to: skipTime) { (cancelled) in }
         }
     }
-    
+
     func skip(back seconds: CMTime)
     {
         guard let playerItem = self.playerItem else { return }
@@ -329,7 +329,7 @@ class AVFoundationMediaPlayerManager : NSObject,
             self.seek(to: skipTime) { (cancelled) in }
         }
     }
-    
+
     // * observeValue(forKeyPath…)
     @objc override func observeValue(forKeyPath keyPath: String?,
                                      of object: Any?,
@@ -384,7 +384,7 @@ class AVFoundationMediaPlayerManager : NSObject,
                     print("Unknown")
                     self.status = .unknown
             }
-            
+
             if let validItemStatus = itemStatus
             {
                 switch validItemStatus

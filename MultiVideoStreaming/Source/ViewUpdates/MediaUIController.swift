@@ -18,7 +18,7 @@ class MediaUIController: NSObject
     func registerMediaPlayerUICollection(uiCollection: MediaPlayerUICollection)
     {
         self.mediaPlayerViewCollection = uiCollection
-        
+
         uiCollection.playPauseButton?.addTarget(self, action: #selector(playPauseButtonTapped(_:)), for: .touchUpInside)
 
         uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
@@ -122,37 +122,37 @@ class MediaUIController: NSObject
                 print("Player is idle.")
         }
     }
-    
+
     @IBAction func forwardButtonTapped(_ sender: Any)
     {
     }
-    
+
     //
-    
+
     @IBAction func sliderValueChanged(_ sender: Any)
     {
         print("sliderValueChanged")
         self.isSliderChanging = true
     }
-    
+
     @IBAction func sliderEditingChanged(_ sender: Any)
     {
         print("sliderEditingChanged")
         self.isSliderChanging = true
     }
-    
+
     @IBAction func sliderTouchCancelled(_ sender: Any)
     {
         print("sliderTouchCancelled")
         self.isSliderChanging = false
     }
-    
+
     @IBAction func sliderEditingDidEnd(_ sender: Any)
     {
         print("sliderEditingDidEnd")
         self.isSliderChanging = false
     }
-    
+
     @IBAction func sliderDidEndOnExit(_ sender: Any)
     {
         print("sliderDidEndOnExit")
@@ -272,7 +272,7 @@ class MediaUIController: NSObject
                 let currentTimeFrac = currentTimeSec - currentTimeRoundedWholeSec
                 let currentTimeFracRoundedFrac = (currentTimeFrac * 100).rounded(.down) / 100
                 let currentTimeRoundedSec = currentTimeRoundedWholeSec + currentTimeFracRoundedFrac
-                
+
                 let durationRoundedWholeSec = durationSec.rounded(.down)
                 let durationFrac = durationSec - durationRoundedWholeSec
                 let durationFracRoundedFrac = (durationFrac * 100).rounded(.down) / 100
@@ -317,7 +317,7 @@ class MediaUIController: NSObject
 
             case .playedToEnd:
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
-                
+
                 self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = false

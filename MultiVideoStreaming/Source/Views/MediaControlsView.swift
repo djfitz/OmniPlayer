@@ -15,7 +15,7 @@ class MediaControlsView: UIView
 
     @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
-    
+
     @IBOutlet var seekTimeSlider: UISlider!
 
     @IBOutlet var nextButton: UIButton!

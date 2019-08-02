@@ -37,7 +37,7 @@ class ViewController: UIViewController
         if let url = self.mediaURL
         {
             let item = MediaItem.init(title: "Zelo - Boss Video Productions", url: url)
-            
+   
             MediaPlayerManager.mgr.load(mediaItem: item)
         }
     }
