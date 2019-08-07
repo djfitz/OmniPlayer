@@ -228,9 +228,9 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         self.currentPlayer.stop()
     }
 
-    func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
+    func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
-        self.currentPlayer.seek(to: time, completionHandler: completionHandler)
+        self.currentPlayer.seek(to: time, playAfterSeek: playAfterSeek, completionHandler: completionHandler)
     }
 
     func skip(forward seconds: CMTime)

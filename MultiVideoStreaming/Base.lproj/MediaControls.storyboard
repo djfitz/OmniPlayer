@@ -12,102 +12,141 @@
         <!--Media Controls View Controller-->
         <scene sceneID="WaS-ad-bLk">
             <objects>
-                <viewController id="0pJ-06-kSK" customClass="MediaControlsViewController" customModule="MultiVideoStreaming" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dlQ-6G-Gfx" customClass="MediaPlayerControlsView" customModule="MultiVideoStreaming" customModuleProvider="target">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="0pJ-06-kSK" customClass="MediaControlsViewController" customModule="MultiVideoStreaming" sceneMemberID="viewController">
+                    <view key="view" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dlQ-6G-Gfx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l5k-Tz-7PD" customClass="AVPlayerView" customModule="MultiVideoStreaming">
-                                <rect key="frame" x="0.0" y="10" width="375" height="667"/>
+                            <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l5k-Tz-7PD" customClass="AVPlayerView" customModule="MultiVideoStreaming">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="MLe-gd-C8u" userLabel="Remote Buttons Stack">
-                                <rect key="frame" x="331" y="20" width="44" height="44"/>
-                                <color key="backgroundColor" red="0.96432751159999996" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XRt-72-ScG" userLabel="Controls Container" customClass="MediaPlayerControlsView" customModule="MultiVideoStreaming" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <button clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zkh-L9-c1t" userLabel="Show/Hide Controls Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="MLe-gd-C8u" userLabel="Remote Buttons Stack">
+                                        <rect key="frame" x="331" y="0.0" width="44" height="44"/>
+                                        <color key="backgroundColor" red="0.96432751159999996" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Gfs-mV-Piq"/>
+                                            <constraint firstAttribute="width" priority="250" constant="44" id="RYR-2C-0cG"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="JDS-GT-7fI" userLabel="Info Stack">
+                                        <rect key="frame" x="0.0" y="283" width="375" height="81"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eNC-m2-noz" userLabel="Info Label">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="J70-14-MAj">
+                                                <rect key="frame" x="0.0" y="30.5" width="375" height="20"/>
+                                            </activityIndicatorView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seI-DU-pXZ" userLabel="Error Label">
+                                                <rect key="frame" x="0.0" y="60.5" width="375" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="Kbl-0I-fK9" userLabel="Playback Controls Stack">
+                                        <rect key="frame" x="0.0" y="625" width="375" height="22"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bqJ-z3-yX3" userLabel="Back Button">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="22"/>
+                                                <state key="normal" image="Backward"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cV-FI-lRd" userLabel="Play/Pause Button">
+                                                <rect key="frame" x="42" y="0.0" width="20" height="22"/>
+                                                <state key="normal" image="PlayButton"/>
+                                            </button>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-ma-sft" userLabel="Seek/Time Slider">
+                                                <rect key="frame" x="82" y="0.0" width="253" height="23"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </slider>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfd-HR-r8c" userLabel="Forward Button">
+                                                <rect key="frame" x="355" y="0.0" width="20" height="22"/>
+                                                <state key="normal" image="Forward"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="Gfs-mV-Piq"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="RYR-2C-0cG"/>
+                                    <constraint firstItem="Kbl-0I-fK9" firstAttribute="centerX" secondItem="mhk-xp-YSB" secondAttribute="centerX" id="5FC-Et-6tX"/>
+                                    <constraint firstItem="Kbl-0I-fK9" firstAttribute="width" secondItem="XRt-72-ScG" secondAttribute="width" id="CIl-03-LrJ"/>
+                                    <constraint firstItem="JDS-GT-7fI" firstAttribute="centerX" secondItem="mhk-xp-YSB" secondAttribute="centerX" id="JZu-z9-GsS"/>
+                                    <constraint firstItem="mhk-xp-YSB" firstAttribute="trailing" secondItem="MLe-gd-C8u" secondAttribute="trailing" id="Wno-qi-Bl4"/>
+                                    <constraint firstItem="zkh-L9-c1t" firstAttribute="height" secondItem="XRt-72-ScG" secondAttribute="height" id="YSb-rI-qLk"/>
+                                    <constraint firstItem="JDS-GT-7fI" firstAttribute="centerY" secondItem="mhk-xp-YSB" secondAttribute="centerY" id="aSp-fw-qmy"/>
+                                    <constraint firstItem="zkh-L9-c1t" firstAttribute="centerX" secondItem="mhk-xp-YSB" secondAttribute="centerX" id="ctR-F1-DnD"/>
+                                    <constraint firstItem="MLe-gd-C8u" firstAttribute="top" secondItem="mhk-xp-YSB" secondAttribute="top" id="hr8-sC-uTf"/>
+                                    <constraint firstItem="zkh-L9-c1t" firstAttribute="centerY" secondItem="mhk-xp-YSB" secondAttribute="centerY" id="jcj-s0-1n6"/>
+                                    <constraint firstItem="zkh-L9-c1t" firstAttribute="width" secondItem="XRt-72-ScG" secondAttribute="width" id="mxe-oK-z4Z"/>
+                                    <constraint firstItem="mhk-xp-YSB" firstAttribute="bottom" secondItem="Kbl-0I-fK9" secondAttribute="bottom" id="qrz-Iz-AAl"/>
+                                    <constraint firstItem="JDS-GT-7fI" firstAttribute="width" secondItem="XRt-72-ScG" secondAttribute="width" id="wY5-Lc-MAT"/>
                                 </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="JDS-GT-7fI" userLabel="Info Stack">
-                                <rect key="frame" x="166.5" y="306" width="42" height="75"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eNC-m2-noz" userLabel="Info Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="42" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seI-DU-pXZ" userLabel="Error Label">
-                                        <rect key="frame" x="0.0" y="54.5" width="42" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="Kbl-0I-fK9" userLabel="Playback Controls Stack">
-                                <rect key="frame" x="0.0" y="645" width="375" height="22"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bqJ-z3-yX3" userLabel="Back Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="20" height="22"/>
-                                        <state key="normal" image="Backward"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cV-FI-lRd" userLabel="Play/Pause Button">
-                                        <rect key="frame" x="42" y="0.0" width="20" height="22"/>
-                                        <state key="normal" image="PlayButton"/>
-                                    </button>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-ma-sft" userLabel="Seek/Time Slider">
-                                        <rect key="frame" x="82" y="0.0" width="253" height="23"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </slider>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfd-HR-r8c" userLabel="Forward Button">
-                                        <rect key="frame" x="355" y="0.0" width="20" height="22"/>
-                                        <state key="normal" image="Forward"/>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="J70-14-MAj">
-                                <rect key="frame" x="177.5" y="333.5" width="20" height="20"/>
-                            </activityIndicatorView>
+                                <viewLayoutGuide key="safeArea" id="mhk-xp-YSB"/>
+                                <connections>
+                                    <outlet property="activitySpinner" destination="J70-14-MAj" id="cnI-Oh-mOX"/>
+                                    <outlet property="avPlayerView" destination="l5k-Tz-7PD" id="Gdx-8S-AhE"/>
+                                    <outlet property="backButton" destination="bqJ-z3-yX3" id="ZuG-IK-Aps"/>
+                                    <outlet property="controlsVisibilityToggleButton" destination="zkh-L9-c1t" id="ONs-hI-7DH"/>
+                                    <outlet property="errorLabel" destination="seI-DU-pXZ" id="8MF-uc-QuL"/>
+                                    <outlet property="forwardButton" destination="rfd-HR-r8c" id="eRI-Cz-9hb"/>
+                                    <outlet property="infoLabel" destination="eNC-m2-noz" id="aqr-CX-6oe"/>
+                                    <outlet property="playPauseButton" destination="2cV-FI-lRd" id="4Ue-eH-tfI"/>
+                                    <outlet property="remoteButtonsContainerStack" destination="MLe-gd-C8u" id="HVe-TJ-Jwk"/>
+                                    <outlet property="seekTimeSlider" destination="hMs-ma-sft" id="6G3-vn-Z4A"/>
+                                    <outlet property="toggleFullscreenButton" destination="UZ0-NR-iq0" id="TuR-CR-AMb"/>
+                                </connections>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZ0-NR-iq0" userLabel="Toggle Fullscreen Button">
+                                <rect key="frame" x="0.0" y="20" width="35" height="57"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="37"/>
+                                <state key="normal" title="⤡">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleFullscreen:" destination="0pJ-06-kSK" eventType="touchUpInside" id="HWm-Rh-eII"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="yd8-Jn-8t3" firstAttribute="bottom" secondItem="Kbl-0I-fK9" secondAttribute="bottom" id="2hb-rz-o3e"/>
-                            <constraint firstItem="l5k-Tz-7PD" firstAttribute="height" secondItem="dlQ-6G-Gfx" secondAttribute="height" id="3dY-xd-nxB"/>
-                            <constraint firstItem="l5k-Tz-7PD" firstAttribute="centerY" secondItem="yd8-Jn-8t3" secondAttribute="centerY" id="3xu-pF-7Dv"/>
-                            <constraint firstItem="JDS-GT-7fI" firstAttribute="centerY" secondItem="yd8-Jn-8t3" secondAttribute="centerY" id="8Dc-Ys-Cbd"/>
-                            <constraint firstItem="J70-14-MAj" firstAttribute="centerY" secondItem="yd8-Jn-8t3" secondAttribute="centerY" id="9Ej-Gx-gZ5"/>
-                            <constraint firstItem="JDS-GT-7fI" firstAttribute="centerX" secondItem="yd8-Jn-8t3" secondAttribute="centerX" id="Iub-Rn-phw"/>
-                            <constraint firstItem="yd8-Jn-8t3" firstAttribute="trailing" secondItem="MLe-gd-C8u" secondAttribute="trailing" id="LOB-VL-gww"/>
-                            <constraint firstItem="Kbl-0I-fK9" firstAttribute="centerX" secondItem="yd8-Jn-8t3" secondAttribute="centerX" id="PB3-3T-yKr"/>
-                            <constraint firstItem="J70-14-MAj" firstAttribute="centerX" secondItem="yd8-Jn-8t3" secondAttribute="centerX" id="ROf-dQ-ZGw"/>
-                            <constraint firstItem="MLe-gd-C8u" firstAttribute="leading" secondItem="yd8-Jn-8t3" secondAttribute="leading" constant="331" id="bYi-P2-1ww"/>
-                            <constraint firstItem="l5k-Tz-7PD" firstAttribute="centerX" secondItem="yd8-Jn-8t3" secondAttribute="centerX" id="gqZ-mJ-9YB"/>
-                            <constraint firstItem="MLe-gd-C8u" firstAttribute="top" secondItem="yd8-Jn-8t3" secondAttribute="top" id="i43-Lr-laj"/>
-                            <constraint firstItem="Kbl-0I-fK9" firstAttribute="width" secondItem="dlQ-6G-Gfx" secondAttribute="width" id="iHS-4D-HSY"/>
-                            <constraint firstItem="l5k-Tz-7PD" firstAttribute="width" secondItem="dlQ-6G-Gfx" secondAttribute="width" id="jJz-vE-Usv"/>
+                            <constraint firstAttribute="bottom" secondItem="l5k-Tz-7PD" secondAttribute="bottom" id="2V5-Yw-PxN"/>
+                            <constraint firstItem="UZ0-NR-iq0" firstAttribute="top" secondItem="zBZ-7L-cyE" secondAttribute="top" id="ChY-Xu-qKt"/>
+                            <constraint firstItem="XRt-72-ScG" firstAttribute="leading" secondItem="zBZ-7L-cyE" secondAttribute="leading" id="FIB-aj-SQv"/>
+                            <constraint firstItem="XRt-72-ScG" firstAttribute="top" secondItem="zBZ-7L-cyE" secondAttribute="top" id="Fpg-LS-q5O"/>
+                            <constraint firstItem="UZ0-NR-iq0" firstAttribute="leading" secondItem="zBZ-7L-cyE" secondAttribute="leading" id="Qfb-sU-18H"/>
+                            <constraint firstItem="zBZ-7L-cyE" firstAttribute="bottom" secondItem="XRt-72-ScG" secondAttribute="bottom" id="VuW-Vf-1zK"/>
+                            <constraint firstItem="zBZ-7L-cyE" firstAttribute="trailing" secondItem="XRt-72-ScG" secondAttribute="trailing" id="Yz1-vT-UYd"/>
+                            <constraint firstItem="zBZ-7L-cyE" firstAttribute="trailing" secondItem="l5k-Tz-7PD" secondAttribute="trailing" id="ceY-bz-mfD"/>
+                            <constraint firstAttribute="top" secondItem="l5k-Tz-7PD" secondAttribute="top" id="ni8-sU-Koc"/>
+                            <constraint firstItem="l5k-Tz-7PD" firstAttribute="leading" secondItem="zBZ-7L-cyE" secondAttribute="leading" id="rQH-8c-xbI"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="yd8-Jn-8t3"/>
-                        <connections>
-                            <outlet property="activitySpinner" destination="J70-14-MAj" id="pxH-jT-IUY"/>
-                            <outlet property="avPlayerView" destination="l5k-Tz-7PD" id="djy-8I-UiO"/>
-                            <outlet property="backButton" destination="bqJ-z3-yX3" id="s3J-sE-ELZ"/>
-                            <outlet property="errorLabel" destination="seI-DU-pXZ" id="Cd8-XO-8q9"/>
-                            <outlet property="forwardButton" destination="rfd-HR-r8c" id="9UO-DJ-5FW"/>
-                            <outlet property="infoLabel" destination="eNC-m2-noz" id="62S-Xj-o4n"/>
-                            <outlet property="playPauseButton" destination="2cV-FI-lRd" id="AKf-wN-ekS"/>
-                            <outlet property="remoteButtonsContainerStack" destination="MLe-gd-C8u" id="hSn-Mn-1nN"/>
-                            <outlet property="seekTimeSlider" destination="hMs-ma-sft" id="ADv-aD-PVN"/>
-                        </connections>
+                        <viewLayoutGuide key="safeArea" id="zBZ-7L-cyE"/>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="mediaControlsView" destination="dlQ-6G-Gfx" id="FBg-dJ-R7t"/>
+                        <outlet property="mediaControlsView" destination="XRt-72-ScG" id="2Zz-ai-6cu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ube-kQ-M4J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="854" y="31"/>
+            <point key="canvasLocation" x="853.60000000000002" y="30.134932533733135"/>
         </scene>
     </scenes>
     <resources>

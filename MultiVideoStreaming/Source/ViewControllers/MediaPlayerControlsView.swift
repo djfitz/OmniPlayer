@@ -9,7 +9,11 @@
 import UIKit
 
 class MediaPlayerControlsView: UIView, MediaPlayerUICollection
-{   
+{
+    @IBOutlet var controlsVisibilityToggleButton: UIButton?
+
+    @IBOutlet var toggleFullscreenButton: UIButton?
+
     @IBOutlet var backButton: UIButton?
     @IBOutlet weak var playPauseButton: UIButton?
     @IBOutlet weak var seekTimeSlider: UISlider?

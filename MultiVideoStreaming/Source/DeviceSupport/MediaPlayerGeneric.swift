@@ -121,7 +121,7 @@ protocol MediaPlayerGeneric
 
     func stop()
 
-    func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
+    func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
 
     func skip( forward seconds: CMTime )
 

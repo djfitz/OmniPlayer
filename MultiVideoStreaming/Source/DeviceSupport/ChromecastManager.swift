@@ -11,6 +11,24 @@ import GoogleCast
 import MediaPlayer
 
 
+struct SeekOperation
+{
+    let request: GCKRequest
+    let completionHandler: (Bool) -> Void
+
+    func complete()
+    {
+        self.completionHandler(false)
+    }
+
+    func cancel()
+    {
+        request.cancel()
+
+        completionHandler(true)
+    }
+}
+
 /**
     Manages the interface between the application and the Chromecast SDK.
 
@@ -155,7 +173,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
+    func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
         guard let _ = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus?.mediaInformation else { completionHandler(true); return }
         if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
@@ -170,12 +188,11 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
             let seekOptions = GCKMediaSeekOptions.init()
             seekOptions.interval = time.seconds
-            seekOptions.resumeState = .play
+            seekOptions.resumeState = playAfterSeek ? .play : .pause
 
-            self.currentSeekRequest = remoteMediaClient.seek(with: seekOptions)
-            self.currentSeekRequest?.delegate = self
-
-            completionHandler(false)
+            let seekRequest = remoteMediaClient.seek(with: seekOptions)
+            seekRequest.delegate = self
+            self.currentSeekOperation = SeekOperation(request: seekRequest, completionHandler: completionHandler)
         }
     }
 
@@ -194,14 +211,14 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     // Chromecast SDK
     // ------------------------------------------------------------------
 
-    var currentSeekRequest: GCKRequest?
+    var currentSeekOperation: SeekOperation?
 
     // ------------------------------------------------------------------
 
     // * cancelPendingSeeks
     func cancelPendingSeeks()
     {
-        if let currentSeek = self.currentSeekRequest
+        if let currentSeek = self.currentSeekOperation
         {
             currentSeek.cancel()
         }
@@ -212,32 +229,43 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         return GCKCastContext.sharedInstance().sessionManager.currentSession != nil
     }
 
+    // ======================================
     // MARK: GCKRequestDelegate Methods
+    // ======================================
 
     func requestDidComplete(_ request: GCKRequest)
     {
-        if request == self.currentSeekRequest
+        if request == self.currentSeekOperation?.request
         {
             self.isSeeking = false
-            self.currentSeekRequest = nil
+
+            self.currentSeekOperation?.complete()
+
+            self.currentSeekOperation = nil
         }
     }
 
     func request(_ request: GCKRequest, didFailWithError error: GCKError)
     {
-        if request == self.currentSeekRequest
+        if request == self.currentSeekOperation?.request
         {
+            self.currentSeekOperation?.cancel()
+
             self.isSeeking = false
-            self.currentSeekRequest = nil
+
+            self.currentSeekOperation = nil
         }
     }
 
     func request(_ request: GCKRequest, didAbortWith abortReason: GCKRequestAbortReason)
     {
-        if request == self.currentSeekRequest
+        if request == self.currentSeekOperation?.request
         {
+            self.currentSeekOperation?.cancel()
+
             self.isSeeking = false
-            self.currentSeekRequest = nil
+
+            self.currentSeekOperation = nil
         }
     }
 

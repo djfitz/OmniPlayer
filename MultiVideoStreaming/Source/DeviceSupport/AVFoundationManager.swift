@@ -248,7 +248,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         // Start playing the new media
         self.player.replaceCurrentItem(with: self.playerItem)
 
-        self.seek(to: time) { (a) in }
+        self.seek(to: time, playAfterSeek: true) { (a) in }
     }
 
     /// Starts playback at the current offset.
@@ -279,32 +279,35 @@ class AVFoundationMediaPlayerManager : NSObject,
     }
 
 
-    func seek(to time: CMTime, completionHandler: @escaping (Bool) -> Void)
+    func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
         print("$$$$ >> Starting Seek to time: \(time.seconds) ")
         print("Duration: \(self.player.currentItem!.duration.seconds)")
 
-        self.player.currentItem?.cancelPendingSeeks()
+         self.player.currentItem?.cancelPendingSeeks()
 
         self.isSeeking = true
 
-        self.pause()
+//        self.pause()
 
         self.status = .buffering
 
         self.player.seek(to: time)
-        { (cancelled) in
-            completionHandler(cancelled)
-            if true // !cancelled
+        { (finished) in
+            completionHandler(!finished)
+            if finished && playAfterSeek
             {
                 print("Completed Seek to time: \(time.seconds). Start playback.\n")
-                self.isSeeking = false
-                self.play()
+                // self.play()
+//                self.pause()
             }
-            else
+            else if !finished
             {
                 print("Cancelled Seek to time: \(time.seconds)\n")
+//                self.pause()
             }
+
+            self.isSeeking = false
         }
     }
 
@@ -315,7 +318,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         {
             let skipTime = playerItem.currentTime() + seconds
 
-            self.seek(to: skipTime) { (cancelled) in }
+            self.seek(to: skipTime, playAfterSeek: true) { (finished) in }
         }
     }
 
@@ -326,7 +329,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         {
             let skipTime = playerItem.currentTime() - seconds
 
-            self.seek(to: skipTime) { (cancelled) in }
+            self.seek(to: skipTime, playAfterSeek: true) { (finished) in }
         }
     }
 

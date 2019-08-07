@@ -9,31 +9,33 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Booya-->
+        <!--URL Input VC-->
         <scene sceneID="tnX-TE-pzH">
             <objects>
-                <viewController title="Booya" id="YOY-z1-69q" customClass="TextInputViewController" customModule="MultiVideoStreaming" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="RGj-Fd-6nq">
+                <viewController title="Booya" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="YOY-z1-69q" userLabel="URL Input VC" customClass="TextInputViewController" customModule="MultiVideoStreaming" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RGj-Fd-6nq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://breaqz.com/movies/Lego911gt3.mov" borderStyle="roundedRect" placeholder="Enter a Media URL" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-d6-gB6" userLabel="URL Text Field">
-                                <rect key="frame" x="10" y="103" width="394" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" borderStyle="roundedRect" placeholder="Enter a Media URL" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-d6-gB6" userLabel="URL Text Field">
+                                <rect key="frame" x="10" y="98" width="394" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" keyboardAppearance="alert" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
                             </textField>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="9Uk-d6-gB6" firstAttribute="leading" secondItem="fTe-kU-Y5p" secondAttribute="leading" constant="10" id="9bs-GM-hgs"/>
-                            <constraint firstItem="9Uk-d6-gB6" firstAttribute="top" secondItem="fTe-kU-Y5p" secondAttribute="top" constant="15" id="UKu-zh-2la"/>
-                            <constraint firstItem="fTe-kU-Y5p" firstAttribute="trailing" secondItem="9Uk-d6-gB6" secondAttribute="trailing" constant="10" id="ydR-RT-m2G"/>
+                            <constraint firstItem="9Uk-d6-gB6" firstAttribute="leading" secondItem="oqT-Ge-kJr" secondAttribute="leading" constant="10" id="9bs-GM-hgs"/>
+                            <constraint firstItem="9Uk-d6-gB6" firstAttribute="top" secondItem="oqT-Ge-kJr" secondAttribute="top" constant="10" id="UKu-zh-2la"/>
+                            <constraint firstItem="oqT-Ge-kJr" firstAttribute="trailing" secondItem="9Uk-d6-gB6" secondAttribute="trailing" constant="10" id="ydR-RT-m2G"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="fTe-kU-Y5p"/>
+                        <viewLayoutGuide key="safeArea" id="oqT-Ge-kJr"/>
                     </view>
                     <navigationItem key="navigationItem" id="a2K-E3-l6g"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="urlTextInput" destination="9Uk-d6-gB6" id="mER-ON-vuT"/>
                     </connections>
@@ -42,46 +44,48 @@
             </objects>
             <point key="canvasLocation" x="-793" y="-361"/>
         </scene>
-        <!--Hella Playah-->
+        <!--Media Player Container VC-->
         <scene sceneID="vhw-FN-7nx">
             <objects>
-                <viewController storyboardIdentifier="MediaPlayerVCID" title="Hella Playah" extendedLayoutIncludesOpaqueBars="YES" id="pCo-Kr-KBu" customClass="ViewController" customModule="MultiVideoStreaming" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="wfg-PZ-Ek9">
+                <viewController storyboardIdentifier="MediaPlayerVCID" title="Hella Playah" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="pCo-Kr-KBu" userLabel="Media Player Container VC" customClass="ViewController" customModule="MultiVideoStreaming" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wfg-PZ-Ek9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="uLB-UL-4vy" userLabel="Media Controls Container">
-                                <rect key="frame" x="20" y="54" width="374" height="798"/>
+                            <containerView opaque="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLB-UL-4vy" userLabel="Media Controls Container">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <connections>
                                     <segue destination="1l6-6X-qLS" kind="embed" id="jVU-Ki-kSC"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="uLB-UL-4vy" firstAttribute="leading" secondItem="wfg-PZ-Ek9" secondAttribute="leadingMargin" id="BnP-4Z-C1x"/>
-                            <constraint firstItem="qvM-xv-X30" firstAttribute="bottom" secondItem="uLB-UL-4vy" secondAttribute="bottom" constant="10" id="omI-Ge-Jou"/>
-                            <constraint firstItem="uLB-UL-4vy" firstAttribute="top" secondItem="qvM-xv-X30" secondAttribute="top" constant="10" id="rv9-Cf-c3N"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="uLB-UL-4vy" secondAttribute="trailing" id="zHa-QV-5tC"/>
+                            <constraint firstItem="uLB-UL-4vy" firstAttribute="height" secondItem="wfg-PZ-Ek9" secondAttribute="height" id="0Fa-fT-jYc"/>
+                            <constraint firstItem="uLB-UL-4vy" firstAttribute="centerX" secondItem="wfg-PZ-Ek9" secondAttribute="centerX" id="DuJ-G3-SnL"/>
+                            <constraint firstItem="uLB-UL-4vy" firstAttribute="width" secondItem="wfg-PZ-Ek9" secondAttribute="width" id="UXW-JN-1Hg"/>
+                            <constraint firstItem="uLB-UL-4vy" firstAttribute="centerY" secondItem="wfg-PZ-Ek9" secondAttribute="centerY" id="YwK-PE-vz4"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="qvM-xv-X30"/>
+                        <viewLayoutGuide key="safeArea" id="bUl-G1-wbj"/>
                     </view>
                     <navigationItem key="navigationItem" id="AMk-u7-aGd"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A1d-MK-abN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="68" y="-361"/>
+            <point key="canvasLocation" x="66.666666666666671" y="-361.60714285714283"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="lSJ-XM-wIO">
             <objects>
-                <navigationController id="mhh-Mw-Apk" sceneMemberID="viewController">
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="IWQ-pQ-2Wo">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="mhh-Mw-Apk" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="IWQ-pQ-2Wo">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <connections>
                         <segue destination="YOY-z1-69q" kind="relationship" relationship="rootViewController" id="wNk-0s-h5j"/>

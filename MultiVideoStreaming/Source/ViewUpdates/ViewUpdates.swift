@@ -35,6 +35,8 @@ protocol MediaPlayerUICollection
     var seekTimeSlider: UISlider? {get}
 
     var playPauseButton: UIButton? {get}
+    var backButton: UIButton? {get}
+    var forwardButton: UIButton? {get}
 
     var activitySpinner: UIActivityIndicatorView? {get}
 
@@ -42,6 +44,10 @@ protocol MediaPlayerUICollection
     var errorLabel: UILabel? {get}
 
     var remoteButtonsContainerStack: UIStackView? {get}
+
+    var controlsVisibilityToggleButton: UIButton? {get}
+
+    var toggleFullscreenButton: UIButton? {get}
 
     var avPlayerView: AVPlayerView? {get}
 }

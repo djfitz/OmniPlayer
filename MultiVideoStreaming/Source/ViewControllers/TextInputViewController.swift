@@ -19,7 +19,17 @@ class TextInputViewController: UIViewController, UITextFieldDelegate
         MediaPlayerManager.mgr.avFoundationPlayer.beginSearchForRemoteDevices()
         MediaPlayerManager.mgr.chromecastPlayer.beginSearchForRemoteDevices()
 
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.barTintColor =  .clear
+//        self.navigationController?.navigationBar.setBackgroundImage(#imageLiteral(resourceName: "bg"), for: .default)
+        self.title = "Media Home"
+
+        self.navigationController?.edgesForExtendedLayout = [.top,.bottom,.left,.right]
+
         self.urlTextInput.delegate = self
+
+        self.urlTextInput.becomeFirstResponder()
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool

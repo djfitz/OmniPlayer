@@ -16,12 +16,26 @@ class ViewController: UIViewController
 {
     var mediaURL:URL? = nil
 
+    override var prefersHomeIndicatorAutoHidden:Bool
+    {
+        get
+        {
+            return true
+        }
+    }
+
     // * viewDidLoad
     override func viewDidLoad()
     {
         super.viewDidLoad()
 
-         self.startPlayback()
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.navigationController?.navigationBar.barTintColor = .clear
+        
+        self.edgesForExtendedLayout = .all
+
+        self.startPlayback()
     }
 
 
@@ -34,6 +48,10 @@ class ViewController: UIViewController
 
 //        let url = URL.init(string: "http://csm-e.cds1.yospace.com/csm/live/74246610.m3u8")!
 
+
+//https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8
+//https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8
+
         if let url = self.mediaURL
         {
             let item = MediaItem.init(title: "Zelo - Boss Video Productions", url: url)
@@ -42,3 +60,4 @@ class ViewController: UIViewController
         }
     }
 }
+//
