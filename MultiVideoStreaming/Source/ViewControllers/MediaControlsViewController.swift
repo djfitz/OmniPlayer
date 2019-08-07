@@ -41,11 +41,38 @@ class MediaControlsViewController: UIViewController
 
     func enterFullscreen()
     {
-        self.navigationController?.navigationBar.isHidden = true
+        self.mediaControlsView.toggleFullscreenButton?.setTitle("⇲", for: .normal)
+
+        self.parent?.view.sizeThatFits(CGSize.zero)
+        self.parent?.view.setNeedsLayout()
+
+        UIView.animate(withDuration: 0.2, animations:
+        {
+            self.navigationController?.navigationBar.alpha = 0
+        },
+        completion:
+        { (completed) in
+            self.navigationController?.navigationBar.isHidden = true
+        })
+
+        MediaPlayerManager.mgr.uiUpdatesController?.showControls()
     }
 
     func exitFullscreen()
     {
-        self.navigationController?.navigationBar.isHidden = false
+        self.mediaControlsView.toggleFullscreenButton?.setTitle("⇱", for: .normal)
+
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false)
+        { (timer) in
+            self.navigationController?.navigationBar.isHidden = false
+
+            self.parent?.view.sizeThatFits(CGSize.zero)
+            self.parent?.view.setNeedsLayout()
+
+            UIView.animate(withDuration: 0.2, animations:
+            {
+                self.navigationController?.navigationBar.alpha = 1
+            })
+        }
     }
 }

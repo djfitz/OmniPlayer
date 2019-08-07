@@ -100,6 +100,15 @@ class MediaUIController: NSObject
         self.mediaPlayerViewCollection?.toggleFullscreenButton?.isHidden = false
 
         self.isControlsHidden = false
+
+        self.mediaPlayerViewCollection?.errorLabel?.alpha = 1
+        self.mediaPlayerViewCollection?.infoLabel?.alpha = 1
+        self.mediaPlayerViewCollection?.remoteButtonsContainerStack?.alpha = 1
+        self.mediaPlayerViewCollection?.playPauseButton?.alpha = 1
+        self.mediaPlayerViewCollection?.seekTimeSlider?.alpha = 1
+        self.mediaPlayerViewCollection?.backButton?.alpha = 1
+        self.mediaPlayerViewCollection?.forwardButton?.alpha = 1
+        self.mediaPlayerViewCollection?.toggleFullscreenButton?.alpha = 1
     }
     
     // * hideControls
@@ -109,17 +118,31 @@ class MediaUIController: NSObject
 
         self.controlsVisibilityTimer = nil
 
-        self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
-        self.mediaPlayerViewCollection?.infoLabel?.isHidden = true
-        self.mediaPlayerViewCollection?.remoteButtonsContainerStack?.isHidden = true
-        self.mediaPlayerViewCollection?.playPauseButton?.isHidden = true
-        self.mediaPlayerViewCollection?.seekTimeSlider?.isHidden = true
-        self.mediaPlayerViewCollection?.backButton?.isHidden = true
-        self.mediaPlayerViewCollection?.forwardButton?.isHidden = true
-        self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
-        self.mediaPlayerViewCollection?.toggleFullscreenButton?.isHidden = true
+        UIView.animate(withDuration: 0.5,
+        animations: {
+            self.mediaPlayerViewCollection?.errorLabel?.alpha = 0
+            self.mediaPlayerViewCollection?.infoLabel?.alpha = 0
+            self.mediaPlayerViewCollection?.remoteButtonsContainerStack?.alpha = 0
+            self.mediaPlayerViewCollection?.playPauseButton?.alpha = 0
+            self.mediaPlayerViewCollection?.seekTimeSlider?.alpha = 0
+            self.mediaPlayerViewCollection?.backButton?.alpha = 0
+            self.mediaPlayerViewCollection?.forwardButton?.alpha = 0
+//            self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+            self.mediaPlayerViewCollection?.toggleFullscreenButton?.alpha = 0
+        })
+        { (completed) in
+            self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
+            self.mediaPlayerViewCollection?.infoLabel?.isHidden = true
+            self.mediaPlayerViewCollection?.remoteButtonsContainerStack?.isHidden = true
+            self.mediaPlayerViewCollection?.playPauseButton?.isHidden = true
+            self.mediaPlayerViewCollection?.seekTimeSlider?.isHidden = true
+            self.mediaPlayerViewCollection?.backButton?.isHidden = true
+            self.mediaPlayerViewCollection?.forwardButton?.isHidden = true
+            self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+            self.mediaPlayerViewCollection?.toggleFullscreenButton?.isHidden = true
 
-        self.isControlsHidden = true
+            self.isControlsHidden = true
+        }
     }
 
 
@@ -130,17 +153,6 @@ class MediaUIController: NSObject
         if isControlsHidden
         {
             self.showControls()
-
-//            self.controlsVisibilityTimer?.invalidate()
-//
-//            self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block:
-//            { (timer: Timer) in
-//                if timer.isValid
-//                {
-//                    self.controlsVisibilityTimer = nil
-//                    self.hideControls()
-//                }
-//            })
         }
         else
         {
@@ -167,20 +179,28 @@ class MediaUIController: NSObject
 
     @IBAction func playPauseButtonTapped(_ sender: Any)
     {
+        print("^^^^^ playPauseButtonTapped")
+
         switch MediaPlayerManager.mgr.status
         {
             case .readyToPlay:
-                MediaPlayerManager.mgr.play()
+                print("* readyToPlay")
+//                MediaPlayerManager.mgr.play()
+                MediaPlayerManager.mgr.pause()
+
+                self.controlsVisibilityTimer?.invalidate()
+                self.controlsVisibilityTimer = nil
+
+                self.showControls()
 
             case .paused:
+                print("* paused")
+
                 MediaPlayerManager.mgr.play()
 
-//                self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block:
-//                { (Timer) in
-//                    self.hideControls()
-//                })
-
             case .playing:
+                print("* playing")
+
                 MediaPlayerManager.mgr.pause()
 
                 self.controlsVisibilityTimer?.invalidate()
@@ -189,15 +209,22 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .failed:
+                print("* failed")
                 MediaPlayerManager.mgr.play()
 
             case .loading:
+                print("* loading")
+
                 MediaPlayerManager.mgr.play()
 
             case .unknown:
+                print("* unknown")
+
                 MediaPlayerManager.mgr.play()
 
             case .playedToEnd:
+                print("* playedToEnd")
+
                 // When the player is at the end, due to playback finishing
                 // normally, starting playback involves
                 // - Seek to the beginning
@@ -211,9 +238,13 @@ class MediaUIController: NSObject
                 }
 
             case .buffering:
+                print("* buffering")
+
                 MediaPlayerManager.mgr.pause()
 
             case .idle:
+                print("* idle")
+
                 print("Player is idle.")
         }
     }
