@@ -281,8 +281,8 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
-        print("$$$$ >> Starting Seek to time: \(time.seconds) ")
-        print("Duration: \(self.player.currentItem!.duration.seconds)")
+//        print("\n$$$$ >> Starting Seek to time: \(time.seconds) ")
+//        print("Duration: \(self.player.currentItem!.duration.seconds)")
 
          self.player.currentItem?.cancelPendingSeeks()
 
@@ -339,52 +339,52 @@ class AVFoundationMediaPlayerManager : NSObject,
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
     {
-        print("\n========================================\n")
+//        print("\n========================================\n")
 
-        if let objVal = object
-        {
-            print("Object: \(objVal)")
-        }
+//        if let objVal = object
+//        {
+//            print("Object: \(objVal)")
+//        }
 
 
-        if let kindVal = change?[NSKeyValueChangeKey.kindKey]
-        {
-            print("Kind: \(kindVal)")
-        }
-
-        if let newVal = change?[NSKeyValueChangeKey.newKey]
-        {
-            print("New: \(newVal)")
-        }
+//        if let kindVal = change?[NSKeyValueChangeKey.kindKey]
+//        {
+//            print("Kind: \(kindVal)")
+//        }
+//
+//        if let newVal = change?[NSKeyValueChangeKey.newKey]
+//        {
+//            print("New: \(newVal)")
+//        }
 
         if keyPath == "status"
         {
             let playerStatus = self.player.status
-            let playerStatusDesc = playerStatus.description()
+//            let playerStatusDesc = playerStatus.description()
             let itemStatus = self.player.currentItem?.status
-            let itemStatusDesc = itemStatus.debugDescription
+//            let itemStatusDesc = itemStatus.debugDescription
 
-            print("Status:\(playerStatusDesc)\n")
-            print("Item Status:\(itemStatusDesc)\n")
+//            print("Status:\(playerStatusDesc)\n")
+//            print("Item Status:\(itemStatusDesc)\n")
 
             switch playerStatus
             {
                 case .failed:
-                    print("Player Status is Failed")
+//                    print("Player Status is Failed")
                     self.status = .failed
 
                 case .readyToPlay:
-                    print("Player Status is Ready to Play")
+//                    print("Player Status is Ready to Play")
                     self.currentMediaItem = self.loadingMediaItem
                     self.loadingMediaItem = nil
                     self.status = .readyToPlay
 
                 case .unknown:
-                    print("Player Status is Unknown")
+//                    print("Player Status is Unknown")
                     self.status = .unknown
 
                 @unknown default:
-                    print("Unknown")
+//                    print("Unknown")
                     self.status = .unknown
             }
 
@@ -419,13 +419,13 @@ class AVFoundationMediaPlayerManager : NSObject,
         else if keyPath == "rate"
         {
             let rt = self.player.rate
-            print("New rate is \(rt)")
+//            print("New rate is \(rt)")
         }
         else if keyPath == "timeControlStatus"
         {
             let status = self.player.timeControlStatus
             let timeControlDesc = status.description()
-            print("Time Control Status: \(timeControlDesc)")
+//            print("Time Control Status: \(timeControlDesc)")
 
             switch status
             {
@@ -446,7 +446,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         }
         else if keyPath == "duration"
         {
-            print("Duration: \(self.playerItem!.duration.seconds)")
+//            print("Duration: \(self.playerItem!.duration.seconds)")
 
             if let newVal = self.playerItem?.duration
             {
@@ -454,7 +454,7 @@ class AVFoundationMediaPlayerManager : NSObject,
             }
         }
 
-        print("\n========================================\n\n")
+//        print("\n========================================\n\n")
     }
 
     // * sessionInterrupted

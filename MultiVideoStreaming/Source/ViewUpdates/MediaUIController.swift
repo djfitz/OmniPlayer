@@ -15,6 +15,8 @@ class MediaUIController: NSObject
 
     var isSliderChanging = false
 
+    var lastSeekTime = CMTime.invalid
+
     func registerMediaPlayerUICollection(uiCollection: MediaPlayerUICollection)
     {
         self.mediaPlayerViewCollection = uiCollection
@@ -24,7 +26,7 @@ class MediaUIController: NSObject
         uiCollection.playPauseButton?.addTarget(self, action: #selector(playPauseButtonTapped(_:)), for: .touchUpInside)
 
         uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderDidBeginEditing(_:)), for: .editingDidBegin)
-
+        uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderTouchDown(_:)), for: .touchDown)
         uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
         uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderTouchUpInside(_:)), for: .touchUpInside)
         uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderTouchUpOutside(_:)), for: .touchUpOutside)
@@ -83,8 +85,8 @@ class MediaUIController: NSObject
     // * showControls
     func showControls()
     {
-        print("}}}}} Showing Controls")
-        print("Cancelling Timer: \(String(describing: self.controlsVisibilityTimer))")
+//        print("}}}}} Showing Controls")
+//        print("Cancelling Timer: \(String(describing: self.controlsVisibilityTimer))")
 
         self.controlsVisibilityTimer?.invalidate()
 
@@ -179,12 +181,12 @@ class MediaUIController: NSObject
 
     @IBAction func playPauseButtonTapped(_ sender: Any)
     {
-        print("^^^^^ playPauseButtonTapped")
+//        print("^^^^^ playPauseButtonTapped")
 
         switch MediaPlayerManager.mgr.status
         {
             case .readyToPlay:
-                print("* readyToPlay")
+//                print("* readyToPlay")
 //                MediaPlayerManager.mgr.play()
                 MediaPlayerManager.mgr.pause()
 
@@ -194,12 +196,12 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .paused:
-                print("* paused")
+//                print("* paused")
 
                 MediaPlayerManager.mgr.play()
 
             case .playing:
-                print("* playing")
+//                print("* playing")
 
                 MediaPlayerManager.mgr.pause()
 
@@ -209,21 +211,21 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .failed:
-                print("* failed")
+//                print("* failed")
                 MediaPlayerManager.mgr.play()
 
             case .loading:
-                print("* loading")
+//                print("* loading")
 
                 MediaPlayerManager.mgr.play()
 
             case .unknown:
-                print("* unknown")
+//                print("* unknown")
 
                 MediaPlayerManager.mgr.play()
 
             case .playedToEnd:
-                print("* playedToEnd")
+//                print("* playedToEnd")
 
                 // When the player is at the end, due to playback finishing
                 // normally, starting playback involves
@@ -238,14 +240,15 @@ class MediaUIController: NSObject
                 }
 
             case .buffering:
-                print("* buffering")
+//                print("* buffering")
 
                 MediaPlayerManager.mgr.pause()
 
             case .idle:
-                print("* idle")
+                let x = 1
+//                print("* idle")
 
-                print("Player is idle.")
+//                print("Player is idle.")
         }
     }
 
@@ -255,21 +258,36 @@ class MediaUIController: NSObject
 
     //
 
+    @IBAction func sliderTouchDown(_ sender: Any)
+    {
+        print("sliderTouchDown")
+
+        self.lastSeekTime = CMTime.invalid
+
+        self.controlsVisibilityTimer?.invalidate()
+        self.controlsVisibilityTimer = nil
+
+        self.isSliderChanging = true
+    }
+
     @IBAction func sliderDidBeginEditing(_ sender: Any)
     {
         print("sliderDidBeginEditing")
+
+        self.controlsVisibilityTimer?.invalidate()
+        self.controlsVisibilityTimer = nil
+
+        self.isSliderChanging = true
     }
 
     @IBAction func sliderValueChanged(_ sender: Any)
     {
         print("sliderValueChanged")
 
-        self.isSliderChanging = true
-
-        self.controlsVisibilityTimer?.invalidate()
-        self.controlsVisibilityTimer = nil
-
-        print("***** Slider >> Value Changed\nNew Value: \(self.mediaPlayerViewCollection?.seekTimeSlider?.value)")
+    if self.isSliderChanging
+    {
+        print("\n***** Slider >> Value Changed\nNew Value: \(self.mediaPlayerViewCollection?.seekTimeSlider?.value)")
+        print("***** Slider is Changing: \(self.isSliderChanging)")
         let currentSliderValue = Double(self.mediaPlayerViewCollection?.seekTimeSlider?.value ?? 0)
         let duration = MediaPlayerManager.mgr.duration
         let seekTimeSec = currentSliderValue * duration.seconds
@@ -290,15 +308,22 @@ class MediaUIController: NSObject
         {
 //            MediaPlayerManager.mgr.pause()
 
-            MediaPlayerManager.mgr.seek(
-                to: CMTime( seconds: seekTimeSec,
-                            preferredTimescale: CMTimeScale(1) ),
-                playAfterSeek: false
-            )
-            { (finished) in
-                print("Seeked to \(seekTimeSec): Finished = \(finished)")
+            let newTime = CMTime( seconds: seekTimeSec, preferredTimescale: CMTimeScale(1) )
+            if newTime.isValid && newTime != lastSeekTime
+            {
+                self.lastSeekTime = newTime
+
+                MediaPlayerManager.mgr.seek( to: newTime, playAfterSeek: false )
+                { (finished) in
+                    print("Seeked to \(seekTimeSec): Finished = \(finished)")
+                }
+            }
+            else
+            {
+                print("\n>$>$>$>$>$>$> >> Skipping redundant seek to \(newTime)")
             }
         }
+    }
     }
 
     @IBAction func sliderEditingChanged(_ sender: Any)
@@ -332,43 +357,47 @@ class MediaUIController: NSObject
 
     @IBAction func sliderTouchUpInside(_ sender: Any)
     {
-        print("***** Slider >> Touch Up Inside\nNew Value: \(self.mediaPlayerViewCollection?.seekTimeSlider?.value)")
-        let currentSliderValue = Double(self.mediaPlayerViewCollection?.seekTimeSlider?.value ?? 0)
-        let duration = MediaPlayerManager.mgr.duration
-        let seekTimeSec = currentSliderValue * duration.seconds
+        print("\n***** Slider >> Touch Up Inside\nNew Value: \(self.mediaPlayerViewCollection?.seekTimeSlider?.value)\n")
 
-        if seekTimeSec == duration.seconds
-        {
-            print("***** Seeking to the end.")
-        }
+        self.isSliderChanging = false
 
-        if MediaPlayerManager.mgr.status == .playedToEnd
-        {
-            if let mediaItem = MediaPlayerManager.mgr.currentMediaItem
-            {
-                MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: CMTime.init(seconds: seekTimeSec, preferredTimescale: 1))
-            }
-        }
-        else
-        {
-//            MediaPlayerManager.mgr.pause()
 
-            MediaPlayerManager.mgr.seek(
-                to: CMTime( seconds: seekTimeSec,
-                            preferredTimescale: CMTimeScale(1) ),
-                playAfterSeek: true
-            )
-            { (finished) in
-                print("Seeked to \(seekTimeSec): Finished = \(finished)")
-
-                if seekTimeSec != duration.seconds && finished
-                {
-                    MediaPlayerManager.mgr.play()
-                }
-
-                self.isSliderChanging = false
-            }
-        }
+//        let currentSliderValue = Double(self.mediaPlayerViewCollection?.seekTimeSlider?.value ?? 0)
+//        let duration = MediaPlayerManager.mgr.duration
+//        let seekTimeSec = currentSliderValue * duration.seconds
+//
+//        if seekTimeSec == duration.seconds
+//        {
+//            print("***** Seeking to the end.")
+//        }
+//
+//        if MediaPlayerManager.mgr.status == .playedToEnd
+//        {
+//            if let mediaItem = MediaPlayerManager.mgr.currentMediaItem
+//            {
+//                MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: CMTime.init(seconds: seekTimeSec, preferredTimescale: 1))
+//            }
+//        }
+//        else
+//        {
+////            MediaPlayerManager.mgr.pause()
+//
+//            MediaPlayerManager.mgr.seek(
+//                to: CMTime( seconds: seekTimeSec,
+//                            preferredTimescale: CMTimeScale(1) ),
+//                playAfterSeek: true
+//            )
+//            { (finished) in
+//                print("Seeked to \(seekTimeSec): Finished = \(finished)")
+//
+//                if seekTimeSec != duration.seconds && finished
+//                {
+//                    MediaPlayerManager.mgr.play()
+//                }
+//
+//                self.isSliderChanging = false
+//            }
+//        }
     }
 
     //
@@ -379,11 +408,11 @@ class MediaUIController: NSObject
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
     {
-        print("\n**************************************")
-        print("Observed Value change: \(keyPath!)")
-        print("Object: \(object!)")
-        print("Kind: \(change![NSKeyValueChangeKey.kindKey]!)")
-        print("New Value: \(change![NSKeyValueChangeKey.newKey]!)")
+//        print("\n**************************************")
+//        print("Observed Value change: \(keyPath!)")
+//        print("Object: \(object!)")
+//        print("Kind: \(change![NSKeyValueChangeKey.kindKey]!)")
+//        print("New Value: \(change![NSKeyValueChangeKey.newKey]!)")
 
         if keyPath == "status"
         {
@@ -391,10 +420,10 @@ class MediaUIController: NSObject
         }
         else if keyPath == "currentOffset"
         {
-            if let newValue = change?[NSKeyValueChangeKey.newKey] as? CMTime
-            {
-                print("New Current Offset: \(newValue.seconds)")
-            }
+//            if let newValue = change?[NSKeyValueChangeKey.newKey] as? CMTime
+//            {
+//                print("New Current Offset: \(newValue.seconds)")
+//            }
 
             if let newCurrentTime = change?[NSKeyValueChangeKey.newKey] as? CMTime
             {
@@ -406,15 +435,15 @@ class MediaUIController: NSObject
                    self.controlsVisibilityTimer == nil
                 {
                     let randomID = UUID.init()
-                    print(">>>>>> After playback has started, auto-hide controls.")
-                    print("Timer ID: \(randomID)")
+//                    print(">>>>>> After playback has started, auto-hide controls.")
+//                    print("Timer ID: \(randomID)")
 
                     self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block:
                     { (timer: Timer) in
-                        print(">>>>>> Auto-hide timer has fired.")
-                        print("Timer: \(timer)")
-                        print("Timer ID: \(randomID)")
-                        print("Is Timer Valid? \(timer.isValid)")
+//                        print(">>>>>> Auto-hide timer has fired.")
+//                        print("Timer: \(timer)")
+//                        print("Timer ID: \(randomID)")
+//                        print("Is Timer Valid? \(timer.isValid)")
 
                         if timer.isValid
                         {
@@ -427,7 +456,7 @@ class MediaUIController: NSObject
             }
         }
 
-        print("**************************************")
+//        print("**************************************")
     }
 
     func playerStatusUpdated( status: PlaybackStatus )
@@ -435,7 +464,7 @@ class MediaUIController: NSObject
         switch status
         {
             case .loading:
-                print("Loading")
+//                print("Loading")
                 self.mediaPlayerViewCollection?.avPlayerView?.isHidden = true
 
                 self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
@@ -449,7 +478,7 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .readyToPlay:
-                print("readyToPlay")
+//                print("readyToPlay")
                 self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
@@ -461,7 +490,7 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .playing:
-                print("playing")
+//                print("playing")
 
                 let currentTimeSec = MediaPlayerManager.mgr.currentOffset.seconds
                 let durationSec = MediaPlayerManager.mgr.duration.seconds
@@ -476,8 +505,8 @@ class MediaUIController: NSObject
                 let durationFracRoundedFrac = (durationFrac * 100).rounded(.down) / 100
                 let durationRoundedSec = durationRoundedWholeSec + durationFracRoundedFrac
 
-                print("**** Current Time =  \(currentTimeSec) Rounded: \(currentTimeRoundedSec)")
-                print("**** Duration = \(durationSec) rounded to \(durationRoundedSec)")
+//                print("**** Current Time =  \(currentTimeSec) Rounded: \(currentTimeRoundedSec)")
+//                print("**** Duration = \(durationSec) rounded to \(durationRoundedSec)")
 
                 if durationRoundedSec <= currentTimeRoundedSec
                 {
@@ -497,12 +526,12 @@ class MediaUIController: NSObject
                 {
                     self.controlsVisibilityTimer?.invalidate()
 
-                    print("++++++++ Create a Controls auto-hide timer:")
+//                    print("++++++++ Create a Controls auto-hide timer:")
 
                     self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block:
                     { (timer: Timer) in
-                        print("++++++++ Fired timer: \(timer)")
-                        print("And it is valid: \(timer.isValid)")
+//                        print("++++++++ Fired timer: \(timer)")
+//                        print("And it is valid: \(timer.isValid)")
 
                         if timer.isValid
                         {
@@ -511,11 +540,11 @@ class MediaUIController: NSObject
                         }
                     })
 
-                    print("++++++++ Timer: \(self.controlsVisibilityTimer)")
+//                    print("++++++++ Timer: \(self.controlsVisibilityTimer)")
                 }
 
             case .paused:
-                print("paused")
+//                print("paused")
 
                 if self.isSliderChanging == false
                 {
@@ -531,7 +560,7 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .failed:
-                print("failed")
+//                print("failed")
                 self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
@@ -541,7 +570,7 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .buffering:
-                print("buffering")
+//                print("buffering")
                 self.mediaPlayerViewCollection?.activitySpinner?.startAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.isHidden = false
 
@@ -571,7 +600,7 @@ class MediaUIController: NSObject
                 self.showControls()
 
             case .unknown:
-                print("Unknown")
+//                print("Unknown")
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = false
         }
     }
