@@ -21,6 +21,7 @@
 		F638B96D22F39FCF0013465F /* MediaPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638B96C22F39FCF0013465F /* MediaPlayerControlsView.swift */; };
 		F63A81B322E6C154008473EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A81B222E6C154008473EA /* AppDelegate.swift */; };
 		F63A81B822E6C1D1008473EA /* MediaControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F63A81B622E6C1D1008473EA /* MediaControls.storyboard */; };
+		F63C3BEF22FC8DD90003C343 /* MediaHomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63C3BEE22FC8DD90003C343 /* MediaHomeTableViewController.swift */; };
 		F67BF7B922EE805D00D453F8 /* MediaPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67BF7B822EE805D00D453F8 /* MediaPlayerManager.swift */; };
 		F6C573A3219BC45F00F09066 /* OCDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C573A1219BC45E00F09066 /* OCDummy.m */; };
 		F6D5C022214EDD64004BBAA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C021214EDD64004BBAA8 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		F638B96C22F39FCF0013465F /* MediaPlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerControlsView.swift; sourceTree = "<group>"; };
 		F63A81B222E6C154008473EA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F63A81B722E6C1D1008473EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MultiVideoStreaming/Base.lproj/MediaControls.storyboard; sourceTree = SOURCE_ROOT; };
+		F63C3BEE22FC8DD90003C343 /* MediaHomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaHomeTableViewController.swift; sourceTree = "<group>"; };
 		F67BF7B822EE805D00D453F8 /* MediaPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerManager.swift; sourceTree = "<group>"; };
 		F68CE3CA215EE93300A0CF12 /* MultiVideoStreaming-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiVideoStreaming-Bridging-Header.h"; sourceTree = "<group>"; };
 		F6C573A1219BC45E00F09066 /* OCDummy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCDummy.m; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				F625DAB12284B3C2005EC540 /* AVPlayerView.swift */,
 				F61E009A22ECD0A2004C78AB /* TextInputViewController.swift */,
 				F638B96C22F39FCF0013465F /* MediaPlayerControlsView.swift */,
+				F63C3BEE22FC8DD90003C343 /* MediaHomeTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F63A81B322E6C154008473EA /* AppDelegate.swift in Sources */,
+				F63C3BEF22FC8DD90003C343 /* MediaHomeTableViewController.swift in Sources */,
 				F625DAB22284B3C2005EC540 /* AVPlayerView.swift in Sources */,
 				F638B96B22F393410013465F /* MediaUIController.swift in Sources */,
 				F614FDA1219BC1C000EDA431 /* MediaControlsViewController.swift in Sources */,

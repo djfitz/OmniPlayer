@@ -34,6 +34,24 @@ class MediaControlsViewController: UIViewController
         MediaPlayerManager.mgr.registerPlayerUICollection(uiCollection: self.mediaControlsView)
     }
 
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+
+        if !self.isFullscreen
+        {
+            let nsecs = DispatchTime.now().uptimeNanoseconds + UInt64( Double( NSEC_PER_SEC) * 0.9 )
+            let fireTime = DispatchTime(uptimeNanoseconds: nsecs
+            )
+            DispatchQueue
+                .main
+                .asyncAfter( deadline: fireTime )
+            {
+                self.enterFullscreen()
+            }
+        }
+    }
+
     @IBAction func toggleFullscreen(_ sender: Any)
     {
         self.isFullscreen = !self.isFullscreen
@@ -43,17 +61,21 @@ class MediaControlsViewController: UIViewController
     {
         self.mediaControlsView.toggleFullscreenButton?.setTitle("⇲", for: .normal)
 
-        self.parent?.view.sizeThatFits(CGSize.zero)
-        self.parent?.view.setNeedsLayout()
-
-        UIView.animate(withDuration: 0.2, animations:
+        if let navBar = self.navigationController?.navigationBar
         {
-            self.navigationController?.navigationBar.alpha = 0
-        },
-        completion:
-        { (completed) in
-            self.navigationController?.navigationBar.isHidden = true
-        })
+            UIView.animate(withDuration: 0.2, animations:
+            {
+                navBar.center = CGPoint(x:navBar.center.x, y:(navBar.center.y - 20))
+            },
+            completion:
+            { (completed) in
+                navBar.isHidden = true
+                navBar.center = CGPoint(x:navBar.center.x, y:(navBar.center.y + 20))
+
+                self.parent?.view.sizeThatFits(CGSize.zero)
+                self.parent?.view.setNeedsLayout()
+            })
+        }
 
         MediaPlayerManager.mgr.uiUpdatesController?.showControls()
     }

@@ -140,7 +140,7 @@ class MediaUIController: NSObject
             self.mediaPlayerViewCollection?.seekTimeSlider?.isHidden = true
             self.mediaPlayerViewCollection?.backButton?.isHidden = true
             self.mediaPlayerViewCollection?.forwardButton?.isHidden = true
-            self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+            self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
             self.mediaPlayerViewCollection?.toggleFullscreenButton?.isHidden = true
 
             self.isControlsHidden = true
@@ -438,7 +438,7 @@ class MediaUIController: NSObject
 //                    print(">>>>>> After playback has started, auto-hide controls.")
 //                    print("Timer ID: \(randomID)")
 
-                    self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block:
+                    self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block:
                     { (timer: Timer) in
 //                        print(">>>>>> Auto-hide timer has fired.")
 //                        print("Timer: \(timer)")
@@ -474,6 +474,7 @@ class MediaUIController: NSObject
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
                 self.mediaPlayerViewCollection?.activitySpinner?.startAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.isHidden = false
+                self.mediaPlayerViewCollection?.activitySpinner?.alpha = 1
 
                 self.showControls()
 
@@ -481,7 +482,8 @@ class MediaUIController: NSObject
 //                print("readyToPlay")
                 self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
-                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+                self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+//                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
 
@@ -518,7 +520,8 @@ class MediaUIController: NSObject
                 }
 
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
-                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+                self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+//                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
 
@@ -528,7 +531,7 @@ class MediaUIController: NSObject
 
 //                    print("++++++++ Create a Controls auto-hide timer:")
 
-                    self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block:
+                    self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block:
                     { (timer: Timer) in
 //                        print("++++++++ Fired timer: \(timer)")
 //                        print("And it is valid: \(timer.isValid)")
@@ -552,7 +555,8 @@ class MediaUIController: NSObject
                 }
 
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
-                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+                self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+//                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
 
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
@@ -563,7 +567,8 @@ class MediaUIController: NSObject
 //                print("failed")
                 self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
-                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+                self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+//                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
                 self.mediaPlayerViewCollection?.errorLabel?.text = "There was a playback error."
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = false
 
@@ -573,6 +578,7 @@ class MediaUIController: NSObject
 //                print("buffering")
                 self.mediaPlayerViewCollection?.activitySpinner?.startAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.isHidden = false
+                self.mediaPlayerViewCollection?.activitySpinner?.alpha = 1
 
                 if self.isSliderChanging == false
                 {
@@ -584,7 +590,8 @@ class MediaUIController: NSObject
 
             case .playedToEnd:
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
-                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+                self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+//                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
 
                 self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
