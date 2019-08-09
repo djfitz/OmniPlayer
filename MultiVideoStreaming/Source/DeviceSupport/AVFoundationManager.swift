@@ -375,8 +375,11 @@ class AVFoundationMediaPlayerManager : NSObject,
 
                 case .readyToPlay:
 //                    print("Player Status is Ready to Play")
-                    self.currentMediaItem = self.loadingMediaItem
-                    self.loadingMediaItem = nil
+                    if self.currentMediaItem == nil
+                    {
+                        self.currentMediaItem = self.loadingMediaItem
+                        self.loadingMediaItem = nil
+                    }
                     self.status = .readyToPlay
 
                 case .unknown:

@@ -121,7 +121,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" id="Hyo-oD-dir">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
                             <tableViewSection id="QRi-Kj-hEG">
                                 <cells>
@@ -136,11 +136,13 @@
                                                     <rect key="frame" x="82" y="21" width="250" height="108"/>
                                                 </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="OBg-JX-4VH" firstAttribute="centerX" secondItem="mgQ-Lf-A8T" secondAttribute="centerX" id="V55-BJ-MlK"/>
                                                 <constraint firstItem="OBg-JX-4VH" firstAttribute="centerY" secondItem="mgQ-Lf-A8T" secondAttribute="centerY" id="oug-QG-xAf"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <segue destination="pCo-Kr-KBu" kind="show" id="9PZ-4y-X5E"/>
                                         </connections>
@@ -152,7 +154,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="149.66666666666666"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb2" translatesAutoresizingMaskIntoConstraints="NO" id="FUQ-9r-D7B">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb5" translatesAutoresizingMaskIntoConstraints="NO" id="FUQ-9r-D7B">
                                                     <rect key="frame" x="82" y="5" width="250" height="140"/>
                                                 </imageView>
                                             </subviews>
@@ -160,6 +162,7 @@
                                                 <constraint firstItem="FUQ-9r-D7B" firstAttribute="centerX" secondItem="gcM-eh-DBt" secondAttribute="centerX" id="Qfw-1X-9Hz"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="FUQ-9r-D7B" firstAttribute="centerY" secondItem="542-vf-Rz2" secondAttribute="centerY" id="LNA-as-1hB"/>
                                         </constraints>
@@ -174,11 +177,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="149.66666666666666"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb3" translatesAutoresizingMaskIntoConstraints="NO" id="6ss-lb-JL6">
-                                                    <rect key="frame" x="107" y="18.666666666666671" width="200" height="113.00000000000001"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb8" translatesAutoresizingMaskIntoConstraints="NO" id="6ss-lb-JL6">
+                                                    <rect key="frame" x="82" y="8.6666666666666714" width="250" height="133"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="6ss-lb-JL6" firstAttribute="centerY" secondItem="9Iu-GV-osF" secondAttribute="centerY" id="BYI-ru-PYk"/>
                                             <constraint firstItem="6ss-lb-JL6" firstAttribute="centerX" secondItem="9Iu-GV-osF" secondAttribute="centerX" id="Kd2-Y8-z16"/>
@@ -194,11 +198,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="149.66666666666666"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb4" translatesAutoresizingMaskIntoConstraints="NO" id="Qnf-Ju-hfA">
-                                                    <rect key="frame" x="107" y="32.666666666666657" width="200" height="85"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb7" translatesAutoresizingMaskIntoConstraints="NO" id="Qnf-Ju-hfA">
+                                                    <rect key="frame" x="82" y="5" width="250" height="140"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="Qnf-Ju-hfA" firstAttribute="centerY" secondItem="oiS-DF-uFQ" secondAttribute="centerY" id="hKk-XP-kNV"/>
                                             <constraint firstItem="Qnf-Ju-hfA" firstAttribute="centerX" secondItem="oiS-DF-uFQ" secondAttribute="centerX" id="xzf-E4-icq"/>
@@ -214,15 +219,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="149.66666666666666"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb5" translatesAutoresizingMaskIntoConstraints="NO" id="YHt-BH-zbe">
-                                                    <rect key="frame" x="82" y="5" width="250" height="140"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb6" translatesAutoresizingMaskIntoConstraints="NO" id="YHt-BH-zbe">
+                                                    <rect key="frame" x="82" y="10" width="250" height="130"/>
                                                 </imageView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="YHt-BH-zbe" firstAttribute="centerX" secondItem="31V-1o-3Vj" secondAttribute="centerX" id="CDI-bR-ZYO"/>
+                                                <constraint firstItem="YHt-BH-zbe" firstAttribute="centerY" secondItem="31V-1o-3Vj" secondAttribute="centerY" id="wrU-VS-VwM"/>
+                                            </constraints>
                                         </tableViewCellContentView>
-                                        <constraints>
-                                            <constraint firstItem="YHt-BH-zbe" firstAttribute="centerX" secondItem="Zyb-Fa-01W" secondAttribute="centerX" id="6Dl-Wg-5gJ"/>
-                                            <constraint firstItem="YHt-BH-zbe" firstAttribute="centerY" secondItem="Zyb-Fa-01W" secondAttribute="centerY" id="Pr6-HT-ChR"/>
-                                        </constraints>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <segue destination="pCo-Kr-KBu" kind="show" id="NmQ-vX-umx"/>
                                         </connections>
@@ -244,10 +250,10 @@
     </scenes>
     <resources>
         <image name="Thumb1" width="250" height="108"/>
-        <image name="Thumb2" width="250" height="140"/>
-        <image name="Thumb3" width="200" height="113"/>
-        <image name="Thumb4" width="200" height="85"/>
         <image name="Thumb5" width="250" height="140"/>
+        <image name="Thumb6" width="250" height="130"/>
+        <image name="Thumb7" width="250" height="140"/>
+        <image name="Thumb8" width="250" height="133"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0TY-hq-8gi"/>

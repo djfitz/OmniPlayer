@@ -301,7 +301,10 @@ class MediaUIController: NSObject
             {
                 if let mediaItem = MediaPlayerManager.mgr.currentMediaItem
                 {
-                    MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: CMTime.init(seconds: seekTimeSec, preferredTimescale: 1))
+                    DispatchQueue.main.async
+                    {
+                        MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: CMTime.init(seconds: seekTimeSec, preferredTimescale: 1))
+                    }
                 }
             }
             else
@@ -408,11 +411,11 @@ class MediaUIController: NSObject
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
     {
-//        print("\n**************************************")
-//        print("Observed Value change: \(keyPath!)")
-//        print("Object: \(object!)")
-//        print("Kind: \(change![NSKeyValueChangeKey.kindKey]!)")
-//        print("New Value: \(change![NSKeyValueChangeKey.newKey]!)")
+        print("\n**************************************")
+        print("Observed Value change: \(keyPath!)")
+        print("Object: \(object!)")
+        print("Kind: \(change![NSKeyValueChangeKey.kindKey]!)")
+        print("New Value: \(change![NSKeyValueChangeKey.newKey]!)")
 
         if keyPath == "status"
         {
@@ -565,7 +568,11 @@ class MediaUIController: NSObject
 
             case .failed:
 //                print("failed")
-                self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                if self.isSliderChanging == false
+                {
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                }
+                
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
 //                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
@@ -593,14 +600,22 @@ class MediaUIController: NSObject
                 self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
 //                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
 
-                self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                if self.isSliderChanging == false
+                {
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                }
+                
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
 
                 self.showControls()
 
             case .idle:
-                self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                if self.isSliderChanging == false
+                {
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                }
+                
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
 

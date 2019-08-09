@@ -47,7 +47,7 @@ class MediaControlsViewController: UIViewController
                 .main
                 .asyncAfter( deadline: fireTime )
             {
-                self.enterFullscreen()
+                self.isFullscreen = true
             }
         }
     }
