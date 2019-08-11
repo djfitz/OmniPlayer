@@ -17,6 +17,16 @@ class AVFoundationMediaPlayerManager : NSObject,
                                        RemoteMediaPlayback,
                                        MediaPlaybackQueue
 {
+    static var showLogMessages = false
+
+    func log(msg: String)
+    {
+        if AVFoundationMediaPlayerManager.showLogMessages
+        {
+            print("\(msg)")
+        }
+    }
+
     // MARK: ** Generic Media Player
 
     /// Setting the offset will perform a seek operation.
@@ -134,12 +144,15 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     @objc func airplayRoutesAvailableNotification( notif: Notification)
     {
+        self.log(msg: "Airplay Route Changed:\n\(notif)")
 //        self.updateAirplayButtonVisibility()
     }
 
     // * airplayRouteChangedNotification
     @objc func airplayRouteChangedNotification( notif: Notification)
     {
+        self.log(msg: "Airplay Route Changed:\n\(notif)")
+
 //        if let isWirelessRouteActive = self.remoteDevicePickerButton.isWirelessRouteActive
 //        {
 //            if self.
@@ -155,6 +168,8 @@ class AVFoundationMediaPlayerManager : NSObject,
     override init()
     {
         super.init()
+
+        AVFoundationMediaPlayerManager.showLogMessages = true
 
         self.setupAVFoundationPlayer()
     }
@@ -279,8 +294,8 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
-//        print("\n$$$$ >> Starting Seek to time: \(time.seconds) ")
-//        print("Duration: \(self.player.currentItem!.duration.seconds)")
+        self.log( msg:"\n$$$$ >> Starting Seek to time: \(time.seconds) ")
+        self.log( msg:"Duration: \(self.player.currentItem!.duration.seconds)")
 
         self.player.currentItem?.cancelPendingSeeks()
 
@@ -295,13 +310,13 @@ class AVFoundationMediaPlayerManager : NSObject,
             completionHandler(!finished)
             if finished && playAfterSeek
             {
-                print("Completed Seek to time: \(time.seconds). Start playback.\n")
+                self.log( msg:"Completed Seek to time: \(time.seconds). Start playback.\n")
                 // self.play()
 //                self.pause()
             }
             else if !finished
             {
-                print("Cancelled Seek to time: \(time.seconds)\n")
+                self.log( msg:"Cancelled Seek to time: \(time.seconds)\n")
 //                self.pause()
             }
 
@@ -337,42 +352,42 @@ class AVFoundationMediaPlayerManager : NSObject,
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
     {
-//        print("\n========================================\n")
+        self.log( msg:"\n========================================\n")
 
-//        if let objVal = object
-//        {
-//            print("Object: \(objVal)")
-//        }
+        if let objVal = object
+        {
+            self.log( msg:"Object: \(objVal)")
+        }
 
 
-//        if let kindVal = change?[NSKeyValueChangeKey.kindKey]
-//        {
-//            print("Kind: \(kindVal)")
-//        }
-//
-//        if let newVal = change?[NSKeyValueChangeKey.newKey]
-//        {
-//            print("New: \(newVal)")
-//        }
+        if let kindVal = change?[NSKeyValueChangeKey.kindKey]
+        {
+            self.log( msg:"Kind: \(kindVal)")
+        }
+
+        if let newVal = change?[NSKeyValueChangeKey.newKey]
+        {
+            self.log( msg:"New: \(newVal)")
+        }
 
         if keyPath == "status"
         {
             let playerStatus = self.player.status
-//            let playerStatusDesc = playerStatus.description()
+            let playerStatusDesc = playerStatus.description()
             let itemStatus = self.player.currentItem?.status
-//            let itemStatusDesc = itemStatus.debugDescription
+            let itemStatusDesc = itemStatus.debugDescription
 
-//            print("Status:\(playerStatusDesc)\n")
-//            print("Item Status:\(itemStatusDesc)\n")
+            self.log( msg:"Status:\(playerStatusDesc)\n")
+            self.log( msg:"Item Status:\(itemStatusDesc)\n")
 
             switch playerStatus
             {
                 case .failed:
-//                    print("Player Status is Failed")
+                    self.log( msg:"Player Status is Failed")
                     self.status = .failed
 
                 case .readyToPlay:
-//                    print("Player Status is Ready to Play")
+                    self.log( msg:"Player Status is Ready to Play")
                     if self.currentMediaItem == nil
                     {
                         self.currentMediaItem = self.loadingMediaItem
@@ -382,11 +397,11 @@ class AVFoundationMediaPlayerManager : NSObject,
                     self.status = .readyToPlay
 
                 case .unknown:
-//                    print("Player Status is Unknown")
+                    self.log( msg:"Player Status is Unknown")
                     self.status = .unknown
 
                 @unknown default:
-//                    print("Unknown")
+                    self.log( msg:"Unknown")
                     self.status = .unknown
             }
 
@@ -395,19 +410,19 @@ class AVFoundationMediaPlayerManager : NSObject,
                 switch validItemStatus
                 {
                     case .failed:
-                        print("Player Status is Failed")
+                        self.log( msg:"Player Status is Failed")
                         self.status = .failed
 
                     case .readyToPlay:
-                        print("Player Status is Ready to Play")
+                        self.log( msg:"Player Status is Ready to Play")
                         self.status = .readyToPlay
 
                     case .unknown:
-                        print("Unknown")
+                        self.log( msg:"Unknown")
                         self.status = .unknown
 
                     @unknown default:
-                        print("Unknown")
+                        self.log( msg:"Unknown")
                         self.status = .unknown
                 }
             }
@@ -421,13 +436,13 @@ class AVFoundationMediaPlayerManager : NSObject,
         else if keyPath == "rate"
         {
             let rt = self.player.rate
-            print("New rate is \(rt)")
+            self.log( msg:"New rate is \(rt)")
         }
         else if keyPath == "timeControlStatus"
         {
             let status = self.player.timeControlStatus
-//            let timeControlDesc = status.description()
-//            print("Time Control Status: \(timeControlDesc)")
+            let timeControlDesc = status.description()
+            self.log( msg:"Time Control Status: \(timeControlDesc)")
 
             switch status
             {
@@ -443,12 +458,12 @@ class AVFoundationMediaPlayerManager : NSObject,
                     self.status = .buffering
 
                 @unknown default:
-                    print("Unknown Time Control Status.")
+                    self.log( msg:"Unknown Time Control Status.")
             }
         }
         else if keyPath == "duration"
         {
-//            print("Duration: \(self.playerItem!.duration.seconds)")
+            self.log( msg:"Duration: \(self.playerItem!.duration.seconds)")
 
             if let newVal = self.playerItem?.duration
             {
@@ -456,31 +471,31 @@ class AVFoundationMediaPlayerManager : NSObject,
             }
         }
 
-//        print("\n========================================\n\n")
+        self.log( msg:"\n========================================\n\n")
     }
 
     // * sessionInterrupted
     @objc func sessionInterrupted( notif: Notification)
     {
-        print("\(notif)")
+        self.log( msg:"sessionInterrupted:\n\(notif)")
     }
 
     @objc func mediaDidToPlayToEndTime( notif: Notification )
     {
         self.status = .playedToEnd
-        print("mediaDidToPlayToEndTime")
+        self.log( msg:"mediaDidToPlayToEndTime")
     }
 
     @objc func mediaFailedToPlayToEndTime( notif: Notification )
     {
         self.status = .failed
-        print("mediaFailedToPlayToEndTime")
+        self.log( msg:"mediaFailedToPlayToEndTime")
     }
 
     @objc func mediaPlaybackStalled( notif: Notification )
     {
         self.status = .failed
-        print("mediaFailedToPlayToEndTime")
+        self.log( msg:"mediaFailedToPlayToEndTime")
     }
 
     @objc func mediaPlaybackTimeJumped( notif: Notification )

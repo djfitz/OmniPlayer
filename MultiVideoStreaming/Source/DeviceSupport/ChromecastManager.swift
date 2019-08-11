@@ -38,6 +38,13 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                           GCKRemoteMediaClientListener, GCKRequestDelegate,
                           GCKSessionManagerListener, GCKLoggerDelegate
 {
+    static var showLogMessages = false
+
+    func log(msg: String)
+    {
+        print("\(msg)")
+    }
+
     // ID can be found at: https://cast.google.com/publish/
     let kChromecastApplicationID = "09E504FF"
 
@@ -51,6 +58,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         label: "ChromecastMessageQueue",
                         qos: .background )
 
+    var mediaStatusUpdateTimer: Timer? = nil
+
     /**
         Update this property to show Chromecast SDK log messages.
 
@@ -63,6 +72,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     override init()
     {
         super.init()
+
+        self.logChromecastMessages = true
 
         self.setupChromecastSDK()
     }
@@ -120,8 +131,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
     func load(mediaItem: MediaItem, startingAt time: CMTime)
     {
-//        print("&$&$&$&$&><> Loading media item in Chromecast player.")
-//        print("URL: \(mediaItem.url.absoluteString); At Time: \(time.seconds)")
+        self.log( msg:"&$&$&$&$&><> Loading media item in Chromecast player.")
+        self.log( msg:"URL: \(mediaItem.url.absoluteString); At Time: \(time.seconds)")
 
         let md = GCKMediaMetadata.init(metadataType: .movie)
         md.setString(mediaItem.title, forKey: kGCKMetadataKeyTitle)
@@ -352,7 +363,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         didFailToStart session: GCKSession,
                         withError error: Error)
     {
-        print( "Session Manager: Session Did Fail to Start, with Session with ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(error)" )
+        self.log( msg: "Session Manager: Session Did Fail to Start, with Session with ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(error)" )
 
         NotificationCenter.default.post(name: NSNotification.Name.init("SessionDidFailtoStartNotification"), object: error)
     }
@@ -368,7 +379,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         didSuspend session: GCKSession,
                         with reason: GCKConnectionSuspendReason)
     {
-        print( "Session Manager: Session Did Suspend. Reason:\n\(EnumDescriber.description(for: reason)))\n" )
+        self.log( msg: "Session Manager: Session Did Suspend. Reason:\n\(EnumDescriber.description(for: reason)))\n" )
     }
 
     /**
@@ -407,7 +418,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         session: GCKSession,
                         didUpdate device: GCKDevice)
     {
-        print( "Session Manager: Did Update Device\nSession ID: \((session.sessionID != nil) ? session.sessionID! : "no ID")\nDevice ID = \(String(describing: device.deviceID))\n" )
+        self.log( msg: "Session Manager: Did Update Device\nSession ID: \((session.sessionID != nil) ? session.sessionID! : "no ID")\nDevice ID = \(String(describing: device.deviceID))\n" )
     }
 
     /**
@@ -423,7 +434,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         didReceiveDeviceVolume volume: Float,
                         muted: Bool)
     {
-        print( "Session Manager: Did Receive Device Volume.\nSession ID: \((session.sessionID != nil) ? session.sessionID! : "no ID")\nNew Device Volume = \(String(describing: volume))\nMuted:\(String(describing: muted))" )
+        self.log( msg: "Session Manager: Did Receive Device Volume.\nSession ID: \((session.sessionID != nil) ? session.sessionID! : "no ID")\nNew Device Volume = \(String(describing: volume))\nMuted:\(String(describing: muted))" )
     }
 
     /**
@@ -526,7 +537,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         didFailToStart session: GCKCastSession,
                         withError error: Error)
     {
-        print( "Session Manager: Cast Session Did Fail to Start. Cast Session ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(error)" )
+        self.log( msg: "Session Manager: Cast Session Did Fail to Start. Cast Session ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(error)" )
     }
 
     /**
@@ -540,7 +551,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         didSuspend session: GCKCastSession,
                         with reason: GCKConnectionSuspendReason)
     {
-        print( "Session Manager: Cast Session Did Suspend. Reason:\n\(String(describing: reason))\n" )
+        self.log( msg: "Session Manager: Cast Session Did Suspend. Reason:\n\(String(describing: reason))\n" )
     }
 
     /**
@@ -593,7 +604,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         didReceiveDeviceVolume volume: Float,
                         muted: Bool)
     {
-        print( "Session Manager: Cast Session Did Receive Device Volume.\nCast Session ID: \((session.sessionID != nil) ? session.sessionID! : "no ID")\nNew Device Volume = \(String(describing: volume))\nMuted:\(String(describing: muted))" )
+        self.log( msg: "Session Manager: Cast Session Did Receive Device Volume.\nCast Session ID: \((session.sessionID != nil) ? session.sessionID! : "no ID")\nNew Device Volume = \(String(describing: volume))\nMuted:\(String(describing: muted))" )
     }
 
     func logMessage(_ message: String,
@@ -603,7 +614,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     {
         let lvl = EnumDescriber.description(for: level)
 
-        print("Chromecast Message:\n\(message)\nLevel: \(lvl)\nFunction: \(function)\nLocation:\(location)\n")
+        self.log( msg:"Chromecast Message:\n\(message)\nLevel: \(lvl)\nFunction: \(function)\nLocation:\(location)\n")
     }
 
 // =======================================================================================
@@ -659,6 +670,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                 }
                 self.status = .buffering
 
+                self.mediaStatusUpdateTimer?.invalidate()
+
             case .idle:
                 self.loadingMediaItem = nil
 
@@ -688,8 +701,12 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         self.status = .unknown
                 }
 
+                self.mediaStatusUpdateTimer?.invalidate()
+
             case .loading:
                 self.status = .loading
+    
+                self.mediaStatusUpdateTimer?.invalidate()
 
             case .paused:
                 self.loadingMediaItem = nil
@@ -699,14 +716,22 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                     self.currentOffset = CMTime.init(seconds: currentStatus.streamPosition, preferredTimescale: 1)
                 }
                 self.status = .paused
+    
+                self.mediaStatusUpdateTimer?.invalidate()
 
             case .playing:
                 self.loadingMediaItem = nil
 
-                if let currentStatus = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus
-                {
-                    self.currentOffset = CMTime.init(seconds: currentStatus.streamPosition, preferredTimescale: 1)
-                }
+                self.mediaStatusUpdateTimer =
+                    Timer.scheduledTimer(withTimeInterval: 1,
+                                repeats: true,
+                                block:
+                                { (timer:Timer) in
+                                    self.updateToLatestTimeOffset()
+                                } )
+
+                self.updateToLatestTimeOffset()
+
                 self.status = .playing
 
             case .unknown:
@@ -714,6 +739,14 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
             @unknown default:
                 self.status = .unknown
+        }
+    }
+
+    func updateToLatestTimeOffset()
+    {
+        if let currentTimeOffset = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.approximateStreamPosition()
+        {
+            self.currentOffset = CMTime.init(seconds: currentTimeOffset, preferredTimescale: 1)
         }
     }
 

@@ -15,6 +15,16 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
 
     static let mgr = MediaPlayerManager()
 
+    static var showPlayerLogMessages = false
+
+    func log(msg: String)
+    {
+        if MediaPlayerManager.showPlayerLogMessages
+        {
+            print("\(msg)")
+        }
+    }
+
     // MARK: - Media Playback Engines
     
     let avFoundationPlayer = AVFoundationMediaPlayerManager()
@@ -28,6 +38,8 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
     override init()
     {
         super.init()
+
+        MediaPlayerManager.showPlayerLogMessages = true
 
         self.switchPlayback(to: self.avFoundationPlayer)
     }
@@ -255,11 +267,11 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
     {
-//        print("\n--------------------------------------------")
-//        print("Observed Value change: \(keyPath!)")
-//        print("Object: \(object!)")
-//        print("Kind: \(change![NSKeyValueChangeKey.kindKey]!)")
-//        print("New Value: \(change![NSKeyValueChangeKey.newKey]!)")
+//        self.log( msg:"\n--------------------------------------------")
+//        self.log( msg:"Observed Value change: \(keyPath!)")
+//        self.log( msg:"Object: \(object!)")
+//        self.log( msg:"Kind: \(change![NSKeyValueChangeKey.kindKey]!)")
+//        self.log( msg:"New Value: \(change![NSKeyValueChangeKey.newKey]!)")
 
         if keyPath == "status"
         {
@@ -267,33 +279,33 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
             {
                 self.status = PlaybackStatus(rawValue: newStatusInt) ?? .unknown
 
-//                print("New Status: \(self.status.rawValue)")
+                self.log( msg:"New Status: \(self.status.rawValue)")
             }
         }
         else if keyPath == "currentOffset"
         {
             if let newCurrentTime = change?[NSKeyValueChangeKey.newKey] as? CMTime
             {
-//                print("New Current Offset: \(newCurrentTime.seconds)")
+                self.log( msg:"New Current Offset: \(newCurrentTime.seconds)")
 
                 self.currentOffset = newCurrentTime
             }
         }
         else if keyPath == "loadingMediaItem"
         {
-//            if let newLoadingItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
-//            {
-//                print("New Media Item is being loaded: \(newLoadingItem)")
-//            }
+            if let newLoadingItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
+            {
+                self.log( msg:"New Media Item is being loaded: \(newLoadingItem)")
+            }
 
             self.loadingMediaItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
         }
         else if keyPath == "currentMediaItem"
         {
-//            if let newCurrentItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
-//            {
-//                print("Current Media Item Changed: \(newCurrentItem)")
-//            }
+            if let newCurrentItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
+            {
+                self.log( msg:"Current Media Item Changed: \(newCurrentItem)")
+            }
 
             self.currentMediaItem = change?[NSKeyValueChangeKey.newKey] as? MediaItem
             self.loadingMediaItem = nil
@@ -302,7 +314,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         {
             if let newDuration = change?[NSKeyValueChangeKey.newKey] as? CMTime
             {
-//                print("New Duration: \(newDuration)")
+                self.log( msg:"New Duration: \(newDuration)")
 
                 self.duration = newDuration
             }
@@ -311,7 +323,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         {
             if let newRate = change?[NSKeyValueChangeKey.newKey] as? Double
             {
-//                print("New Playback Rate: \(newRate)")
+                self.log( msg:"New Playback Rate: \(newRate)")
 
                 self.playbackRate = newRate
             }
@@ -320,12 +332,12 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         {
             if let newIsSeeking = change?[NSKeyValueChangeKey.newKey] as? Bool
             {
-//                print("Player is Seeking: \(newIsSeeking)")
+                self.log( msg:"Player is Seeking: \(newIsSeeking)")
 
                 self.isSeeking = newIsSeeking
             }
         }
 
-//        print("--------------------------------------------")
+        self.log( msg:"--------------------------------------------")
     }
 }
