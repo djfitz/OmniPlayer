@@ -234,6 +234,69 @@
                                             <segue destination="pCo-Kr-KBu" kind="show" id="NmQ-vX-umx"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="150" id="Hqu-7x-B0v">
+                                        <rect key="frame" x="0.0" y="750" width="414" height="150"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hqu-7x-B0v" id="A1E-q4-Caw">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="149.66666666666666"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb9" translatesAutoresizingMaskIntoConstraints="NO" id="bDN-iN-AKz">
+                                                    <rect key="frame" x="82" y="4.3333333333333286" width="250" height="141"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bDN-iN-AKz" firstAttribute="centerY" secondItem="A1E-q4-Caw" secondAttribute="centerY" id="phE-s7-ljL"/>
+                                                <constraint firstItem="bDN-iN-AKz" firstAttribute="centerX" secondItem="A1E-q4-Caw" secondAttribute="centerX" id="rOK-dA-fdB"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <segue destination="pCo-Kr-KBu" kind="show" id="qz8-dw-gLc"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="150" id="9Z5-Bk-xJx">
+                                        <rect key="frame" x="0.0" y="900" width="414" height="150"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9Z5-Bk-xJx" id="LUf-bw-CN8">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="149.66666666666666"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb10" translatesAutoresizingMaskIntoConstraints="NO" id="qzO-zN-ihl">
+                                                    <rect key="frame" x="82" y="5" width="250" height="140"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="qzO-zN-ihl" firstAttribute="centerX" secondItem="LUf-bw-CN8" secondAttribute="centerX" id="81x-oi-DY1"/>
+                                                <constraint firstItem="qzO-zN-ihl" firstAttribute="centerY" secondItem="LUf-bw-CN8" secondAttribute="centerY" id="EPq-yB-ELu"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <segue destination="pCo-Kr-KBu" kind="show" id="Qeg-03-3DY"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="150" id="PCv-Ie-kuO">
+                                        <rect key="frame" x="0.0" y="1050" width="414" height="150"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PCv-Ie-kuO" id="JdN-Js-Wjq">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="149.66666666666666"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Thumb11" translatesAutoresizingMaskIntoConstraints="NO" id="Ql5-2H-IZD">
+                                                    <rect key="frame" x="82" y="7" width="250" height="136"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Ql5-2H-IZD" firstAttribute="centerX" secondItem="JdN-Js-Wjq" secondAttribute="centerX" id="p1s-De-5nC"/>
+                                                <constraint firstItem="Ql5-2H-IZD" firstAttribute="centerY" secondItem="JdN-Js-Wjq" secondAttribute="centerY" id="zl1-bd-1yo"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <segue destination="pCo-Kr-KBu" kind="show" id="kgA-KW-lxC"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -251,10 +314,13 @@
     </scenes>
     <resources>
         <image name="Thumb1" width="250" height="108"/>
+        <image name="Thumb10" width="250" height="140"/>
+        <image name="Thumb11" width="250" height="136"/>
         <image name="Thumb5" width="250" height="140"/>
         <image name="Thumb6" width="250" height="130"/>
         <image name="Thumb7" width="250" height="140"/>
         <image name="Thumb8" width="250" height="133"/>
+        <image name="Thumb9" width="250" height="141"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0TY-hq-8gi"/>

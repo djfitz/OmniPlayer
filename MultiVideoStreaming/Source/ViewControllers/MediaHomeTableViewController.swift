@@ -13,12 +13,13 @@ class MediaHomeTableViewController: UITableViewController
     static let mediaURLs =
         [
             URL(string: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),
-            URL(string: "http://cdn-lt-hls-vod.tv2fyn.dk/fhls/p/1966291/sp/196629100/serveFlavor/entryId/0_yct7rqn3/v/2/flavorId/0_h2wfmuqm/name/a.mp4/index.m3u8"),
-            URL(string: "http://la7-vh.akamaihd.net/i/content/entry/data/0/299/0_b7o9lvba_0_kyyr8vxz_1.mp4/master.m3u8"),
             URL(string: "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"),
             URL(string: "http://csm-e.cds1.yospace.com/csm/live/74246610.m3u8"),
             URL(string: "http://breaqz.com/movies/Lego911gt3.mov"),
-            URL(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8")
+            URL(string: "http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"),
+            URL(string: "http://la7-vh.akamaihd.net/i/content/entry/data/0/299/0_b7o9lvba_0_kyyr8vxz_1.mp4/master.m3u8"),
+            URL(string: "http://cdn-lt-hls-vod.tv2fyn.dk/fhls/p/1966291/sp/196629100/serveFlavor/entryId/0_yct7rqn3/v/2/flavorId/0_h2wfmuqm/name/a.mp4/index.m3u8"),
+            URL(string: "http://sireclipsfoxru-vh.akamaihd.net/i/mpx/FIC_SIRE_Fox/831/336/Sneak_Peek~~111704~12~21~en~~1_ru_42787397,100_mp4_video_1920x0_4016000_primary_audio_6,099_mp4_video_1280x0_2432000_primary_audio_5,098_mp4_video_1280x0_1800000_primary_audio_4,097_mp4_video_960x0_1200000_primary_audio_3,096_mp4_video_640x0_568000_primary_audio_2,095_mp4_video_480x0_400000_primary_audio_1,.mp4.csmil/index_0_av.m3u8")
         ]
     override func viewDidLoad()
     {
