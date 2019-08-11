@@ -245,10 +245,8 @@ class MediaUIController: NSObject
                 MediaPlayerManager.mgr.pause()
 
             case .idle:
-                let x = 1
-//                print("* idle")
-
-//                print("Player is idle.")
+                print("* idle")
+                print("Player is idle.")
         }
     }
 
@@ -284,49 +282,7 @@ class MediaUIController: NSObject
     {
         print("sliderValueChanged")
 
-        if self.isSliderChanging
-        {
-            print("\n***** Slider >> Value Changed\nNew Value: \(self.mediaPlayerViewCollection?.seekTimeSlider?.value)")
-            print("***** Slider is Changing: \(self.isSliderChanging)")
-            let currentSliderValue = Double(self.mediaPlayerViewCollection?.seekTimeSlider?.value ?? 0)
-            let duration = MediaPlayerManager.mgr.duration
-            let seekTimeSec = currentSliderValue * duration.seconds
-
-            if seekTimeSec == duration.seconds
-            {
-                print("***** Seeking to the end.")
-            }
-
-            if MediaPlayerManager.mgr.status == .playedToEnd
-            {
-                if let mediaItem = MediaPlayerManager.mgr.currentMediaItem
-                {
-                    DispatchQueue.main.async
-                    {
-                        MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: CMTime.init(seconds: seekTimeSec, preferredTimescale: 1))
-                    }
-                }
-            }
-            else
-            {
-    //            MediaPlayerManager.mgr.pause()
-
-                let newTime = CMTime( seconds: seekTimeSec, preferredTimescale: CMTimeScale(1) )
-                if newTime.isValid && newTime != lastSeekTime
-                {
-                    self.lastSeekTime = newTime
-
-                    MediaPlayerManager.mgr.seek( to: newTime, playAfterSeek: false )
-                    { (finished) in
-                        print("Seeked to \(seekTimeSec): Finished = \(finished)")
-                    }
-                }
-                else
-                {
-                    print("\n>$>$>$>$>$>$> >> Skipping redundant seek to \(newTime)")
-                }
-            }
-        }
+//        self.seek(to: CMTime(seconds: seekTimeSec, preferredTimescale: 1))
     }
 
     @IBAction func sliderEditingChanged(_ sender: Any)
@@ -360,47 +316,57 @@ class MediaUIController: NSObject
 
     @IBAction func sliderTouchUpInside(_ sender: Any)
     {
-        print("\n***** Slider >> Touch Up Inside\nNew Value: \(self.mediaPlayerViewCollection?.seekTimeSlider?.value)\n")
+        print("\n***** Slider >> Touch Up Inside\nNew Value: \(String( describing: self.mediaPlayerViewCollection?.seekTimeSlider?.value))\n")
+
+        print("\n***** Slider >> Value Changed\nNew Value: \(String(describing: self.mediaPlayerViewCollection?.seekTimeSlider?.value))")
+        print("***** Slider is Changing: \(self.isSliderChanging)")
+        let currentSliderValue = Double(self.mediaPlayerViewCollection?.seekTimeSlider?.value ?? 0)
+        let duration = MediaPlayerManager.mgr.duration
+        let seekTimeSec = currentSliderValue * duration.seconds
+
+        self.seek(to: CMTime(seconds: seekTimeSec, preferredTimescale: 1))
 
         self.isSliderChanging = false
+    }
 
+    func seek( to newTime:CMTime)
+    {
+        if self.isSliderChanging
+        {
+            let duration = MediaPlayerManager.mgr.duration
 
-//        let currentSliderValue = Double(self.mediaPlayerViewCollection?.seekTimeSlider?.value ?? 0)
-//        let duration = MediaPlayerManager.mgr.duration
-//        let seekTimeSec = currentSliderValue * duration.seconds
-//
-//        if seekTimeSec == duration.seconds
-//        {
-//            print("***** Seeking to the end.")
-//        }
-//
-//        if MediaPlayerManager.mgr.status == .playedToEnd
-//        {
-//            if let mediaItem = MediaPlayerManager.mgr.currentMediaItem
-//            {
-//                MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: CMTime.init(seconds: seekTimeSec, preferredTimescale: 1))
-//            }
-//        }
-//        else
-//        {
-////            MediaPlayerManager.mgr.pause()
-//
-//            MediaPlayerManager.mgr.seek(
-//                to: CMTime( seconds: seekTimeSec,
-//                            preferredTimescale: CMTimeScale(1) ),
-//                playAfterSeek: true
-//            )
-//            { (finished) in
-//                print("Seeked to \(seekTimeSec): Finished = \(finished)")
-//
-//                if seekTimeSec != duration.seconds && finished
-//                {
-//                    MediaPlayerManager.mgr.play()
-//                }
-//
-//                self.isSliderChanging = false
-//            }
-//        }
+            if newTime.seconds == duration.seconds
+            {
+                print("***** Seeking to the end.")
+            }
+
+            if MediaPlayerManager.mgr.status == .playedToEnd
+            {
+                if let mediaItem = MediaPlayerManager.mgr.currentMediaItem
+                {
+                    DispatchQueue.main.async
+                    {
+                        MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: newTime)
+                    }
+                }
+            }
+            else
+            {
+                if newTime.isValid && newTime != self.lastSeekTime
+                {
+                    self.lastSeekTime = newTime
+
+                    MediaPlayerManager.mgr.seek( to: newTime, playAfterSeek: true )
+                    { (finished) in
+                        print("Seeked to \(newTime.seconds): Finished = \(finished)")
+                    }
+                }
+                else
+                {
+                    print("\n>$>$>$>$>$>$> >> Skipping redundant seek to \(newTime)")
+                }
+            }
+        }
     }
 
     //
@@ -437,7 +403,7 @@ class MediaUIController: NSObject
                    self.isControlsHidden == false &&
                    self.controlsVisibilityTimer == nil
                 {
-                    let randomID = UUID.init()
+//                    let randomID = UUID.init()
 //                    print(">>>>>> After playback has started, auto-hide controls.")
 //                    print("Timer ID: \(randomID)")
 

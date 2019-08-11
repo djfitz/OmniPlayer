@@ -140,12 +140,9 @@ class AVFoundationMediaPlayerManager : NSObject,
     // * airplayRouteChangedNotification
     @objc func airplayRouteChangedNotification( notif: Notification)
     {
-//        self.updateAirplayButtonVisibility()
-
-//        if self.airplayButton.isWirelessRouteActive
-////        && self.player?.timeControlStatus != .
+//        if let isWirelessRouteActive = self.remoteDevicePickerButton.isWirelessRouteActive
 //        {
-//            self.startPlayback()
+//            if self.
 //        }
     }
 
@@ -232,6 +229,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 
         let url = mediaItem.url
         self.loadingMediaItem = mediaItem
+        self.currentMediaItem = nil
         self.status = .loading
 
         // Create the new player item for this media.
@@ -284,7 +282,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 //        print("\n$$$$ >> Starting Seek to time: \(time.seconds) ")
 //        print("Duration: \(self.player.currentItem!.duration.seconds)")
 
-         self.player.currentItem?.cancelPendingSeeks()
+        self.player.currentItem?.cancelPendingSeeks()
 
         self.isSeeking = true
 
@@ -378,8 +376,9 @@ class AVFoundationMediaPlayerManager : NSObject,
                     if self.currentMediaItem == nil
                     {
                         self.currentMediaItem = self.loadingMediaItem
-                        self.loadingMediaItem = nil
                     }
+
+                    self.loadingMediaItem = nil
                     self.status = .readyToPlay
 
                 case .unknown:
@@ -422,12 +421,12 @@ class AVFoundationMediaPlayerManager : NSObject,
         else if keyPath == "rate"
         {
             let rt = self.player.rate
-//            print("New rate is \(rt)")
+            print("New rate is \(rt)")
         }
         else if keyPath == "timeControlStatus"
         {
             let status = self.player.timeControlStatus
-            let timeControlDesc = status.description()
+//            let timeControlDesc = status.description()
 //            print("Time Control Status: \(timeControlDesc)")
 
             switch status

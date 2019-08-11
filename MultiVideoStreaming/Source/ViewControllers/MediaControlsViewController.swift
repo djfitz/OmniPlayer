@@ -72,7 +72,6 @@ class MediaControlsViewController: UIViewController
                 navBar.isHidden = true
                 navBar.center = CGPoint(x:navBar.center.x, y:(navBar.center.y + 20))
 
-                self.parent?.view.sizeThatFits(CGSize.zero)
                 self.parent?.view.setNeedsLayout()
             })
         }
@@ -88,7 +87,6 @@ class MediaControlsViewController: UIViewController
         { (timer) in
             self.navigationController?.navigationBar.isHidden = false
 
-            self.parent?.view.sizeThatFits(CGSize.zero)
             self.parent?.view.setNeedsLayout()
 
             UIView.animate(withDuration: 0.2, animations:

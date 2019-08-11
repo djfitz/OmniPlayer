@@ -28,8 +28,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="355" height="637"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </button>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="MLe-gd-C8u" userLabel="Remote Buttons Stack">
-                                        <rect key="frame" x="311" y="0.0" width="44" height="44"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="MLe-gd-C8u" userLabel="Remote Buttons Stack">
+                                        <rect key="frame" x="296" y="15" width="44" height="44"/>
                                         <color key="backgroundColor" red="0.96432751159999996" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Gfs-mV-Piq"/>
@@ -100,11 +100,11 @@
                                     <constraint firstItem="Kbl-0I-fK9" firstAttribute="centerX" secondItem="mhk-xp-YSB" secondAttribute="centerX" id="5FC-Et-6tX"/>
                                     <constraint firstItem="Kbl-0I-fK9" firstAttribute="width" secondItem="XRt-72-ScG" secondAttribute="width" id="CIl-03-LrJ"/>
                                     <constraint firstItem="JDS-GT-7fI" firstAttribute="centerX" secondItem="mhk-xp-YSB" secondAttribute="centerX" id="JZu-z9-GsS"/>
-                                    <constraint firstItem="mhk-xp-YSB" firstAttribute="trailing" secondItem="MLe-gd-C8u" secondAttribute="trailing" id="Wno-qi-Bl4"/>
+                                    <constraint firstItem="mhk-xp-YSB" firstAttribute="trailing" secondItem="MLe-gd-C8u" secondAttribute="trailing" constant="15" id="Wno-qi-Bl4"/>
                                     <constraint firstItem="zkh-L9-c1t" firstAttribute="height" secondItem="XRt-72-ScG" secondAttribute="height" id="YSb-rI-qLk"/>
                                     <constraint firstItem="JDS-GT-7fI" firstAttribute="centerY" secondItem="mhk-xp-YSB" secondAttribute="centerY" id="aSp-fw-qmy"/>
                                     <constraint firstItem="zkh-L9-c1t" firstAttribute="centerX" secondItem="mhk-xp-YSB" secondAttribute="centerX" id="ctR-F1-DnD"/>
-                                    <constraint firstItem="MLe-gd-C8u" firstAttribute="top" secondItem="mhk-xp-YSB" secondAttribute="top" id="hr8-sC-uTf"/>
+                                    <constraint firstItem="MLe-gd-C8u" firstAttribute="top" secondItem="mhk-xp-YSB" secondAttribute="top" constant="15" id="hr8-sC-uTf"/>
                                     <constraint firstItem="zkh-L9-c1t" firstAttribute="centerY" secondItem="mhk-xp-YSB" secondAttribute="centerY" id="jcj-s0-1n6"/>
                                     <constraint firstItem="zkh-L9-c1t" firstAttribute="width" secondItem="XRt-72-ScG" secondAttribute="width" id="mxe-oK-z4Z"/>
                                     <constraint firstItem="mhk-xp-YSB" firstAttribute="bottom" secondItem="Kbl-0I-fK9" secondAttribute="bottom" id="qrz-Iz-AAl"/>

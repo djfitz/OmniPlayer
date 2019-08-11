@@ -13,6 +13,8 @@ class MediaHomeTableViewController: UITableViewController
     static let mediaURLs =
         [
             URL(string: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),
+            URL(string: "http://cdn-lt-hls-vod.tv2fyn.dk/fhls/p/1966291/sp/196629100/serveFlavor/entryId/0_yct7rqn3/v/2/flavorId/0_h2wfmuqm/name/a.mp4/index.m3u8"),
+            URL(string: "http://la7-vh.akamaihd.net/i/content/entry/data/0/299/0_b7o9lvba_0_kyyr8vxz_1.mp4/master.m3u8"),
             URL(string: "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"),
             URL(string: "http://csm-e.cds1.yospace.com/csm/live/74246610.m3u8"),
             URL(string: "http://breaqz.com/movies/Lego911gt3.mov"),
@@ -21,6 +23,9 @@ class MediaHomeTableViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+
+        MediaPlayerManager.mgr.avFoundationPlayer.beginSearchForRemoteDevices()
+        MediaPlayerManager.mgr.chromecastPlayer.beginSearchForRemoteDevices()
     }
 
     //

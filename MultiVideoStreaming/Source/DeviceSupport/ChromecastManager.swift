@@ -120,6 +120,9 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
     func load(mediaItem: MediaItem, startingAt time: CMTime)
     {
+//        print("&$&$&$&$&><> Loading media item in Chromecast player.")
+//        print("URL: \(mediaItem.url.absoluteString); At Time: \(time.seconds)")
+
         let md = GCKMediaMetadata.init(metadataType: .movie)
         md.setString(mediaItem.title, forKey: kGCKMetadataKeyTitle)
         md.setString("0 Lux Studios", forKey: kGCKMetadataKeyStudio)
@@ -249,7 +252,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     {
         if request == self.currentSeekOperation?.request
         {
-            self.currentSeekOperation?.cancel()
+            self.currentSeekOperation?.completionHandler(true)
 
             self.isSeeking = false
 
@@ -261,7 +264,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     {
         if request == self.currentSeekOperation?.request
         {
-            self.currentSeekOperation?.cancel()
+            self.currentSeekOperation?.completionHandler(true)
 
             self.isSeeking = false
 
