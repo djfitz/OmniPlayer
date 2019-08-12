@@ -38,6 +38,10 @@ protocol MediaPlayerUICollection
     var backButton: UIButton? {get}
     var forwardButton: UIButton? {get}
 
+    // A button, where taps on it switches between showing media start time and media remaining time.
+    var startRemainingTimeComboButton: UIButton? {get}
+    var timeElapsedLabel: UILabel? {get}
+
     var activitySpinner: UIActivityIndicatorView? {get}
 
     var infoLabel: UILabel? {get}

@@ -202,7 +202,7 @@ class AVFoundationMediaPlayerManager : NSObject,
                 queue: DispatchQueue.main,
                 using:
                 { (time:CMTime) in
-                    self.currentOffset = time
+                    self.currentOffset = self.player.currentTime()
                 }
             )
 
