@@ -138,7 +138,8 @@ class MediaUIController: NSObject
         self.controlsVisibilityTimer = nil
 
         UIView.animate(withDuration: 0.5,
-        animations: {
+        animations:
+        {
             self.mediaPlayerViewCollection?.errorLabel?.alpha = 0
             self.mediaPlayerViewCollection?.infoLabel?.alpha = 0
             self.mediaPlayerViewCollection?.remoteButtonsContainerStack?.alpha = 0
@@ -198,31 +199,35 @@ class MediaUIController: NSObject
         }
     }
 
-    func updateTimeReadout(for currentMediaPlaybackOffset: CMTime, duration: CMTime)
+    /*!
+        Returns a formatted string of the form:
+        <hours>:<minutes>:<seconds>
+    */
+    func hmsTimeString(for time:CMTime) -> String
     {
-        var secondsDigitsString = "00"
-        var minutesDigitsString = "00"
-
-        if currentMediaPlaybackOffset.isValid
+        if time.isValid
         {
             let timeSeconds =
-                currentMediaPlaybackOffset.seconds >= 0 ?
-                currentMediaPlaybackOffset.seconds : 0
+                time.seconds >= 0 ?
+                time.seconds : 0
 
-            var currentTimeFracMinute = timeSeconds.remainder(dividingBy: 60)
+            var secondsDigitsString = "00"
+            var minutesDigitsString = "00"
 
-            if currentTimeFracMinute < 0
+            var timeFracMinute = timeSeconds.remainder(dividingBy: 60)
+
+            if timeFracMinute < 0
             {
-                currentTimeFracMinute = 60 + currentTimeFracMinute
+                timeFracMinute = 60 + timeFracMinute
             }
 
-            let secsDigitsValue = abs(currentTimeFracMinute.rounded(FloatingPointRoundingRule.towardZero))
+            let secsDigitsValue = abs(timeFracMinute.rounded(FloatingPointRoundingRule.towardZero))
 
             secondsDigitsString = Int(secsDigitsValue).description
 
-            print("Seconds Time Display: \(secsDigitsValue)")
+            print("Seconds Time Display: \(secondsDigitsString)")
 
-            if currentTimeFracMinute < 10
+            if timeFracMinute < 10
             {
                 secondsDigitsString = "0" + secondsDigitsString
             }
@@ -249,12 +254,21 @@ class MediaUIController: NSObject
 
                 print("Minute Time Display: \(minutesDigitsString)")
             }
+
+            let labelStr = minutesDigitsString + ":" + secondsDigitsString
+
+            return labelStr
         }
+        else
+        {
+            return "--:--"
+        }
+    }
 
-        let labelStr = minutesDigitsString + ":" + secondsDigitsString
-
-        self.mediaPlayerViewCollection?.timeElapsedLabel?.text = Int(duration.seconds).description
-        self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.text = labelStr
+    func updateTimeReadout(for currentMediaPlaybackOffset: CMTime, duration: CMTime)
+    {
+        self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.text = self.hmsTimeString(for: currentMediaPlaybackOffset)
+        self.mediaPlayerViewCollection?.timeElapsedLabel?.text = self.hmsTimeString(for: duration)
     }
 
     @IBAction func backButtonTapped(_ sender: Any)
@@ -364,7 +378,17 @@ class MediaUIController: NSObject
     {
         self.log( msg:"sliderValueChanged")
 
+        self.log( msg:"\n***** Slider >> Value Changed\nNew Value: \(String(describing: self.mediaPlayerViewCollection?.seekTimeSlider?.value))")
+
+        if let slider = sender as? UISlider
+        {
+            let currentSliderValue = slider.value
+            let duration = MediaPlayerManager.mgr.duration
+            let seekTimeSec = Double(currentSliderValue) * duration.seconds
+
+            self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.text = self.hmsTimeString(for: CMTime(seconds: seekTimeSec, preferredTimescale: 1))
 //        self.seek(to: CMTime(seconds: seekTimeSec, preferredTimescale: 1))
+        }
     }
 
     @IBAction func sliderEditingChanged(_ sender: Any)
