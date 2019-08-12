@@ -136,10 +136,16 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     var remoteDevicePickerButton: UIView? = MPVolumeView()
 
+    @objc dynamic var isWirelessRouteActive:Bool = false
+
     func beginSearchForRemoteDevices()
     {
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRoutesAvailableNotification ), name: Notification.Name.MPVolumeViewWirelessRoutesAvailableDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRouteChangedNotification ), name: Notification.Name.MPVolumeViewWirelessRouteActiveDidChange, object: nil)
+        if let airplayButton = self.remoteDevicePickerButton as? MPVolumeView
+        {
+            airplayButton.addObserver(self, forKeyPath: "isWirelessRouteActive", options: .new, context: nil)
+        }
     }
 
     @objc func airplayRoutesAvailableNotification( notif: Notification)
@@ -153,10 +159,13 @@ class AVFoundationMediaPlayerManager : NSObject,
     {
         self.log(msg: "Airplay Route Changed:\n\(notif)")
 
-//        if let isWirelessRouteActive = self.remoteDevicePickerButton.isWirelessRouteActive
-//        {
-//            if self.
-//        }
+        if let airplayButton = self.remoteDevicePickerButton as? MPVolumeView
+        {
+            if self.isWirelessRouteActive != airplayButton.isWirelessRouteActive
+            {
+                self.isWirelessRouteActive = airplayButton.isWirelessRouteActive
+            }
+        }
     }
 
     // MARK: AVFoundation Objects
@@ -468,6 +477,13 @@ class AVFoundationMediaPlayerManager : NSObject,
             if let newVal = self.playerItem?.duration
             {
                 self.duration = newVal
+            }
+        }
+        else if keyPath == "isWirelessRouteActive"
+        {
+            if let airplayButton = self.remoteDevicePickerButton as? MPVolumeView
+            {
+                self.isWirelessRouteActive = airplayButton.isWirelessRouteActive
             }
         }
 

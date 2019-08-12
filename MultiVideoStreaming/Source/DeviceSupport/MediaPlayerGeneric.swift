@@ -149,6 +149,8 @@ protocol RemoteMediaPlayback
 
     var currentlySelectedDevice: PlaybackDevice? { get set }
 
+    var isWirelessRouteActive: Bool {get set}
+
     /// A button that the client of this lib can put into their
     /// view hierarchy. This button automatically handles picking
     /// a remote device.

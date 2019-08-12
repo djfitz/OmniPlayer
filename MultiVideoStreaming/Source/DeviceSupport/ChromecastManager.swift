@@ -69,6 +69,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
     var remoteDevicePickerButton: UIView? = nil
 
+    @objc dynamic var isWirelessRouteActive = false
+
     override init()
     {
         super.init()
@@ -523,6 +525,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
         NSLog("Session Manager: Cast Session Did Start.\nCast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
 
+        self.isWirelessRouteActive = true
+
         MediaPlayerManager.mgr.switchPlayback(to: self)
     }
 
@@ -551,6 +555,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         didSuspend session: GCKCastSession,
                         with reason: GCKConnectionSuspendReason)
     {
+        self.isWirelessRouteActive = false
+
         self.log( msg: "Session Manager: Cast Session Did Suspend. Reason:\n\(String(describing: reason))\n" )
     }
 
@@ -566,6 +572,8 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
                         withError error: Error?)
     {
         NSLog("Session Manager: Cast Session Did End. Cast Session ID: \((session.sessionID != nil) ? session.sessionID! : "no session ID")\nError:\n\(String(describing: error))" )
+
+        self.isWirelessRouteActive = false
 
         MediaPlayerManager.mgr.stopUsing(player: self)
     }

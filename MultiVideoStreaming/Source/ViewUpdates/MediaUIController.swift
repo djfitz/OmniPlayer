@@ -98,8 +98,8 @@ class MediaUIController: NSObject
     // * showControls
     func showControls()
     {
-        log(msg: "}}}}} Showing Controls")
-        log(msg: "Cancelling Timer: \(String(describing: self.controlsVisibilityTimer))")
+//        log(msg: "}}}}} Showing Controls")
+//        log(msg: "Cancelling Timer: \(String(describing: self.controlsVisibilityTimer))")
 
         self.controlsVisibilityTimer?.invalidate()
 
@@ -225,7 +225,7 @@ class MediaUIController: NSObject
 
             secondsDigitsString = Int(secsDigitsValue).description
 
-            print("Seconds Time Display: \(secondsDigitsString)")
+//            self.log(msg: "Seconds Time Display: \(secondsDigitsString)")
 
             if timeFracMinute < 10
             {
@@ -252,7 +252,7 @@ class MediaUIController: NSObject
                     minutesDigitsString = "0" + minutesDigitsString
                 }
 
-                print("Minute Time Display: \(minutesDigitsString)")
+//                self.log(msg: "Minute Time Display: \(minutesDigitsString)")
             }
 
             let labelStr = minutesDigitsString + ":" + secondsDigitsString
@@ -506,9 +506,9 @@ class MediaUIController: NSObject
                 if self.isSliderChanging == false &&
                    self.controlsVisibilityTimer == nil
                 {
-                    let randomID = UUID.init()
-                    self.log( msg:">>>>>> After playback has started, auto-hide controls.")
-                    self.log( msg:"Timer ID: \(randomID)")
+//                    let randomID = UUID.init()
+//                    self.log( msg:">>>>>> After playback has started, auto-hide controls.")
+//                    self.log( msg:"Timer ID: \(randomID)")
 
                     self.playbackTimeUpdated(newTime: newCurrentTime)
 
@@ -519,10 +519,10 @@ class MediaUIController: NSObject
                             withTimeInterval: 1.5,
                             repeats: false, block:
                             { (timer: Timer) in
-                                self.log( msg:">>>>>> Auto-hide timer has fired.")
-                                self.log( msg:"Timer: \(timer)")
-                                self.log( msg:"Timer ID: \(randomID)")
-                                self.log( msg:"Is Timer Valid? \(timer.isValid)")
+//                                self.log( msg:">>>>>> Auto-hide timer has fired.")
+//                                self.log( msg:"Timer: \(timer)")
+//                                self.log( msg:"Timer ID: \(randomID)")
+//                                self.log( msg:"Is Timer Valid? \(timer.isValid)")
 
                                 if timer.isValid
                                 {

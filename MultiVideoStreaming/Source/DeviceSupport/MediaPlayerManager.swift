@@ -124,6 +124,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         self.avFoundationPlayer.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
         self.avFoundationPlayer.addObserver(self, forKeyPath: "playbackRate", options: .new, context: nil)
         self.avFoundationPlayer.addObserver(self, forKeyPath: "isSeeking", options: .new, context: nil)
+        self.avFoundationPlayer.addObserver(self, forKeyPath: "isWirelessRouteActive", options: .new, context: nil)
     }
 
     // * beginObservingChromecast
@@ -136,6 +137,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         self.chromecastPlayer.addObserver(self, forKeyPath: "duration", options: .new, context: nil)
         self.chromecastPlayer.addObserver(self, forKeyPath: "playbackRate", options: .new, context: nil)
         self.chromecastPlayer.addObserver(self, forKeyPath: "isSeeking", options: .new, context: nil)
+        self.chromecastPlayer.addObserver(self, forKeyPath: "isWirelessRouteActive", options: .new, context: nil)
     }
 
     // * stopObserving
@@ -167,6 +169,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         self.avFoundationPlayer.removeObserver(self, forKeyPath: "duration")
         self.avFoundationPlayer.removeObserver(self, forKeyPath: "playbackRate")
         self.avFoundationPlayer.removeObserver(self, forKeyPath: "isSeeking")
+        self.avFoundationPlayer.removeObserver(self, forKeyPath: "isWirelessRouteActive")
     }
 
     // * stopObservingChromecast
@@ -179,6 +182,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         self.chromecastPlayer.removeObserver(self, forKeyPath: "duration")
         self.chromecastPlayer.removeObserver(self, forKeyPath: "playbackRate")
         self.chromecastPlayer.removeObserver(self, forKeyPath: "isSeeking")
+        self.chromecastPlayer.removeObserver(self, forKeyPath: "isWirelessRouteActive")
     }
 
     // ============================
@@ -211,6 +215,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
 
     @objc dynamic var isSeeking: Bool = false
 
+    @objc dynamic var isWirelessRouteActive: Bool = false
 
     // MARK: - Generic Player Methods
 
@@ -286,7 +291,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
         {
             if let newCurrentTime = change?[NSKeyValueChangeKey.newKey] as? CMTime
             {
-                self.log( msg:"New Current Offset: \(newCurrentTime.seconds)")
+//                self.log( msg:"New Current Offset: \(newCurrentTime.seconds)")
 
                 self.currentOffset = newCurrentTime
             }
@@ -337,7 +342,45 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
                 self.isSeeking = newIsSeeking
             }
         }
+        else if keyPath == "isWirelessRouteActive"
+        {
+            if let newIsWirelessRouteActive = change?[NSKeyValueChangeKey.newKey] as? Bool
+            {
+                self.log( msg:"Is Wireless Route Active: \(newIsWirelessRouteActive)\nby \(String(describing: object))")
 
-        self.log( msg:"--------------------------------------------")
+                if let _ = self.currentPlayer as? AVFoundationMediaPlayerManager
+                {
+                    if let _ = object as? ChromecastManager
+                    {
+                        if newIsWirelessRouteActive == true
+                        {
+                            self.switchPlayback(to: self.chromecastPlayer)
+                        }
+                    }
+                }
+                else if let _ = self.currentPlayer as? ChromecastManager
+                {
+                    if let _ = object as? AVFoundationMediaPlayerManager
+                    {
+                        if newIsWirelessRouteActive == true
+                        {
+                            self.switchPlayback(to: self.avFoundationPlayer)
+                        }
+                    }
+                    else if let _ = object as? ChromecastManager
+                    {
+                        if newIsWirelessRouteActive == false
+                        {
+                            self.stopUsing(player: self.chromecastPlayer)
+                        }
+                    }
+
+                }
+
+                self.isWirelessRouteActive = newIsWirelessRouteActive
+            }
+        }
+
+//        self.log( msg:"--------------------------------------------")
     }
 }
