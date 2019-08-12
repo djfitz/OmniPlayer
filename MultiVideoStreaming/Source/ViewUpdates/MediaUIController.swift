@@ -93,6 +93,7 @@ class MediaUIController: NSObject
 
     var controlsVisibilityTimer: Timer?
 
+    var shouldAutoHideControls = false
 
     // * showControls
     func showControls()
@@ -112,6 +113,8 @@ class MediaUIController: NSObject
         self.mediaPlayerViewCollection?.backButton?.isHidden = false
         self.mediaPlayerViewCollection?.forwardButton?.isHidden = false
         self.mediaPlayerViewCollection?.toggleFullscreenButton?.isHidden = false
+        self.mediaPlayerViewCollection?.timeElapsedLabel?.isHidden = false
+        self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.isHidden = false
 
         self.isControlsHidden = false
 
@@ -123,6 +126,8 @@ class MediaUIController: NSObject
         self.mediaPlayerViewCollection?.backButton?.alpha = 1
         self.mediaPlayerViewCollection?.forwardButton?.alpha = 1
         self.mediaPlayerViewCollection?.toggleFullscreenButton?.alpha = 1
+        self.mediaPlayerViewCollection?.timeElapsedLabel?.alpha = 1
+        self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.alpha = 1
     }
     
     // * hideControls
@@ -143,6 +148,8 @@ class MediaUIController: NSObject
             self.mediaPlayerViewCollection?.forwardButton?.alpha = 0
 //            self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
             self.mediaPlayerViewCollection?.toggleFullscreenButton?.alpha = 0
+            self.mediaPlayerViewCollection?.timeElapsedLabel?.alpha = 0
+            self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.alpha = 0
         })
         { (completed) in
             self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
@@ -152,8 +159,10 @@ class MediaUIController: NSObject
             self.mediaPlayerViewCollection?.seekTimeSlider?.isHidden = true
             self.mediaPlayerViewCollection?.backButton?.isHidden = true
             self.mediaPlayerViewCollection?.forwardButton?.isHidden = true
-            self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+//            self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
             self.mediaPlayerViewCollection?.toggleFullscreenButton?.isHidden = true
+            self.mediaPlayerViewCollection?.timeElapsedLabel?.isHidden = true
+            self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.isHidden = true
 
             self.isControlsHidden = true
         }
@@ -191,52 +200,61 @@ class MediaUIController: NSObject
 
     func updateTimeReadout(for currentMediaPlaybackOffset: CMTime, duration: CMTime)
     {
-        let timeSeconds = currentMediaPlaybackOffset.seconds
-        var currentTimeFracMinute = timeSeconds.remainder(dividingBy: 60)
-
-        if currentTimeFracMinute < 0
-        {
-            currentTimeFracMinute = 60 + currentTimeFracMinute
-        }
-
-        let secsDigitsValue = abs(currentTimeFracMinute.rounded(FloatingPointRoundingRule.towardZero))
-
-        var secondsDigitsString:String = Int(secsDigitsValue).description
-
-        print("Seconds Time Display: \(secsDigitsValue)")
-
-        if currentTimeFracMinute < 10
-        {
-            secondsDigitsString = "0" + secondsDigitsString
-        }
-
+        var secondsDigitsString = "00"
         var minutesDigitsString = "00"
 
-        let fracMinutes = timeSeconds / 60
-
-        if fracMinutes >= 1
+        if currentMediaPlaybackOffset.isValid
         {
-            var currentTimeFracHour = fracMinutes.remainder(dividingBy: (60))
+            let timeSeconds =
+                currentMediaPlaybackOffset.seconds >= 0 ?
+                currentMediaPlaybackOffset.seconds : 0
 
-            if currentTimeFracHour < 0
+            var currentTimeFracMinute = timeSeconds.remainder(dividingBy: 60)
+
+            if currentTimeFracMinute < 0
             {
-                currentTimeFracHour = 60 + currentTimeFracHour
+                currentTimeFracMinute = 60 + currentTimeFracMinute
             }
 
-            let minsDigitValue = abs(currentTimeFracHour.rounded(FloatingPointRoundingRule.towardZero))
+            let secsDigitsValue = abs(currentTimeFracMinute.rounded(FloatingPointRoundingRule.towardZero))
 
-            minutesDigitsString = Int(minsDigitValue).description
+            secondsDigitsString = Int(secsDigitsValue).description
 
-            if minsDigitValue < 10
+            print("Seconds Time Display: \(secsDigitsValue)")
+
+            if currentTimeFracMinute < 10
             {
-                minutesDigitsString = "0" + minutesDigitsString
+                secondsDigitsString = "0" + secondsDigitsString
+            }
+
+            let fracMinutes = timeSeconds / 60
+
+            if fracMinutes >= 1
+            {
+                var currentTimeFracHour = fracMinutes.remainder(dividingBy: (60))
+
+                if currentTimeFracHour < 0
+                {
+                    currentTimeFracHour = 60 + currentTimeFracHour
+                }
+
+                let minsDigitValue = abs(currentTimeFracHour.rounded(FloatingPointRoundingRule.towardZero))
+
+                minutesDigitsString = Int(minsDigitValue).description
+
+                if minsDigitValue < 10
+                {
+                    minutesDigitsString = "0" + minutesDigitsString
+                }
+
+                print("Minute Time Display: \(minutesDigitsString)")
             }
         }
 
-        print("Minute Time Display: \(minutesDigitsString)")
         let labelStr = minutesDigitsString + ":" + secondsDigitsString
 
-        self.mediaPlayerViewCollection?.timeElapsedLabel?.text = labelStr
+        self.mediaPlayerViewCollection?.timeElapsedLabel?.text = Int(duration.seconds).description
+        self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.text = labelStr
     }
 
     @IBAction func backButtonTapped(_ sender: Any)
@@ -409,6 +427,7 @@ class MediaUIController: NSObject
                     DispatchQueue.main.async
                     {
                         MediaPlayerManager.mgr.load(mediaItem: mediaItem, startingAt: newTime)
+                        self.updateTimeReadout(for: newTime, duration: MediaPlayerManager.mgr.duration)
                         self.isSliderChanging = false
                     }
                 }
@@ -463,26 +482,33 @@ class MediaUIController: NSObject
                 if self.isSliderChanging == false &&
                    self.controlsVisibilityTimer == nil
                 {
-//                    let randomID = UUID.init()
-//                    self.log( msg:">>>>>> After playback has started, auto-hide controls.")
-//                    self.log( msg:"Timer ID: \(randomID)")
+                    let randomID = UUID.init()
+                    self.log( msg:">>>>>> After playback has started, auto-hide controls.")
+                    self.log( msg:"Timer ID: \(randomID)")
 
                     self.playbackTimeUpdated(newTime: newCurrentTime)
 
-//                    self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block:
-//                    { (timer: Timer) in
-//                        self.log( msg:">>>>>> Auto-hide timer has fired.")
-//                        self.log( msg:"Timer: \(timer)")
-//                        self.log( msg:"Timer ID: \(randomID)")
-//                        self.log( msg:"Is Timer Valid? \(timer.isValid)")
-//
-//                        if timer.isValid
-//                        {
-//                            self.hideControls()
-//                        }
-//
-//                        self.controlsVisibilityTimer = nil
-//                    })
+                    if self.shouldAutoHideControls
+                    {
+                        self.controlsVisibilityTimer =
+                        Timer.scheduledTimer(
+                            withTimeInterval: 1.5,
+                            repeats: false, block:
+                            { (timer: Timer) in
+                                self.log( msg:">>>>>> Auto-hide timer has fired.")
+                                self.log( msg:"Timer: \(timer)")
+                                self.log( msg:"Timer ID: \(randomID)")
+                                self.log( msg:"Is Timer Valid? \(timer.isValid)")
+
+                                if timer.isValid
+                                {
+                                    self.hideControls()
+                                }
+
+                                self.controlsVisibilityTimer = nil
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -561,21 +587,24 @@ class MediaUIController: NSObject
                 {
                     self.controlsVisibilityTimer?.invalidate()
 
-//                    self.log( msg:"++++++++ Create a Controls auto-hide timer:")
-//
-//                    self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block:
-//                    { (timer: Timer) in
-//                        self.log( msg:"++++++++ Fired timer: \(timer)")
-//                        self.log( msg:"And it is valid: \(timer.isValid)")
-//
-//                        if timer.isValid
-//                        {
-//                            self.controlsVisibilityTimer = nil
-//                            self.hideControls()
-//                        }
-//                    })
-//
-//                    self.log( msg:"++++++++ Timer: \(self.controlsVisibilityTimer)")
+                    self.log( msg:"++++++++ Create a Controls auto-hide timer:")
+
+                    if self.shouldAutoHideControls
+                    {
+                        self.controlsVisibilityTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block:
+                        { (timer: Timer) in
+                            self.log( msg:"++++++++ Fired timer: \(timer)")
+                            self.log( msg:"And it is valid: \(timer.isValid)")
+
+                            if timer.isValid
+                            {
+                                self.controlsVisibilityTimer = nil
+                                self.hideControls()
+                            }
+                        })
+                    }
+
+                    self.log( msg:"++++++++ Timer: \(String(describing: self.controlsVisibilityTimer))")
                 }
 
             case .paused:

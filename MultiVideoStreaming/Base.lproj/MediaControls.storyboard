@@ -72,15 +72,14 @@
                                                 </constraints>
                                                 <state key="normal" image="PlayButton"/>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yRJ-42-PqO">
-                                                <rect key="frame" x="54" y="0.0" width="51" height="44"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="257" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N6y-oU-MKi" userLabel="TimeStartRemainLabel">
+                                                <rect key="frame" x="54" y="0.0" width="50.5" height="44"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <state key="normal" title="00:00">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                            </button>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hMs-ma-sft" userLabel="Seek/Time Slider">
-                                                <rect key="frame" x="113" y="0.0" width="576.5" height="45"/>
+                                                <rect key="frame" x="112.5" y="0.0" width="577" height="45"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="lZe-Q1-MOG"/>
@@ -135,7 +134,7 @@
                                     <outlet property="playPauseButton" destination="2cV-FI-lRd" id="4Ue-eH-tfI"/>
                                     <outlet property="remoteButtonsContainerStack" destination="MLe-gd-C8u" id="HVe-TJ-Jwk"/>
                                     <outlet property="seekTimeSlider" destination="hMs-ma-sft" id="6G3-vn-Z4A"/>
-                                    <outlet property="startRemainingTimeComboButton" destination="yRJ-42-PqO" id="AR6-kc-2BY"/>
+                                    <outlet property="startRemainingTimeComboLabel" destination="N6y-oU-MKi" id="0E1-tS-YAk"/>
                                     <outlet property="timeElapsedLabel" destination="xzp-lS-563" id="7Oa-UN-eTY"/>
                                     <outlet property="toggleFullscreenButton" destination="UZ0-NR-iq0" id="TuR-CR-AMb"/>
                                 </connections>
