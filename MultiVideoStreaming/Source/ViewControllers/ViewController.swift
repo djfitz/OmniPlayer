@@ -10,7 +10,7 @@ import UIKit
 import GoogleCast
 import AVFoundation
 import MediaPlayer
-
+import MultiVideoPlayer
 
 class ViewController: UIViewController
 {

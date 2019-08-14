@@ -34,7 +34,7 @@ struct SeekOperation
 
     Implements most of the delegate/listeners as defined by the SDK.
 */
-class ChromecastManager : NSObject, MediaPlayerGeneric,
+public class ChromecastManager : NSObject, MediaPlayerGeneric,
                           GCKRemoteMediaClientListener, GCKRequestDelegate,
                           GCKSessionManagerListener, GCKLoggerDelegate
 {
@@ -65,11 +65,11 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
         Use only for debugging; will really affect runtime performance.
     */
-    var logChromecastMessages = true
+    public var logChromecastMessages = true
 
-    var remoteDevicePickerButton: UIView? = nil
+    public var remoteDevicePickerButton: UIView? = nil
 
-    @objc dynamic var isWirelessRouteActive = false
+    @objc public dynamic var isWirelessRouteActive = false
 
     override init()
     {
@@ -80,7 +80,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         self.setupChromecastSDK()
     }
 
-    func beginSearchForRemoteDevices()
+    public func beginSearchForRemoteDevices()
     {
         if self.remoteDevicePickerButton == nil
         {
@@ -110,28 +110,28 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
 
     // MARK: Properties
 
-    @objc dynamic var status: PlaybackStatus = .unknown
+    @objc public dynamic var status: PlaybackStatus = .unknown
 
-    @objc dynamic var loadingMediaItem: MediaItem? = nil
+    @objc public dynamic var loadingMediaItem: MediaItem? = nil
 
-    @objc dynamic var currentMediaItem: MediaItem? = nil
+    @objc public dynamic var currentMediaItem: MediaItem? = nil
 
-    @objc dynamic var currentOffset: CMTime = CMTime.zero
+    @objc public dynamic var currentOffset: CMTime = CMTime.zero
 
-    @objc dynamic var duration: CMTime = CMTime.invalid
+    @objc public dynamic var duration: CMTime = CMTime.invalid
 
-    @objc dynamic var playbackRate: Double = 0.0
+    @objc public dynamic var playbackRate: Double = 0.0
 
-    @objc dynamic var isSeeking: Bool = false
+    @objc public dynamic var isSeeking: Bool = false
 
     // MARK: Methods
 
-    func load(mediaItem: MediaItem)
+    public func load(mediaItem: MediaItem)
     {
         self.load(mediaItem: mediaItem, startingAt: CMTime.zero)
     }
 
-    func load(mediaItem: MediaItem, startingAt time: CMTime)
+    public func load(mediaItem: MediaItem, startingAt time: CMTime)
     {
         self.log( msg:"&$&$&$&$&><> Loading media item in Chromecast player.")
         self.log( msg:"URL: \(mediaItem.url.absoluteString); At Time: \(time.seconds)")
@@ -156,7 +156,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func play()
+    public func play()
     {
         guard let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient else { return }
         if remoteMediaClient.mediaStatus?.mediaInformation != nil
@@ -173,7 +173,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func pause()
+    public func pause()
     {
         if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
         {
@@ -181,7 +181,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func stop()
+    public func stop()
     {
         if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
         {
@@ -189,7 +189,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
+    public func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
         guard let _ = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient?.mediaStatus?.mediaInformation else { completionHandler(true); return }
         if let remoteMediaClient = GCKCastContext.sharedInstance().sessionManager.currentSession?.remoteMediaClient
@@ -212,12 +212,12 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func  skip(forward seconds: CMTime)
+    public func  skip(forward seconds: CMTime)
     {
         
     }
 
-    func skip(back seconds: CMTime)
+    public func skip(back seconds: CMTime)
     {
         
     }
@@ -240,7 +240,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func isSessionActive() -> Bool
+    public func isSessionActive() -> Bool
     {
         return GCKCastContext.sharedInstance().sessionManager.currentSession != nil
     }
@@ -249,7 +249,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
     // MARK: GCKRequestDelegate Methods
     // ======================================
 
-    func requestDidComplete(_ request: GCKRequest)
+    public func requestDidComplete(_ request: GCKRequest)
     {
         if request == self.currentSeekOperation?.request
         {
@@ -261,7 +261,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func request(_ request: GCKRequest, didFailWithError error: GCKError)
+    public func request(_ request: GCKRequest, didFailWithError error: GCKError)
     {
         if request == self.currentSeekOperation?.request
         {
@@ -273,7 +273,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         }
     }
 
-    func request(_ request: GCKRequest, didAbortWith abortReason: GCKRequestAbortReason)
+    public func request(_ request: GCKRequest, didAbortWith abortReason: GCKRequestAbortReason)
     {
         if request == self.currentSeekOperation?.request
         {
@@ -298,7 +298,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         willStart session: GCKSession)
     {
         NSLog("Session Manager: Will Start Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : "No session")
@@ -310,7 +310,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didStart session: GCKSession)
     {
         NSLog("Session Manager: Did Start Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : "None")
@@ -322,7 +322,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         willEnd session: GCKSession)
     {
         NSLog("Session Manager: Will End Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
@@ -335,7 +335,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The session.
      * @param error The error, if any; otherwise nil.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didEnd session: GCKSession,
                         withError error: Error?)
     {
@@ -348,7 +348,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         willEnd session: GCKCastSession)
     {
         NSLog("Session Manager: Will End Cast Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
@@ -361,7 +361,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The session.
      * @param error The error.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didFailToStart session: GCKSession,
                         withError error: Error)
     {
@@ -377,7 +377,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The session.
      * @param reason The reason for the suspension.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didSuspend session: GCKSession,
                         with reason: GCKConnectionSuspendReason)
     {
@@ -390,7 +390,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         willResumeSession session: GCKSession)
     {
         NSLog("Session Manager: Will Resume Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
@@ -402,7 +402,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didResumeSession session: GCKSession)
     {
         NSLog("Session Manager: Did Resume Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
@@ -416,7 +416,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The Cast session.
      * @param device The updated device object.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         session: GCKSession,
                         didUpdate device: GCKDevice)
     {
@@ -431,7 +431,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param volume The current volume, in the range [0.0, 1.0].
      * @param muted The current mute state.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         session: GCKSession,
                         didReceiveDeviceVolume volume: Float,
                         muted: Bool)
@@ -446,7 +446,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The session.
      * @param statusText The new device status text.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         session: GCKSession,
                         didReceiveDeviceStatus statusText: String?)
     {
@@ -466,7 +466,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param category The device category.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didUpdateDefaultSessionOptionsForDeviceCategory category: String)
     {
         NSLog("Session Manager: Did Update Default Session Options.\nDevice Category: %@\n", category )
@@ -480,7 +480,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         willResumeCastSession session: GCKCastSession)
     {
         NSLog("Session Manager: Will Resume Cast Session with ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
@@ -492,7 +492,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The Cast session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didResumeCastSession session: GCKCastSession)
     {
         NSLog("Session Manager: Cast Session Did Resume. Cast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
@@ -506,7 +506,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         willStart session: GCKCastSession)
     {
         NSLog("Session Manager: Cast Session Will Start. Cast Session ID: %@", (session.sessionID != nil) ? session.sessionID! : 0)
@@ -518,7 +518,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param sessionManager The session manager.
      * @param session The Cast session.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didStart session: GCKCastSession)
     {
         session.remoteMediaClient?.add(self)
@@ -537,7 +537,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The Cast session.
      * @param error The error.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didFailToStart session: GCKCastSession,
                         withError error: Error)
     {
@@ -551,7 +551,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The Cast session.
      * @param reason The reason for the suspension.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didSuspend session: GCKCastSession,
                         with reason: GCKConnectionSuspendReason)
     {
@@ -567,7 +567,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The Cast session.
      * @param error The error, if any; otherwise nil.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         didEnd session: GCKCastSession,
                         withError error: Error?)
     {
@@ -585,7 +585,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param session The Cast session.
      * @param statusText The new device status text.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         castSession session: GCKCastSession,
                         didReceiveDeviceStatus statusText: String?)
     {
@@ -607,7 +607,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param volume The current volume, in the range [0.0, 1.0].
      * @param muted The current mute state.
      */
-    func sessionManager(_ sessionManager: GCKSessionManager,
+    public func sessionManager(_ sessionManager: GCKSessionManager,
                         castSession session: GCKCastSession,
                         didReceiveDeviceVolume volume: Float,
                         muted: Bool)
@@ -615,7 +615,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
         self.log( msg: "Session Manager: Cast Session Did Receive Device Volume.\nCast Session ID: \((session.sessionID != nil) ? session.sessionID! : "no ID")\nNew Device Volume = \(String(describing: volume))\nMuted:\(String(describing: muted))" )
     }
 
-    func logMessage(_ message: String,
+    public func logMessage(_ message: String,
                     at level: GCKLoggerLevel,
                     fromFunction function: String,
                     location: String)
@@ -635,7 +635,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param client The client.
      * @param sessionID The ID of the new session.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                            didStartMediaSessionWithID sessionID: Int)
     {
         NSLog("\nRemote Media Client: Did Start Media Session With ID = %d\n", sessionID)
@@ -650,7 +650,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param mediaStatus The updated media status. The status can also be accessed as a property of
      * the player.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                            didUpdate mediaStatus: GCKMediaStatus?)
     {
         if let mediaStatusThatUpdated = mediaStatus
@@ -766,7 +766,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * GCKRemoteMediaClient::mediaStatus property.
      */
 
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                            didUpdate mediaMetadata: GCKMediaMetadata?)
     {
         if let mediaMetadataThatUpdated = mediaMetadata
@@ -785,7 +785,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      *
      * @param client The client.
      */
-    func remoteMediaClientDidUpdatePreloadStatus(_ client: GCKRemoteMediaClient)
+    public func remoteMediaClientDidUpdatePreloadStatus(_ client: GCKRemoteMediaClient)
     {
         if let mediaStatusThatUpdated = client.mediaStatus
         {
@@ -803,7 +803,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      *
      * @param client The client.
      */
-    func remoteMediaClientDidUpdateQueue(_ client: GCKRemoteMediaClient)
+    public func remoteMediaClientDidUpdateQueue(_ client: GCKRemoteMediaClient)
     {
         NSLog("Remote Media Client: Did update Queue")
     }
@@ -814,7 +814,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param client The client.
      * @param queueItemIDs The list of media queue item IDs.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                            didReceiveQueueItemIDs queueItemIDs: [NSNumber])
     {
         NSLog("Remote Media Client: Did Receive Queue Items:\n\(queueItemIDs)")
@@ -830,7 +830,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * If the value is kGCKMediaQueueInvalidItemID, it indicates that the items were appended at the
      * end of the queue.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                             didInsertQueueItemsWithIDs queueItemIDs: [NSNumber],
                             beforeItemWithID beforeItemID: UInt)
     {
@@ -843,7 +843,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param client The client.
      * @param queueItemIDs The item IDs of the updated items.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                             didUpdateQueueItemsWithIDs queueItemIDs: [NSNumber])
     {
         NSLog("Remote Media Client: Did Update Queue Items:\n\(queueItemIDs)")
@@ -855,7 +855,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param client The client.
      * @param queueItemIDs The item IDs of the removed items.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                             didRemoveQueueItemsWithIDs queueItemIDs: [NSNumber])
     {
         NSLog("Remote Media Client: Did Remove Queue Items:\n\(queueItemIDs)")
@@ -867,7 +867,7 @@ class ChromecastManager : NSObject, MediaPlayerGeneric,
      * @param client The client.
      * @param queueItems The queue items.
      */
-    func remoteMediaClient(_ client: GCKRemoteMediaClient,
+    public func remoteMediaClient(_ client: GCKRemoteMediaClient,
                             didReceive queueItems: [GCKMediaQueueItem])
     {
         NSLog("Remote Media Client: Did Receive Queue Items:\n\(queueItems)")

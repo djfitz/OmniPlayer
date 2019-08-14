@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class MediaUIController: NSObject
+@objc public class MediaUIController: NSObject
 {
     static var showPlayerUIUpdateLogMessages = false
 
@@ -479,7 +479,7 @@ class MediaUIController: NSObject
     //
 
     // * observeValue(forKeyPath…)
-    @objc override func observeValue(forKeyPath keyPath: String?,
+    @objc public override func observeValue(forKeyPath keyPath: String?,
                                      of object: Any?,
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)

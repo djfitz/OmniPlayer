@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MultiVideoPlayer
 
 // ** Sample movie streams
 // let url = URL.init(string: "http://breaqz.com/movies/Lego911gt3.mov")!

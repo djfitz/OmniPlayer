@@ -9,11 +9,11 @@
 import AVFoundation
 import CoreFoundation
 
-class MediaPlayerManager: NSObject, MediaPlayerGeneric
-{
+public class MediaPlayerManager: NSObject, MediaPlayerGeneric
+{    
     // MARK: - Static Manager
 
-    static let mgr = MediaPlayerManager()
+    static public let mgr = MediaPlayerManager()
 
     static var showPlayerLogMessages = false
 
@@ -27,15 +27,15 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
 
     // MARK: - Media Playback Engines
     
-    let avFoundationPlayer = AVFoundationMediaPlayerManager()
-    let chromecastPlayer = ChromecastManager()
+    public let avFoundationPlayer = AVFoundationMediaPlayerManager()
+    public let chromecastPlayer = ChromecastManager()
 
-    var currentPlayer:MediaPlayerGeneric = AVFoundationMediaPlayerManager()
+    public var currentPlayer:MediaPlayerGeneric = AVFoundationMediaPlayerManager()
 
-    var uiUpdatesController: MediaUIController?
+    public var uiUpdatesController: MediaUIController?
 
     // * init
-    override init()
+    public override init()
     {
         super.init()
 
@@ -201,61 +201,61 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
 
     // MARK: - Generic Player Properties
 
-    @objc dynamic var status: PlaybackStatus = .unknown
+    public dynamic var status: PlaybackStatus = .unknown
 
-    @objc dynamic var loadingMediaItem: MediaItem? = nil
+    public dynamic var loadingMediaItem: MediaItem? = nil
 
-    @objc dynamic var currentMediaItem: MediaItem? = nil
+    public dynamic var currentMediaItem: MediaItem? = nil
 
-    @objc dynamic var currentOffset: CMTime = CMTime.invalid
+    public dynamic var currentOffset: CMTime = CMTime.invalid
 
-    @objc dynamic var duration: CMTime = CMTime.invalid
+    public dynamic var duration: CMTime = CMTime.invalid
 
-    @objc dynamic var playbackRate: Double = Double.nan
+    public dynamic var playbackRate: Double = Double.nan
 
-    @objc dynamic var isSeeking: Bool = false
+    public dynamic var isSeeking: Bool = false
 
-    @objc dynamic var isWirelessRouteActive: Bool = false
+    public dynamic var isWirelessRouteActive: Bool = false
 
     // MARK: - Generic Player Methods
 
 
-    func load(mediaItem: MediaItem)
+    public func load(mediaItem: MediaItem)
     {
         self.load(mediaItem: mediaItem, startingAt: CMTime.zero)
     }
 
-    func load(mediaItem: MediaItem, startingAt time: CMTime)
+    public func load(mediaItem: MediaItem, startingAt time: CMTime)
     {
         self.currentPlayer.load(mediaItem: mediaItem, startingAt: time)
     }
 
-    func play()
+    public func play()
     {
         self.currentPlayer.play()
     }
 
-    func pause()
+    public func pause()
     {
         self.currentPlayer.pause()
     }
 
-    func stop()
+    public func stop()
     {
         self.currentPlayer.stop()
     }
 
-    func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
+    public func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
         self.currentPlayer.seek(to: time, playAfterSeek: playAfterSeek, completionHandler: completionHandler)
     }
 
-    func skip(forward seconds: CMTime)
+    public func skip(forward seconds: CMTime)
     {
         self.currentPlayer.skip(forward: seconds)
     }
 
-    func skip(back seconds: CMTime)
+    public func skip(back seconds: CMTime)
     {
         self.currentPlayer.skip(back: seconds)
     }
@@ -267,7 +267,7 @@ class MediaPlayerManager: NSObject, MediaPlayerGeneric
 
 
     // * observeValue(forKeyPath…)
-    @objc override func observeValue(forKeyPath keyPath: String?,
+    @objc override public func observeValue(forKeyPath keyPath: String?,
                                      of object: Any?,
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)

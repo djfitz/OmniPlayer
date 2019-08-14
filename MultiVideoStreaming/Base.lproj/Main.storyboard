@@ -57,7 +57,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
-                                    <segue destination="1l6-6X-qLS" kind="embed" id="jVU-Ki-kSC"/>
+                                    <segue destination="Asr-CT-0Zf" kind="embed" id="C97-sg-gu0"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -78,6 +78,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A1d-MK-abN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="66.666666666666671" y="-361.60714285714283"/>
+        </scene>
+        <!--MediaControls-->
+        <scene sceneID="OH3-jr-E3A">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MediaControls" id="Asr-CT-0Zf" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4lN-Js-woT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="67" y="113"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="lSJ-XM-wIO">
@@ -106,14 +114,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ms1-wG-koH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1671" y="-362"/>
-        </scene>
-        <!--MediaControls-->
-        <scene sceneID="21r-JX-gcd">
-            <objects>
-                <viewControllerPlaceholder storyboardName="MediaControls" id="1l6-6X-qLS" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AXf-K4-deX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="67" y="90"/>
         </scene>
         <!--Media Home-->
         <scene sceneID="pCT-n6-rJr">

@@ -9,9 +9,9 @@
 import UIKit
 import AVFoundation
 
-class AVPlayerView: UIView {
-
-    override class var layerClass: AnyClass {
+@objc public class AVPlayerView: UIView
+{
+    override public class var layerClass: AnyClass {
       return AVPlayerLayer.self
     }
 

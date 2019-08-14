@@ -12,10 +12,10 @@ import MediaPlayer
 
 
 
-class AVFoundationMediaPlayerManager : NSObject,
+public class AVFoundationMediaPlayerManager : NSObject,
                                        MediaPlayerGeneric,
-                                       RemoteMediaPlayback,
-                                       MediaPlaybackQueue
+                                       RemoteMediaPlayback
+//                                       MediaPlaybackQueue
 {
     static var showLogMessages = false
 
@@ -30,38 +30,38 @@ class AVFoundationMediaPlayerManager : NSObject,
     // MARK: ** Generic Media Player
 
     /// Setting the offset will perform a seek operation.
-    @objc dynamic var status: PlaybackStatus = .unknown
+    @objc public dynamic var status: PlaybackStatus = .unknown
 
-    @objc dynamic var currentOffset:CMTime = CMTime.invalid
+    @objc public dynamic var currentOffset:CMTime = CMTime.invalid
 
-    @objc dynamic var duration:CMTime = CMTime.invalid
+    @objc public dynamic var duration:CMTime = CMTime.invalid
 
     /// The rate of the playback as a fractional amount. Also known as the playback speed.
     /// Can be observed for when rate changes.
     /// 0 = stopped, 1 = Default playback rate, 2 = Double speed playback
     /// NOTE: Not all media players can support non-whole fractional amounts.
-    @objc dynamic var playbackRate: Double = 0
+    @objc public dynamic var playbackRate: Double = 0
 
     // Whether there is a seek in progress.
-    @objc dynamic var isSeeking = false
+    @objc public dynamic var isSeeking = false
 
     // MARK: Playback Queue
 
-    func addItem(at index: Int)
+    public func addItem(at index: Int)
     {
 //        #warning("fill me in")
     }
 
-    func addToEnd(mediaItems: [MediaItem])
+    public func addToEnd(mediaItems: [MediaItem])
     {
 //        #warning("fill me in")
     }
 
-    @objc dynamic var currentMediaItem: MediaItem?
+    @objc public dynamic var currentMediaItem: MediaItem?
 
-    @objc dynamic var loadingMediaItem: MediaItem?
+    @objc public dynamic var loadingMediaItem: MediaItem?
 
-    var currentPlaybackQueueIndex: Int?
+    public var currentPlaybackQueueIndex: Int?
     {
         didSet
         {
@@ -72,7 +72,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         }
     }
 
-    var playlist: [MediaItem] = []
+    public var playlist: [MediaItem] = []
     {
         didSet
         {
@@ -82,7 +82,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         }
     }
 
-    func playlistUpdated()
+    public func playlistUpdated()
     {
         // Start playback from the first item.
 //        if self.playlist.count > 0
@@ -91,19 +91,19 @@ class AVFoundationMediaPlayerManager : NSObject,
 //        }
     }
 
-    func removeLast() {
+    public func removeLast() {
 //        #warning("fill me in")
     }
 
-    func removeFirst() {
+    public func removeFirst() {
 //        #warning("fill me in")
     }
 
-    func removeItem(at index: Int) {
+    public func removeItem(at index: Int) {
 //        #warning("fill me in")
     }
 
-    func next()
+    public func next()
     {
         if let currentIdx = self.currentPlaybackQueueIndex, currentIdx < (self.playlist.count - 1)
         {
@@ -113,7 +113,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         // If already at beginning of the queue, do nothing.
     }
 
-    func previous()
+    public func previous()
     {
         if let currentIdx = self.currentPlaybackQueueIndex, currentIdx > 0
         {
@@ -123,22 +123,22 @@ class AVFoundationMediaPlayerManager : NSObject,
         // If already at beginning of the queue, do nothing.
     }
 
-    func skipToMediaItem(at index: Int)
+    public func skipToMediaItem(at index: Int)
     {
         self.currentPlaybackQueueIndex = index
         self.load(mediaItem: playlist[index])
     }
 
     // MARK: Remote Media Playback
-    var remoteDevicesList: [PlaybackDevice] = []
+    @objc public var remoteDevicesList: [PlaybackDevice] = []
 
-    var currentlySelectedDevice: PlaybackDevice? = nil
+    @objc public var currentlySelectedDevice: PlaybackDevice? = nil
 
-    var remoteDevicePickerButton: UIView? = MPVolumeView()
+    @objc public var remoteDevicePickerButton: UIView? = MPVolumeView()
 
-    @objc dynamic var isWirelessRouteActive:Bool = false
+    @objc dynamic public var isWirelessRouteActive:Bool = false
 
-    func beginSearchForRemoteDevices()
+    public func beginSearchForRemoteDevices()
     {
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRoutesAvailableNotification ), name: Notification.Name.MPVolumeViewWirelessRoutesAvailableDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector( airplayRouteChangedNotification ), name: Notification.Name.MPVolumeViewWirelessRouteActiveDidChange, object: nil)
@@ -148,14 +148,14 @@ class AVFoundationMediaPlayerManager : NSObject,
         }
     }
 
-    @objc func airplayRoutesAvailableNotification( notif: Notification)
+    @objc public func airplayRoutesAvailableNotification( notif: Notification)
     {
         self.log(msg: "Airplay Route Changed:\n\(notif)")
 //        self.updateAirplayButtonVisibility()
     }
 
     // * airplayRouteChangedNotification
-    @objc func airplayRouteChangedNotification( notif: Notification)
+    @objc public func airplayRouteChangedNotification( notif: Notification)
     {
         self.log(msg: "Airplay Route Changed:\n\(notif)")
 
@@ -169,7 +169,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     }
 
     // MARK: AVFoundation Objects
-    let player: AVPlayer = AVPlayer()
+    public let player: AVPlayer = AVPlayer()
     private var playerItem: AVPlayerItem? = nil
 
     // MARK: ** Methods
@@ -239,12 +239,12 @@ class AVFoundationMediaPlayerManager : NSObject,
                          can play. Check with the media player documentaiton to determine
                          which it supports.
     */
-    func load( mediaItem: MediaItem )
+    public func load( mediaItem: MediaItem )
     {
         self.load(mediaItem: mediaItem, startingAt: CMTime.zero)
     }
 
-    func load(mediaItem: MediaItem, startingAt time: CMTime)
+    public func load(mediaItem: MediaItem, startingAt time: CMTime)
     {
         if let airplayButton = self.remoteDevicePickerButton as? MPVolumeView
         {
@@ -277,7 +277,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     // NOTE: Playback must have already started for Play message to be
     // effective.
 
-    func play()
+    public func play()
     {
         self.status = .buffering
         self.player.play()
@@ -285,7 +285,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 
     /// Pause playback at the current offset.
 
-    func pause()
+    public func pause()
     {
         self.player.pause()
     }
@@ -295,13 +295,13 @@ class AVFoundationMediaPlayerManager : NSObject,
     /// on the media player. For example, stop may remove the current media item,
     /// requiring it to be loaded again.
 
-    func stop()
+    public func stop()
     {
         self.player.replaceCurrentItem(with: nil)
     }
 
 
-    func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
+    public func seek(to time: CMTime, playAfterSeek: Bool, completionHandler: @escaping (Bool) -> Void)
     {
         self.log( msg:"\n$$$$ >> Starting Seek to time: \(time.seconds) ")
         self.log( msg:"Duration: \(self.player.currentItem!.duration.seconds)")
@@ -333,7 +333,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         }
     }
 
-    func skip(forward seconds: CMTime)
+    public func skip(forward seconds: CMTime)
     {
         guard let playerItem = self.playerItem else { return }
         if playerItem.duration > playerItem.currentTime() + seconds
@@ -344,7 +344,7 @@ class AVFoundationMediaPlayerManager : NSObject,
         }
     }
 
-    func skip(back seconds: CMTime)
+    public func skip(back seconds: CMTime)
     {
         guard let playerItem = self.playerItem else { return }
         if (playerItem.currentTime() - seconds) >= CMTime.zero
@@ -356,7 +356,7 @@ class AVFoundationMediaPlayerManager : NSObject,
     }
 
     // * observeValue(forKeyPath…)
-    @objc override func observeValue(forKeyPath keyPath: String?,
+    @objc override public func observeValue(forKeyPath keyPath: String?,
                                      of object: Any?,
                                      change: [NSKeyValueChangeKey : Any]?,
                                      context: UnsafeMutableRawPointer?)
@@ -527,7 +527,7 @@ class AVFoundationMediaPlayerManager : NSObject,
 
 
 // * description for player status
-extension AVPlayer.Status
+public extension AVPlayer.Status
 {
     func description() -> String
     {
@@ -549,7 +549,7 @@ extension AVPlayer.Status
 }
 
 // * description for time control status
-extension AVPlayer.TimeControlStatus
+public extension AVPlayer.TimeControlStatus
 {
     func description() -> String
     {

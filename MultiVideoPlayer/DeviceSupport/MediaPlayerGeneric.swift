@@ -11,12 +11,12 @@ import AVFoundation
 
 
 // MARK: - Media Player
-class MediaItem : NSObject
+@objc public class MediaItem : NSObject
 {
     let title: String
     let url: URL
 
-    init( title: String, url: URL )
+    public init( title: String, url: URL )
     {
         self.title = title
         self.url = url
@@ -49,7 +49,7 @@ class MediaItem : NSObject
 
 // MARK: - Generic Media Player protocol
 
-protocol MediaPlayerGeneric
+public protocol MediaPlayerGeneric
 {
     // MARK: - Properties
 
@@ -128,7 +128,7 @@ protocol MediaPlayerGeneric
     func skip( back seconds: CMTime )
 }
 
-protocol PlaybackDevice
+@objc public protocol PlaybackDevice
 {
     var isLocal: Int { get }
     var name: String { get }
@@ -136,7 +136,7 @@ protocol PlaybackDevice
 
 // MARK: - Remote Playback and Device Switching
 
-protocol RemoteMediaPlayback
+@objc public protocol RemoteMediaPlayback
 {
     // Updated in real-time as the device list changes.
     // Observable.
@@ -158,19 +158,18 @@ protocol RemoteMediaPlayback
     /// will start receiving messages from the newly selected remote
     /// device. Playback may also automatically switch to it as well.
     var remoteDevicePickerButton: UIView? { get }
-
 }
 
 
 // MARK: - Playback Queue
 
 /// A generic interface for a playback queue
-protocol MediaPlaybackQueue
+@objc public protocol MediaPlaybackQueue
 {
     /// Which item in the playback queue is
     /// currently playing.
     /// When queue is empty, this property will return nil.
-    var currentPlaybackQueueIndex: Int? {get set}
+    var currentPlaybackQueueIndex: Int32 {get set}
 
     /// An ordered list of media items
     var playlist: [MediaItem] { get set }
