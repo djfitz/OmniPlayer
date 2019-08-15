@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Lif-5P-d38">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="9wO-tZ-tOO">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Lif-5P-d38" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dae-Iy-dZJ">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="h1w-MD-5wH" kind="relationship" relationship="rootViewController" id="px3-ga-kFz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hWT-Qi-ij2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-272.46376811594206" y="-84.375"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="EkT-Cy-wHb">
+            <objects>
+                <viewController id="h1w-MD-5wH" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Kbp-qg-SRA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3o-in-jal">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <connections>
+                                    <segue destination="QiT-4C-RE8" kind="embed" id="X0P-9f-eGU"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="H3o-in-jal" firstAttribute="leading" secondItem="Kbp-qg-SRA" secondAttribute="leading" id="B7a-Dy-ITz"/>
+                            <constraint firstAttribute="trailing" secondItem="H3o-in-jal" secondAttribute="trailing" id="EOT-aA-qY2"/>
+                            <constraint firstAttribute="bottom" secondItem="H3o-in-jal" secondAttribute="bottom" id="gVm-Bw-P6M"/>
+                            <constraint firstItem="H3o-in-jal" firstAttribute="top" secondItem="fAr-BM-Fh1" secondAttribute="top" id="uWe-UP-2Jf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="fAr-BM-Fh1"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="PFa-Wh-Hck"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xvu-zp-FPH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="591" y="-75"/>
+        </scene>
+        <!--MediaControls-->
+        <scene sceneID="Gdu-Li-Cd9">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MediaControls" bundleIdentifier="com.doughill.MultiVideoPlayer" id="QiT-4C-RE8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="so2-9b-fM3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="618" y="407"/>
+        </scene>
+    </scenes>
+</document>
