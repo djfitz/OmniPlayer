@@ -8,11 +8,11 @@
 
 import UIKit
 
-class MediaControlsViewController: UIViewController
+public class MediaControlsViewController: UIViewController
 {
     @IBOutlet var mediaControlsView: MediaPlayerControlsView!
 
-    var isFullscreen = false
+    public var isFullscreen = false
     {
         didSet
         {
@@ -27,14 +27,14 @@ class MediaControlsViewController: UIViewController
         }
     }
 
-    override func viewDidLoad()
+    override public func viewDidLoad()
     {
         super.viewDidLoad()
 
         MediaPlayerManager.mgr.registerPlayerUICollection(uiCollection: self.mediaControlsView)
     }
 
-    override func viewDidAppear(_ animated: Bool)
+    override public func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
 
@@ -52,12 +52,12 @@ class MediaControlsViewController: UIViewController
         }
     }
 
-    @IBAction func toggleFullscreen(_ sender: Any)
+    @IBAction public func toggleFullscreen(_ sender: Any)
     {
         self.isFullscreen = !self.isFullscreen
     }
 
-    func enterFullscreen()
+    public func enterFullscreen()
     {
         self.mediaControlsView.toggleFullscreenButton?.setTitle("⇲", for: .normal)
 
@@ -79,7 +79,7 @@ class MediaControlsViewController: UIViewController
         MediaPlayerManager.mgr.uiUpdatesController?.showControls()
     }
 
-    func exitFullscreen()
+    public func exitFullscreen()
     {
         self.mediaControlsView.toggleFullscreenButton?.setTitle("⇱", for: .normal)
 
