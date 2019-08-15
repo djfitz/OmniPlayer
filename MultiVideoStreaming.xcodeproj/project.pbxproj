@@ -31,6 +31,13 @@
 		F6D96D652301E6980031C3E4 /* libProtobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96D642301E6980031C3E4 /* libProtobuf.a */; };
 		F6E1A39F23021782003F9C96 /* MediaControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6D96D5D2301E5470031C3E4 /* MediaControls.storyboard */; };
 		F6E1A3A0230217A2003F9C96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C021214EDD64004BBAA8 /* Assets.xcassets */; };
+		F6E3B3342305CD1900FBE054 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3B3332305CD1900FBE054 /* AppDelegate.swift */; };
+		F6E3B3362305CD1900FBE054 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E3B3352305CD1900FBE054 /* ViewController.swift */; };
+		F6E3B3392305CD1900FBE054 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6E3B3372305CD1900FBE054 /* Main.storyboard */; };
+		F6E3B33B2305CD1A00FBE054 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6E3B33A2305CD1A00FBE054 /* Assets.xcassets */; };
+		F6E3B33E2305CD1A00FBE054 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6E3B33C2305CD1A00FBE054 /* LaunchScreen.storyboard */; };
+		F6E3B3432305CDA600FBE054 /* MultiVideoPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96D352301E25C0031C3E4 /* MultiVideoPlayer.framework */; };
+		F6E3B3442305CDA600FBE054 /* MultiVideoPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96D352301E25C0031C3E4 /* MultiVideoPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6F66EAB214EE3CC00EBE520 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66E9F214EE3CC00EBE520 /* CoreText.framework */; };
 		F6F66EAC214EE3CC00EBE520 /* MediaAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA0214EE3CC00EBE520 /* MediaAccessibility.framework */; };
 		F6F66EAD214EE3CC00EBE520 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F66EA1214EE3CC00EBE520 /* MediaPlayer.framework */; };
@@ -54,6 +61,13 @@
 			remoteGlobalIDString = F6D96D342301E25C0031C3E4;
 			remoteInfo = MultiVideoPlayer;
 		};
+		F6E3B3452305CDA600FBE054 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F6D5C00F214EDD62004BBAA8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F6D96D342301E25C0031C3E4;
+			remoteInfo = MultiVideoPlayer;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +78,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				F6D96D3D2301E25C0031C3E4 /* MultiVideoPlayer.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6E3B3472305CDA600FBE054 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F6E3B3442305CDA600FBE054 /* MultiVideoPlayer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -101,6 +126,13 @@
 		F6D96D582301E4490031C3E4 /* MediaPlayerGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPlayerGeneric.swift; sourceTree = "<group>"; };
 		F6D96D5E2301E5470031C3E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MultiVideoPlayer/MultiVideoStreaming/Base.lproj/MediaControls.storyboard; sourceTree = "<group>"; };
 		F6D96D642301E6980031C3E4 /* libProtobuf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libProtobuf.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E3B3312305CD1800FBE054 /* DemoAppFrameworked.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoAppFrameworked.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6E3B3332305CD1900FBE054 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F6E3B3352305CD1900FBE054 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F6E3B3382305CD1900FBE054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F6E3B33A2305CD1A00FBE054 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F6E3B33D2305CD1A00FBE054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F6E3B33F2305CD1A00FBE054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6F66E9F214EE3CC00EBE520 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F6F66EA0214EE3CC00EBE520 /* MediaAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaAccessibility.framework; path = System/Library/Frameworks/MediaAccessibility.framework; sourceTree = SDKROOT; };
 		F6F66EA1214EE3CC00EBE520 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -143,6 +175,14 @@
 			files = (
 				F6D96D652301E6980031C3E4 /* libProtobuf.a in Frameworks */,
 				1F95D592686B5D16EE8F45DB /* libPods-MultiVideoPlayer.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6E3B32E2305CD1800FBE054 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6E3B3432305CDA600FBE054 /* MultiVideoPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +283,7 @@
 			children = (
 				F6D5C019214EDD62004BBAA8 /* MultiVideoStreaming */,
 				F6D96D362301E25C0031C3E4 /* MultiVideoPlayer */,
+				F6E3B3322305CD1900FBE054 /* DemoAppFrameworked */,
 				F6D5C018214EDD62004BBAA8 /* Products */,
 				6F8B2971E104135CAF77DAEC /* Pods */,
 				14FCA132BFCDED9E464A1485 /* Frameworks */,
@@ -254,6 +295,7 @@
 			children = (
 				F6D5C017214EDD62004BBAA8 /* MultiVideoStreaming.app */,
 				F6D96D352301E25C0031C3E4 /* MultiVideoPlayer.framework */,
+				F6E3B3312305CD1800FBE054 /* DemoAppFrameworked.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -291,6 +333,19 @@
 				F6D96D5D2301E5470031C3E4 /* MediaControls.storyboard */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		F6E3B3322305CD1900FBE054 /* DemoAppFrameworked */ = {
+			isa = PBXGroup;
+			children = (
+				F6E3B3332305CD1900FBE054 /* AppDelegate.swift */,
+				F6E3B3352305CD1900FBE054 /* ViewController.swift */,
+				F6E3B3372305CD1900FBE054 /* Main.storyboard */,
+				F6E3B33A2305CD1A00FBE054 /* Assets.xcassets */,
+				F6E3B33C2305CD1A00FBE054 /* LaunchScreen.storyboard */,
+				F6E3B33F2305CD1A00FBE054 /* Info.plist */,
+			);
+			path = DemoAppFrameworked;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -348,13 +403,32 @@
 			productReference = F6D96D352301E25C0031C3E4 /* MultiVideoPlayer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		F6E3B3302305CD1800FBE054 /* DemoAppFrameworked */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F6E3B3422305CD1A00FBE054 /* Build configuration list for PBXNativeTarget "DemoAppFrameworked" */;
+			buildPhases = (
+				F6E3B32D2305CD1800FBE054 /* Sources */,
+				F6E3B32E2305CD1800FBE054 /* Frameworks */,
+				F6E3B32F2305CD1800FBE054 /* Resources */,
+				F6E3B3472305CDA600FBE054 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F6E3B3462305CDA600FBE054 /* PBXTargetDependency */,
+			);
+			name = DemoAppFrameworked;
+			productName = DemoAppFrameworked;
+			productReference = F6E3B3312305CD1800FBE054 /* DemoAppFrameworked.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		F6D5C00F214EDD62004BBAA8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1030;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = doughill;
 				TargetAttributes = {
@@ -363,6 +437,9 @@
 						LastSwiftMigration = 1020;
 					};
 					F6D96D342301E25C0031C3E4 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+					F6E3B3302305CD1800FBE054 = {
 						CreatedOnToolsVersion = 10.3;
 					};
 				};
@@ -382,6 +459,7 @@
 			targets = (
 				F6D5C016214EDD62004BBAA8 /* MultiVideoStreaming */,
 				F6D96D342301E25C0031C3E4 /* MultiVideoPlayer */,
+				F6E3B3302305CD1800FBE054 /* DemoAppFrameworked */,
 			);
 		};
 /* End PBXProject section */
@@ -404,6 +482,16 @@
 			files = (
 				F6D96D612301E5600031C3E4 /* Assets.xcassets in Resources */,
 				F6D96D5F2301E5470031C3E4 /* MediaControls.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6E3B32F2305CD1800FBE054 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6E3B33E2305CD1A00FBE054 /* LaunchScreen.storyboard in Resources */,
+				F6E3B33B2305CD1A00FBE054 /* Assets.xcassets in Resources */,
+				F6E3B3392305CD1900FBE054 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,6 +606,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F6E3B32D2305CD1800FBE054 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6E3B3362305CD1900FBE054 /* ViewController.swift in Sources */,
+				F6E3B3342305CD1900FBE054 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -525,6 +622,11 @@
 			isa = PBXTargetDependency;
 			target = F6D96D342301E25C0031C3E4 /* MultiVideoPlayer */;
 			targetProxy = F6D96D3A2301E25C0031C3E4 /* PBXContainerItemProxy */;
+		};
+		F6E3B3462305CDA600FBE054 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F6D96D342301E25C0031C3E4 /* MultiVideoPlayer */;
+			targetProxy = F6E3B3452305CDA600FBE054 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -551,6 +653,22 @@
 				F6D96D5E2301E5470031C3E4 /* Base */,
 			);
 			name = MediaControls.storyboard;
+			sourceTree = "<group>";
+		};
+		F6E3B3372305CD1900FBE054 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6E3B3382305CD1900FBE054 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F6E3B33C2305CD1A00FBE054 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F6E3B33D2305CD1A00FBE054 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -781,6 +899,46 @@
 			};
 			name = Release;
 		};
+		F6E3B3402305CD1A00FBE054 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8447SZV72Y;
+				INFOPLIST_FILE = DemoAppFrameworked/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doughill.DemoAppFrameworked;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F6E3B3412305CD1A00FBE054 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8447SZV72Y;
+				INFOPLIST_FILE = DemoAppFrameworked/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.doughill.DemoAppFrameworked;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -807,6 +965,15 @@
 			buildConfigurations = (
 				F6D96D3E2301E25C0031C3E4 /* Debug */,
 				F6D96D3F2301E25C0031C3E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F6E3B3422305CD1A00FBE054 /* Build configuration list for PBXNativeTarget "DemoAppFrameworked" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F6E3B3402305CD1A00FBE054 /* Debug */,
+				F6E3B3412305CD1A00FBE054 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
