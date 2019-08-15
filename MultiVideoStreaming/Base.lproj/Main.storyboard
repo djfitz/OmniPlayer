@@ -82,7 +82,7 @@
         <!--MediaControls-->
         <scene sceneID="OH3-jr-E3A">
             <objects>
-                <viewControllerPlaceholder storyboardName="MediaControls" id="Asr-CT-0Zf" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="MediaControls" bundleIdentifier="com.doughill.MultiVideoPlayer" id="Asr-CT-0Zf" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4lN-Js-woT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="67" y="113"/>

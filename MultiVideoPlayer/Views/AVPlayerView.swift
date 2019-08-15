@@ -15,12 +15,12 @@ import AVFoundation
       return AVPlayerLayer.self
     }
 
-    var playerLayer: AVPlayerLayer
+    public var playerLayer: AVPlayerLayer
     {
         return layer as! AVPlayerLayer
     }
 
-    var player: AVPlayer?
+    public var player: AVPlayer?
     {
         get
         {

@@ -13,6 +13,8 @@ import MediaPlayer
 {
     static var showPlayerUIUpdateLogMessages = false
 
+    var resBundle = Bundle.init(identifier: "com.doughill.MultiVideoPlayer")
+
     func log(msg: String)
     {
         if MediaUIController.showPlayerUIUpdateLogMessages
@@ -45,7 +47,9 @@ import MediaPlayer
         uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderEditingChanged(_:)), for: .editingChanged)
         uiCollection.seekTimeSlider?.addTarget(self, action: #selector(sliderDidEndOnExit(_:)), for: .editingDidEndOnExit)
 
-        uiCollection.seekTimeSlider?.setThumbImage(#imageLiteral(resourceName: "TimeSeekSliderThumb"), for: .normal)
+        uiCollection.seekTimeSlider?.setThumbImage(
+            UIImage.init(named: "TimeSeekSliderThumb", in: self.resBundle, compatibleWith:nil ),
+            for: .normal)
 
         uiCollection.infoLabel?.text = MediaPlayerManager.mgr.currentMediaItem?.title
         uiCollection.infoLabel?.isHidden = false
@@ -329,7 +333,9 @@ import MediaPlayer
                 // - Seek to the beginning
                 // - Start playback
                 self.mediaPlayerViewCollection?.seekTimeSlider?.value = 0
-                self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                    UIImage.init(named: "Pause", in: self.resBundle, compatibleWith:nil ),
+                    for: .normal)
 
                 MediaPlayerManager.mgr.seek(to: CMTime.zero, playAfterSeek: true)
                 { (finished) in
@@ -549,7 +555,9 @@ import MediaPlayer
 
                 self.mediaPlayerViewCollection?.avPlayerView?.isHidden = true
 
-                self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                    UIImage.init(named: "Pause", in: self.resBundle, compatibleWith:nil),
+                    for: .normal)
                 self.mediaPlayerViewCollection?.infoLabel?.text = MediaPlayerManager.mgr.loadingMediaItem?.title
                 self.mediaPlayerViewCollection?.infoLabel?.isHidden = false
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
@@ -562,7 +570,9 @@ import MediaPlayer
 
             case .readyToPlay:
                 self.log( msg:"readyToPlay")
-                self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                    UIImage.init(named: "Pause", in: self.resBundle, compatibleWith:nil),
+                    for: .normal)
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
 //                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
@@ -594,11 +604,15 @@ import MediaPlayer
 
                 if durationRoundedSec <= currentTimeRoundedSec
                 {
-                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                        UIImage.init(named: "PlayButton", in: self.resBundle, compatibleWith:nil),
+                        for: .normal)
                 }
                 else
                 {
-                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                        UIImage.init(named: "Pause", in: self.resBundle, compatibleWith:nil),
+                        for: .normal)
                 }
 
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
@@ -636,7 +650,9 @@ import MediaPlayer
 
                 if self.isSliderChanging == false
                 {
-                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                        UIImage.init(named: "PlayButton", in: self.resBundle, compatibleWith:nil),
+                        for: .normal)
                 }
 
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
@@ -652,7 +668,9 @@ import MediaPlayer
                 self.log( msg:"failed")
                 if self.isSliderChanging == false
                 {
-                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                        UIImage.init(named: "PlayButton", in: self.resBundle, compatibleWith:nil),
+                        for: .normal)
                 }
                 
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
@@ -671,7 +689,9 @@ import MediaPlayer
 
                 if self.isSliderChanging == false
                 {
-                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                        UIImage.init(named: "Pause", in: self.resBundle, compatibleWith:nil),
+                        for: .normal)
                 }
 
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
@@ -684,7 +704,9 @@ import MediaPlayer
 
                 if self.isSliderChanging == false
                 {
-                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                        UIImage.init(named: "PlayButton", in: self.resBundle, compatibleWith:nil),
+                        for: .normal)
                 }
                 
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
@@ -697,7 +719,9 @@ import MediaPlayer
 
                 if self.isSliderChanging == false
                 {
-                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(#imageLiteral(resourceName: "PlayButton"), for: .normal)
+                    self.mediaPlayerViewCollection?.playPauseButton?.setImage(
+                        UIImage.init(named: "PlayButton", in: self.resBundle, compatibleWith:nil),
+                        for: .normal)
                 }
                 
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
