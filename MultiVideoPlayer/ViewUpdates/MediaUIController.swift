@@ -29,6 +29,23 @@ import MediaPlayer
 
     var lastSeekTime = CMTime.invalid
 
+    override init()
+    {
+        super.init()
+
+        MediaUIController.showPlayerUIUpdateLogMessages = true
+
+        MediaPlayerManager.mgr.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+        MediaPlayerManager.mgr.addObserver(self, forKeyPath: "currentOffset", options: .new, context: nil)
+    }
+
+    deinit
+    {
+        MediaPlayerManager.mgr.stop()
+        MediaPlayerManager.mgr.removeObserver(self, forKeyPath: "status")
+        MediaPlayerManager.mgr.removeObserver(self, forKeyPath: "currentOffset")
+    }
+
     func registerMediaPlayerUICollection(uiCollection: MediaPlayerUICollection)
     {
         self.mediaPlayerViewCollection = uiCollection
@@ -70,23 +87,6 @@ import MediaPlayer
         uiCollection.avPlayerView?.player = MediaPlayerManager.mgr.avFoundationPlayer.player
 
         self.showControls()
-    }
-
-    deinit
-    {
-        MediaPlayerManager.mgr.stop()
-        MediaPlayerManager.mgr.removeObserver(self, forKeyPath: "status")
-        MediaPlayerManager.mgr.removeObserver(self, forKeyPath: "currentOffset")
-    }
-
-    override init()
-    {
-        super.init()
-
-        MediaUIController.showPlayerUIUpdateLogMessages = true
-
-        MediaPlayerManager.mgr.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-        MediaPlayerManager.mgr.addObserver(self, forKeyPath: "currentOffset", options: .new, context: nil)
     }
 
     // ============================================================
@@ -151,7 +151,7 @@ import MediaPlayer
             self.mediaPlayerViewCollection?.seekTimeSlider?.alpha = 0
             self.mediaPlayerViewCollection?.backButton?.alpha = 0
             self.mediaPlayerViewCollection?.forwardButton?.alpha = 0
-//            self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
+            self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
             self.mediaPlayerViewCollection?.toggleFullscreenButton?.alpha = 0
             self.mediaPlayerViewCollection?.timeElapsedLabel?.alpha = 0
             self.mediaPlayerViewCollection?.startRemainingTimeComboLabel?.alpha = 0
@@ -617,7 +617,7 @@ import MediaPlayer
 
                 self.mediaPlayerViewCollection?.activitySpinner?.stopAnimating()
                 self.mediaPlayerViewCollection?.activitySpinner?.alpha = 0
-//                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
+                self.mediaPlayerViewCollection?.activitySpinner?.isHidden = true
                 self.mediaPlayerViewCollection?.errorLabel?.text = ""
                 self.mediaPlayerViewCollection?.errorLabel?.isHidden = true
 

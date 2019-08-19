@@ -1,0 +1,11 @@
+framework module MultiVideoPlayer {
+  umbrella header "MultiVideoPlayer.h"
+
+  export *
+  module * { export * }
+}
+
+module MultiVideoPlayer.Swift {
+    header "MultiVideoPlayer-Swift.h"
+    requires objc
+}
