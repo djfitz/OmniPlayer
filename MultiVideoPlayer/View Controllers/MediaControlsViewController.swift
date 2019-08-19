@@ -40,15 +40,22 @@ class MediaControlsViewController: UIViewController
 
         if !self.isFullscreen
         {
-            let nsecs = DispatchTime.now().uptimeNanoseconds + UInt64( Double( NSEC_PER_SEC) * 0.9 )
-            let fireTime = DispatchTime(uptimeNanoseconds: nsecs
-            )
-            DispatchQueue
-                .main
-                .asyncAfter( deadline: fireTime )
-            {
-                self.isFullscreen = true
-            }
+            DispatchQueue.global(qos: .userInitiated)
+                .asyncAfter(
+                    deadline: DispatchTime.init(uptimeNanoseconds: UInt64(0.2) * NSEC_PER_SEC))
+                    {
+                        DispatchQueue.main.async()
+                        { self.isFullscreen = true }
+                    }
+//            let nsecs = DispatchTime.now().uptimeNanoseconds + UInt64( Double( NSEC_PER_SEC) * 0.9 )
+//            let fireTime = DispatchTime(uptimeNanoseconds: nsecs
+//            )
+//            DispatchQueue
+//                .main
+//                .asyncAfter( deadline: fireTime )
+//            {
+//                self.isFullscreen = true
+//            }
         }
     }
 
