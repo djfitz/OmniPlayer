@@ -17,7 +17,6 @@
 		F66C6ACB23067BF4000045CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66C6ACA23067BF4000045CE /* Assets.xcassets */; };
 		F66C6ACE23067BF4000045CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66C6ACC23067BF4000045CE /* LaunchScreen.storyboard */; };
 		F6843AAC2305DF0800CC675B /* MultiVideoPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96D352301E25C0031C3E4 /* MultiVideoPlayer.framework */; };
-		F6843AAD2305DF0800CC675B /* MultiVideoPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6D96D352301E25C0031C3E4 /* MultiVideoPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F6C573A3219BC45F00F09066 /* OCDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C573A1219BC45E00F09066 /* OCDummy.m */; };
 		F6D5C025214EDD64004BBAA8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6D5C023214EDD64004BBAA8 /* LaunchScreen.storyboard */; };
 		F6D96D392301E25C0031C3E4 /* MultiVideoPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D96D372301E25C0031C3E4 /* MultiVideoPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -75,7 +74,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F6843AAD2305DF0800CC675B /* MultiVideoPlayer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;

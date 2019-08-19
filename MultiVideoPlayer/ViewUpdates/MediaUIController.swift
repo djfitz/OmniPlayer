@@ -97,7 +97,7 @@ import MediaPlayer
 
     var controlsVisibilityTimer: Timer?
 
-    var shouldAutoHideControls = false
+    var shouldAutoHideControls = true
 
     // * showControls
     func showControls()

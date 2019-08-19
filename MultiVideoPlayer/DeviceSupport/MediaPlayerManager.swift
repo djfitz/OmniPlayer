@@ -9,7 +9,7 @@
 import AVFoundation
 import CoreFoundation
 
-public class MediaPlayerManager: NSObject, MediaPlayerGeneric
+@objc public class MediaPlayerManager: NSObject, MediaPlayerGeneric
 {    
     // MARK: - Static Manager
 
@@ -201,21 +201,21 @@ public class MediaPlayerManager: NSObject, MediaPlayerGeneric
 
     // MARK: - Generic Player Properties
 
-    public dynamic var status: PlaybackStatus = .unknown
+    @objc public dynamic var status: PlaybackStatus = .unknown
 
-    public dynamic var loadingMediaItem: MediaItem? = nil
+    @objc public dynamic var loadingMediaItem: MediaItem? = nil
 
-    public dynamic var currentMediaItem: MediaItem? = nil
+    @objc public dynamic var currentMediaItem: MediaItem? = nil
 
-    public dynamic var currentOffset: CMTime = CMTime.invalid
+    @objc public dynamic var currentOffset: CMTime = CMTime.invalid
 
-    public dynamic var duration: CMTime = CMTime.invalid
+    @objc public dynamic var duration: CMTime = CMTime.invalid
 
-    public dynamic var playbackRate: Double = Double.nan
+    @objc public dynamic var playbackRate: Double = Double.nan
 
-    public dynamic var isSeeking: Bool = false
+    @objc public dynamic var isSeeking: Bool = false
 
-    public dynamic var isWirelessRouteActive: Bool = false
+    @objc public dynamic var isWirelessRouteActive: Bool = false
 
     // MARK: - Generic Player Methods
 
