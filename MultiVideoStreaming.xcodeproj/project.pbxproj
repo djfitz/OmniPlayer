@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24254B8C64E99F653B1EC372 /* libPods-MultiVideoPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE614D0F2C43CF338FE2DC7E /* libPods-MultiVideoPlayer.a */; };
 		F614FDA3219BC1C000EDA431 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614FD98219BC1C000EDA431 /* ViewController.swift */; };
 		F63207632305E2BA00D07163 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F63207622305E2BA00D07163 /* Assets.xcassets */; };
 		F63A81B322E6C154008473EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A81B222E6C154008473EA /* AppDelegate.swift */; };
@@ -83,10 +84,8 @@
 /* Begin PBXFileReference section */
 		44DA4B090D68CA5AAC8C3FF6 /* libPods-MultiVideoStreaming.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MultiVideoStreaming.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D277A7902302FE1A784219C /* Pods-MultiVideoPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoPlayer/Pods-MultiVideoPlayer.debug.xcconfig"; sourceTree = "<group>"; };
-		7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.debug.xcconfig"; sourceTree = "<group>"; };
 		DE614D0F2C43CF338FE2DC7E /* libPods-MultiVideoPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MultiVideoPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E36E40ECE727B6244750C573 /* Pods-MultiVideoPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoPlayer.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoPlayer/Pods-MultiVideoPlayer.release.xcconfig"; sourceTree = "<group>"; };
-		E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiVideoStreaming.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultiVideoStreaming/Pods-MultiVideoStreaming.release.xcconfig"; sourceTree = "<group>"; };
 		F614FD91219BC1C000EDA431 /* AVFoundationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVFoundationManager.swift; sourceTree = "<group>"; };
 		F614FD92219BC1C000EDA431 /* ChromecastManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChromecastManager.swift; sourceTree = "<group>"; };
 		F614FD96219BC1C000EDA431 /* MediaControlsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaControlsViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6D96D652301E6980031C3E4 /* libProtobuf.a in Frameworks */,
+				24254B8C64E99F653B1EC372 /* libPods-MultiVideoPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,8 +197,6 @@
 		6F8B2971E104135CAF77DAEC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */,
-				E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */,
 				4D277A7902302FE1A784219C /* Pods-MultiVideoPlayer.debug.xcconfig */,
 				E36E40ECE727B6244750C573 /* Pods-MultiVideoPlayer.release.xcconfig */,
 			);
@@ -776,7 +774,6 @@
 		};
 		F6D5C02A214EDD64004BBAA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7D4DCC61AB5B5D3C4A1543B3 /* Pods-MultiVideoStreaming.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -800,7 +797,6 @@
 		};
 		F6D5C02B214EDD64004BBAA8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E554A1748B5303CF3B7D63F9 /* Pods-MultiVideoStreaming.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
