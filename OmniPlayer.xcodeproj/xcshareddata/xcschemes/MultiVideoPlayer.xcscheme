@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F6D5C016214EDD62004BBAA8"
-               BuildableName = "MultiVideoStreaming.app"
-               BlueprintName = "MultiVideoStreaming"
-               ReferencedContainer = "container:MultiVideoStreaming.xcodeproj">
+               BlueprintIdentifier = "F6D96D342301E25C0031C3E4"
+               BuildableName = "MultiVideoPlayer.framework"
+               BlueprintName = "MultiVideoPlayer"
+               ReferencedContainer = "container:OmniPlayer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F6D5C016214EDD62004BBAA8"
-            BuildableName = "MultiVideoStreaming.app"
-            BlueprintName = "MultiVideoStreaming"
-            ReferencedContainer = "container:MultiVideoStreaming.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F6D5C016214EDD62004BBAA8"
-            BuildableName = "MultiVideoStreaming.app"
-            BlueprintName = "MultiVideoStreaming"
-            ReferencedContainer = "container:MultiVideoStreaming.xcodeproj">
+            BlueprintIdentifier = "F6D96D342301E25C0031C3E4"
+            BuildableName = "MultiVideoPlayer.framework"
+            BlueprintName = "MultiVideoPlayer"
+            ReferencedContainer = "container:OmniPlayer.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F6D5C016214EDD62004BBAA8"
-            BuildableName = "MultiVideoStreaming.app"
-            BlueprintName = "MultiVideoStreaming"
-            ReferencedContainer = "container:MultiVideoStreaming.xcodeproj">
+            BlueprintIdentifier = "F6D96D342301E25C0031C3E4"
+            BuildableName = "MultiVideoPlayer.framework"
+            BlueprintName = "MultiVideoPlayer"
+            ReferencedContainer = "container:OmniPlayer.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
